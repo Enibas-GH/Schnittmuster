@@ -396,10 +396,23 @@ let P = [], editId = null, deleteId = null, pendingImport = [];
 let sortCol = 'name', sortDir = 'asc', viewMode = 'list', imgData = '';
 
 // ── Persist ──
-function loadData() {
+async function loadData() {
   try { const d = localStorage.getItem(SK); if (d) P = JSON.parse(d); } catch(e) {}
+  if (!P.length) {
+    await fetchDefaultCSV();
+  }
   updateMarkenList();
   render();
+}
+async function fetchDefaultCSV() {
+  try {
+    const res = await fetch('pattydoo-komplett-mit-links.csv');
+    if (!res.ok) return;
+    const text = await res.text();
+    const rows = parseCSV(text);
+    rows.forEach(p => P.push({...p, id: uid(), created: Date.now()}));
+    saveData();
+  } catch(e) {}
 }
 function saveData() {
   try { localStorage.setItem(SK, JSON.stringify(P)); }
@@ -422,7 +435,6 @@ function showToast(msg) {
 // ── Marken ──
 function updateMarkenList() {
   const marken = [...new Set(P.map(p => p.marke).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de'));
-  // Filter dropdown
   const curFilt = gv('f-marke');
   const fSel = document.getElementById('f-marke');
   fSel.innerHTML = '<option value="">Alle Marken</option>';
@@ -432,7 +444,6 @@ function updateMarkenList() {
     fSel.appendChild(o);
   });
   if (curFilt) fSel.value = curFilt;
-  // Form datalist
   const dl = document.getElementById('marken-dl');
   dl.innerHTML = '';
   marken.forEach(m => {
