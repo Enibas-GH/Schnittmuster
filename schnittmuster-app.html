@@ -409,7 +409,10 @@ async function fetchDefaultCSV() {
     const listRes = await fetch('csvlist.txt');
     if (!listRes.ok) return;
     const files = (await listRes.text()).split('\n').map(l => l.trim()).filter(Boolean);
+    let imported = JSON.parse(localStorage.getItem('sm-imported') || '[]');
+    let changed = false;
     for (const file of files) {
+      if (imported.includes(file)) continue;
       try {
         const res = await fetch(file);
         if (!res.ok) continue;
@@ -418,9 +421,14 @@ async function fetchDefaultCSV() {
         const existing = new Set(P.map(p => p.name.toLowerCase()));
         rows.filter(p => !existing.has(p.name.toLowerCase()))
             .forEach(p => P.push({...p, id: uid(), created: Date.now()}));
+        imported.push(file);
+        changed = true;
       } catch(e) {}
     }
-    saveData();
+    if (changed) {
+      saveData();
+      localStorage.setItem('sm-imported', JSON.stringify(imported));
+    }
   } catch(e) {}
 }
 function saveData() {
