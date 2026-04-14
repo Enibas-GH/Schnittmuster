@@ -82,7 +82,7 @@
   th {
     padding: 12px 14px; font-size: 11px; font-weight: 800; color: var(--orange);
     text-transform: uppercase; letter-spacing: 0.8px; cursor: pointer;
-    border-bottom: 2px solid var(--border); background: #fff8f4; user-select: none;
+    border-bottom: 2px solid var(--border); background: #fff8f4; user-select: none; text-align: left;
   }
   th:hover { color: var(--pink); }
   td { padding: 10px 14px; border-bottom: 1px solid #fff0e8; vertical-align: middle; font-weight: 600; }
@@ -229,11 +229,7 @@
     <option value="">Alle Status</option>
     <option>Vorhanden</option><option>Genäht</option><option>In Planung</option><option>Wunschliste</option>
   </select>
-  <select id="fm" onchange="render()">
-    <option value="">Alle Marken</option>
-    <option>Burda</option><option>Schnittreif</option><option>Makerist</option>
-    <option>Ottobre</option><option>Pattydoo</option><option>Eigen</option><option>Sonstiges</option>
-  </select>
+  <select id="fm" onchange="render()"><option value="">Alle Marken</option></select>
   <button class="btn-ghost-dark" id="btn-rst" onclick="resetF()" style="display:none">✕ Reset</button>
 </div>
 
@@ -256,11 +252,9 @@
           <select id="fmk"><option value="">—</option>
             <option>Burda</option><option>Schnittreif</option><option>Makerist</option>
             <option>Ottobre</option><option>Pattydoo</option><option>Eigen</option><option>Sonstiges</option>
-          </select></div>
-        <div><label class="lbl">Kollektion</label><input type="text" id="fkl" placeholder="z. B. Frühjahr 2024"></div>
-        <div><label class="lbl">Zielgruppe</label>
-          <select id="fzgf"><option value="">—</option>
-            <option>Damen</option><option>Herren</option><option>Kinder</option><option>Baby</option><option>Unisex</option>
+        <div><label class="lbl">Marke</label>
+          <input type="text" id="fmk" list="marken-list" placeholder="z. B. Pattydoo" autocomplete="off">
+          <datalist id="marken-list"></datalist></div>
           </select></div>
         <div><label class="lbl">Oberkategorie</label>
           <select id="fok2" onchange="syncTypM()">
@@ -359,7 +353,7 @@ const COLS=[{k:'name',l:'Name'},{k:'marke',l:'Marke'},{k:'zielgruppe',l:'Zielgru
 let P=[],eid=null,did=null,sc='name',sd='asc',importRows=[],currentImgData='',view='list';
 const SK='sm-data-v2';
 
-function load(){try{const d=localStorage.getItem(SK);if(d)P=JSON.parse(d);}catch(e){}render();}
+function load(){try{const d=localStorage.getItem(SK);if(d)P=JSON.parse(d);}catch(e){}updateMarken();render();}
 function save(){try{localStorage.setItem(SK,JSON.stringify(P));}catch(e){toast('Speicherfehler – Bilder zu groß?');}}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
 function e(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -378,6 +372,7 @@ function hideImgPreview(){document.getElementById('img-preview-wrap').style.disp
 function removeImg(){currentImgData='';sv('fbi','');hideImgPreview();}
 function getImgSrc(){return currentImgData||gv('fbi');}
 
+function updateMarken(){const marken=[...new Set(P.map(p=>p.marke).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"de"));const cur=gv("fm");const sel=document.getElementById("fm");sel.innerHTML="<option value="">Alle Marken</option>";marken.forEach(m=>{const o=document.createElement("option");o.value=m;o.textContent=m;sel.appendChild(o);});if(cur)sel.value=cur;const dl=document.getElementById("marken-list");if(dl){dl.innerHTML="";marken.forEach(m=>{const o=document.createElement("option");o.value=m;dl.appendChild(o);});}}
 function syncTypF(){const ok=gv('fok'),sel=document.getElementById('ft');sel.innerHTML='<option value="">Alle Typen</option>';(TM[ok]||[]).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});}
 function syncTypM(){const ok=gv('fok2'),sel=document.getElementById('ft2');sel.innerHTML='<option value="">—</option>';(TM[ok]||[]).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});sel.disabled=!ok;}
 function chkSub(){document.getElementById('bsub').disabled=!gv('fn').trim();}
@@ -460,10 +455,10 @@ function renderGrid(rows){
 
 function ts(col){if(sc===col)sd=sd==='asc'?'desc':'asc';else{sc=col;sd='asc';}render();}
 
-function openAdd(){eid=null;currentImgData='';document.getElementById('mtitle').textContent='Neues Schnittmuster';document.getElementById('bsub').textContent='Hinzufügen';['fn','fkl','fgr','flk','fbi'].forEach(id=>sv(id,''));document.getElementById('fno').value='';['fmk','fok2','ft2','fst2','ffo','fss2','fzgf'].forEach(id=>sv(id,''));hideImgPreview();syncTypM();chkSub();document.getElementById('mform').classList.add('open');}
-function openEdit(id){const p=P.find(x=>x.id===id);if(!p)return;eid=id;currentImgData='';document.getElementById('mtitle').textContent='Schnittmuster bearbeiten';document.getElementById('bsub').textContent='Speichern';sv('fn',p.name);sv('fmk',p.marke);sv('fkl',p.kollektion);sv('fzgf',p.zielgruppe);sv('fok2',p.oberkategorie);syncTypM();sv('ft2',p.typ);sv('fst2',p.stoffart);sv('fgr',p.groesse);sv('ffo',p.format);sv('fss2',p.status);sv('flk',p.link);document.getElementById('fno').value=p.notizen||'';if(p.bild){if(p.bild.startsWith('data:')){currentImgData=p.bild;showImgPreview(p.bild);}else{sv('fbi',p.bild);showImgPreview(p.bild);}}else{sv('fbi','');hideImgPreview();}chkSub();document.getElementById('mform').classList.add('open');}
+function openAdd(){eid=null;currentImgData='';document.getElementById('mtitle').textContent='Neues Schnittmuster';document.getElementById('bsub').textContent='Hinzufügen';['fn','fkl','fgr','flk','fbi'].forEach(id=>sv(id,''));document.getElementById('fno').value='';['fok2','ft2','fst2','ffo','fss2','fzgf'].forEach(id=>sv(id,''));document.getElementById('fmk').value='';hideImgPreview();syncTypM();chkSub();document.getElementById('mform').classList.add('open');}
+function openEdit(id){const p=P.find(x=>x.id===id);if(!p)return;eid=id;currentImgData='';document.getElementById('mtitle').textContent='Schnittmuster bearbeiten';document.getElementById('bsub').textContent='Speichern';sv('fn',p.name);document.getElementById('fmk').value=p.marke||'';sv('fkl',p.kollektion);sv('fzgf',p.zielgruppe);sv('fok2',p.oberkategorie);syncTypM();sv('ft2',p.typ);sv('fst2',p.stoffart);sv('fgr',p.groesse);sv('ffo',p.format);sv('fss2',p.status);sv('flk',p.link);document.getElementById('fno').value=p.notizen||'';if(p.bild){if(p.bild.startsWith('data:')){currentImgData=p.bild;showImgPreview(p.bild);}else{sv('fbi',p.bild);showImgPreview(p.bild);}}else{sv('fbi','');hideImgPreview();}chkSub();document.getElementById('mform').classList.add('open');}
 function closeM(){['mform','mdel'].forEach(id=>document.getElementById(id).classList.remove('open'));did=null;}
-function subF(){if(!gv('fn').trim())return;const p={name:gv('fn').trim(),marke:gv('fmk'),kollektion:gv('fkl').trim(),zielgruppe:gv('fzgf'),oberkategorie:gv('fok2'),typ:gv('ft2'),stoffart:gv('fst2'),groesse:gv('fgr').trim(),format:gv('ffo'),status:gv('fss2'),link:gv('flk').trim(),bild:getImgSrc(),notizen:document.getElementById('fno').value.trim()};if(eid){P=P.map(x=>x.id===eid?{...p,id:eid}:x);}else{P.push({...p,id:uid(),created:Date.now()});}save();closeM();render();toast(eid?'Gespeichert ✓':'Hinzugefügt ✓');}
+function subF(){if(!gv('fn').trim())return;const p={name:gv('fn').trim(),marke:document.getElementById('fmk').value.trim(),kollektion:gv('fkl').trim(),zielgruppe:gv('fzgf'),oberkategorie:gv('fok2'),typ:gv('ft2'),stoffart:gv('fst2'),groesse:gv('fgr').trim(),format:gv('ffo'),status:gv('fss2'),link:gv('flk').trim(),bild:getImgSrc(),notizen:document.getElementById('fno').value.trim()};if(eid){P=P.map(x=>x.id===eid?{...p,id:eid}:x);}else{P.push({...p,id:uid(),created:Date.now()});}save();updateMarken();closeM();render();toast(eid?'Gespeichert ✓':'Hinzugefügt ✓');}
 function askDel(id){did=id;document.getElementById('mdel').classList.add('open');}
 function doDel(){if(!did)return;P=P.filter(p=>p.id!==did);save();closeM();render();toast('Gelöscht');}
 
@@ -478,7 +473,7 @@ function dragLeave(){document.getElementById('drop-zone').classList.remove('drag
 function dropFile(e){e.preventDefault();dragLeave();const f=e.dataTransfer.files[0];if(f)readFile(f);}
 function fileSelected(inp){if(inp.files[0])readFile(inp.files[0]);}
 function readFile(file){const r=new FileReader();r.onload=ev=>{importRows=parseCSV(ev.target.result);const existing=new Set(P.map(p=>p.name.toLowerCase()));const neu=importRows.filter(p=>!existing.has(p.name.toLowerCase()));const skip=importRows.length-neu.length;const prev=document.getElementById('import-preview');prev.style.display='block';prev.innerHTML=`<div class="import-info"><strong>${importRows.length} Einträge gefunden</strong>${neu.length} neu · ${skip} bereits vorhanden (übersprungen)</div>`;document.getElementById('btn-do-import').disabled=neu.length===0;importRows=neu;};r.readAsText(file,'UTF-8');}
-function doImport(){if(!importRows.length)return;importRows.forEach(p=>P.push({...p,id:uid(),created:Date.now()}));save();closeImport();render();toast(`${importRows.length} Schnittmuster importiert ✓`);importRows=[];}
+function doImport(){if(!importRows.length)return;importRows.forEach(p=>P.push({...p,id:uid(),created:Date.now()}));save();updateMarken();closeImport();render();toast(`${importRows.length} Schnittmuster importiert ✓`);importRows=[];}
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeM();closeImport();closeLightbox();}});
 load();
