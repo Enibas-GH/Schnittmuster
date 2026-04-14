@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ff6b2b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Schnittmuster">
+<title>Schnittmuster</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --orange: #ff6b2b;
+    --orange2: #ff8c00;
+    --pink: #ff3d7f;
+    --yellow: #ffd23f;
+    --grad: linear-gradient(135deg, #ff6b2b 0%, #ff8c00 50%, #ffd23f 100%);
+    --grad2: linear-gradient(135deg, #ff3d7f 0%, #ff6b2b 100%);
+    --surface: #ffffff;
+    --bg: #fff8f4;
+    --border: #ffe0cc;
+    --text: #1a0a00;
+    --text2: #7a4020;
+    --text3: #c4885a;
+    --radius: 12px;
+    --radius-lg: 18px;
+    --radius-xl: 24px;
+  }
+  body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; min-height: 100vh; }
+
+  /* Header with gradient */
+  .app-header {
+    background: var(--grad);
+    padding: 18px 20px 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    position: sticky; top: 0; z-index: 10;
+    box-shadow: 0 4px 20px rgba(255,107,43,0.3);
+  }
+  .app-title { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.5px; text-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+  .app-title span { font-size: 20px; }
+  .app-subtitle { font-size: 12px; color: rgba(255,255,255,0.8); margin-top: 1px; font-weight: 600; }
+  .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* Buttons */
+  button { cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; border-radius: var(--radius); border: 2px solid transparent; background: rgba(255,255,255,0.2); color: #fff; padding: 7px 14px; transition: all 0.15s; backdrop-filter: blur(4px); }
+  button:hover { background: rgba(255,255,255,0.35); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-white { background: #fff; color: var(--orange); border-color: #fff; }
+  .btn-white:hover { background: #fff5ee; }
+  .btn-danger { background: #fff; color: #dc2626; border-color: #fecaca; }
+  .btn-danger:hover { background: #fef2f2; }
+  .btn-ghost-dark { background: transparent; border-color: var(--border); color: var(--text2); }
+  .btn-ghost-dark:hover { background: #fff0e8; }
+
+  /* Filter bar */
+  .filter-wrap {
+    padding: 14px 20px;
+    background: var(--surface);
+    border-bottom: 2px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  }
+  input[type=search], select {
+    font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600;
+    padding: 8px 12px; border: 2px solid var(--border); border-radius: var(--radius);
+    background: var(--bg); color: var(--text);
+  }
+  input[type=search]:focus, select:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255,107,43,0.15); }
+  input[type=search] { flex: 1; min-width: 140px; }
+  select { min-width: 110px; }
+  .view-toggle { display: flex; border: 2px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--bg); }
+  .view-toggle button { border: none; border-radius: 0; padding: 7px 12px; font-size: 16px; background: transparent; color: var(--text2); }
+  .view-toggle button.active { background: var(--grad); color: #fff; }
+
+  /* Main */
+  .main { padding: 20px; }
+  .stats-bar { font-size: 12px; font-weight: 700; color: var(--text3); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* TABLE VIEW */
+  .table-wrap { overflow-x: auto; background: var(--surface); border-radius: var(--radius-lg); border: 2px solid var(--border); box-shadow: 0 4px 20px rgba(255,107,43,0.08); }
+  table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+  th {
+    padding: 12px 14px; font-size: 11px; font-weight: 800; color: var(--orange);
+    text-transform: uppercase; letter-spacing: 0.8px; cursor: pointer;
+    border-bottom: 2px solid var(--border); background: #fff8f4; user-select: none; text-align: left;
+  }
+  th:hover { color: var(--pink); }
+  td { padding: 10px 14px; border-bottom: 1px solid #fff0e8; vertical-align: middle; font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fff5ee; }
+  .name-cell { display: flex; align-items: center; gap: 10px; }
+  .thumb { width: 52px; height: 52px; object-fit: cover; border-radius: 10px; flex-shrink: 0; cursor: pointer; transition: transform 0.15s; border: 2px solid var(--border); }
+  .thumb:hover { transform: scale(1.08); border-color: var(--orange); }
+  .thumb-placeholder { width: 52px; height: 52px; border-radius: 10px; background: linear-gradient(135deg,#fff0e8,#ffe4cc); border: 2px dashed var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  .name-text { font-weight: 700; color: var(--text); }
+  td.muted { color: var(--text2); font-weight: 600; }
+  .act { display: flex; gap: 4px; }
+  .act a { font-size: 12px; font-weight: 700; padding: 4px 8px; text-decoration: none; border: 2px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--orange); }
+  .act a:hover { background: #fff0e8; border-color: var(--orange); }
+  .act button { font-size: 13px; padding: 4px 9px; }
+
+  /* CARD VIEW */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; }
+  .card:hover { box-shadow: 0 8px 30px rgba(255,107,43,0.18); transform: translateY(-3px); border-color: var(--orange); }
+  .card-img { width: 100%; height: 150px; object-fit: cover; cursor: pointer; display: block; transition: transform 0.2s; }
+  .card:hover .card-img { transform: scale(1.03); }
+  .card-img-placeholder { width: 100%; height: 150px; background: linear-gradient(135deg,#fff0e8,#ffd0b0); display: flex; align-items: center; justify-content: center; font-size: 42px; }
+  .card-body { padding: 12px 14px; }
+  .card-name { font-weight: 800; font-size: 14px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+  .card-meta { font-size: 12px; color: var(--text2); font-weight: 600; margin-bottom: 8px; }
+  .card-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+  .card-actions { display: flex; gap: 6px; }
+  .card-actions button, .card-actions a { font-size: 12px; font-weight: 700; padding: 5px 10px; flex: 1; text-align: center; text-decoration: none; border: 2px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text2); cursor: pointer; font-family: 'Nunito',sans-serif; }
+  .card-actions button:hover, .card-actions a:hover { border-color: var(--orange); color: var(--orange); background: #fff5ee; }
+
+  /* Badges */
+  .badge { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 20px; white-space: nowrap; display: inline-block; letter-spacing: 0.2px; }
+  .s-vorhanden { background: #d1fae5; color: #065f46; }
+  .s-genaht    { background: #dcfce7; color: #14532d; }
+  .s-planung   { background: #fef9c3; color: #713f12; }
+  .s-wunsch    { background: #fce7f3; color: #831843; }
+  .zg-damen    { background: #fce7f3; color: #9d174d; }
+  .zg-herren   { background: #dbeafe; color: #1e3a8a; }
+  .zg-kinder   { background: #d1fae5; color: #064e3b; }
+  .zg-baby     { background: #fef9c3; color: #78350f; }
+  .zg-unisex   { background: #f3f4f6; color: #374151; }
+
+  /* Empty */
+  .empty { text-align: center; padding: 4rem 1rem; color: var(--text3); }
+  .empty .icon { font-size: 52px; margin-bottom: 1rem; }
+  .empty p { font-size: 16px; font-weight: 700; color: var(--text2); margin-bottom: 0.5rem; }
+  .empty small { font-size: 13px; font-weight: 600; }
+
+  /* Overlay */
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: flex-start; justify-content: center; padding: 1rem; overflow-y: auto; }
+  .overlay.open { display: flex; }
+  .modal { background: var(--surface); border-radius: var(--radius-xl); border: 2px solid var(--border); padding: 0; width: min(580px, 100%); max-height: none; overflow-y: visible; box-shadow: 0 20px 60px rgba(255,107,43,0.2); margin: auto; }
+  .modal-top { background: var(--grad); padding: 1.25rem 1.5rem; border-radius: var(--radius-xl) var(--radius-xl) 0 0; display: flex; align-items: center; justify-content: space-between; }
+  .modal-top h2 { font-size: 18px; font-weight: 800; color: #fff; }
+  .modal-top button { background: rgba(255,255,255,0.2); color: #fff; border-color: transparent; padding: 4px 10px; font-size: 16px; }
+  .modal-top button:hover { background: rgba(255,255,255,0.35); }
+  .modal-body { padding: 1.5rem; }
+  .fg { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .fw { grid-column: 1/-1; }
+  .lbl { font-size: 11px; font-weight: 800; color: var(--orange); display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  input[type=text], input[type=url], textarea, .fg select, .fw select {
+    width: 100%; padding: 9px 12px; border: 2px solid var(--border); border-radius: var(--radius);
+    background: var(--bg); color: var(--text); font-family: 'Nunito',sans-serif; font-size: 14px; font-weight: 600;
+  }
+  input[type=text]:focus, input[type=url]:focus, textarea:focus, .fg select:focus, .fw select:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255,107,43,0.15); }
+  textarea { resize: vertical; }
+  .fa { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; padding-top: 1rem; border-top: 2px solid var(--border); }
+  .fa .btn-submit { background: var(--grad); color: #fff; border-color: transparent; padding: 9px 20px; font-size: 14px; }
+  .fa .btn-submit:hover { opacity: 0.9; }
+  .fa .btn-submit:disabled { opacity: 0.4; }
+  .fa .btn-cancel { background: var(--bg); color: var(--text2); border-color: var(--border); }
+
+  /* Small modal */
+  .smodal { background: var(--surface); border-radius: var(--radius-xl); border: 2px solid var(--border); overflow: hidden; width: min(360px,100%); box-shadow: 0 20px 60px rgba(0,0,0,0.2); margin: auto; }
+  .smodal-top { background: var(--grad2); padding: 1.25rem 1.5rem; }
+  .smodal-top h2 { font-size: 17px; font-weight: 800; color: #fff; }
+  .smodal-body { padding: 1.25rem 1.5rem; }
+  .smodal-body p { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 1.25rem; line-height: 1.6; }
+  .smodal-body .ca { display: flex; gap: 8px; justify-content: flex-end; }
+
+  /* Image upload */
+  .img-upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; cursor: pointer; color: var(--text3); font-size: 13px; font-weight: 700; position: relative; background: var(--bg); transition: all 0.15s; }
+  .img-upload-area:hover { border-color: var(--orange); color: var(--orange); background: #fff5ee; }
+  .img-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+  .img-preview-wrap { position: relative; display: inline-block; margin-top: 8px; }
+  .img-preview { width: 90px; height: 90px; object-fit: cover; border-radius: var(--radius); display: block; border: 2px solid var(--border); }
+  .img-remove { position: absolute; top: -6px; right: -6px; background: var(--pink); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 11px; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 800; }
+
+  /* Lightbox */
+  .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 200; align-items: center; justify-content: center; padding: 1rem; cursor: zoom-out; }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: var(--radius-lg); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+
+  /* Import */
+  .import-drop { border: 2px dashed var(--border); border-radius: var(--radius); padding: 1.5rem; text-align: center; cursor: pointer; color: var(--text3); font-size: 13px; font-weight: 700; margin-bottom: 1rem; transition: all 0.15s; }
+  .import-drop:hover, .import-drop.drag { border-color: var(--orange); color: var(--orange); background: #fff5ee; }
+  .import-info { background: #fff5ee; border-radius: var(--radius); padding: 0.75rem 1rem; font-size: 13px; font-weight: 700; color: var(--text2); margin-bottom: 1rem; border: 2px solid var(--border); }
+  .import-info strong { display: block; color: var(--text); margin-bottom: 2px; font-size: 14px; }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--grad); color: #fff; padding: 11px 22px; border-radius: 30px; font-size: 13px; font-weight: 800; z-index: 300; opacity: 0; transition: opacity 0.2s; pointer-events: none; white-space: nowrap; box-shadow: 0 4px 20px rgba(255,107,43,0.4); }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 520px) { .fg { grid-template-columns: 1fr; } .fw { grid-column: 1; } .card-grid { grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); } }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div>
+    <div class="app-title"><span>✂</span> Schnittmuster</div>
+    <div class="app-subtitle" id="count">0 Einträge</div>
+  </div>
+  <div class="header-actions">
+    <div class="view-toggle">
+      <button id="btn-list" class="active" onclick="setView('list')" title="Liste">☰</button>
+      <button id="btn-grid" onclick="setView('grid')" title="Galerie">⊞</button>
+    </div>
+    <button onclick="openImport()">↑ Import</button>
+    <button id="btn-export" onclick="exportCSV()" style="display:none">↓ Export</button>
+    <button class="btn-white" onclick="openAdd()">+ Neu</button>
+  </div>
+</div>
+
+<div class="filter-wrap">
+  <input type="search" id="fs" placeholder="🔍  Suche …" oninput="render()">
+  <select id="fok" onchange="syncTypF();render()">
+    <option value="">Alle Kategorien</option>
+    <option>Oberteil</option><option>Unterteil</option><option>Kleid</option>
+    <option>Einteiler</option><option>Lingerie</option><option>Accessoires</option>
+    <option>Taschen</option><option>Sonstiges</option>
+  </select>
+  <select id="ft" onchange="render()"><option value="">Alle Typen</option></select>
+  <select id="fzg" onchange="render()">
+    <option value="">Alle Zielgruppen</option>
+    <option>Damen</option><option>Herren</option><option>Kinder</option><option>Baby</option><option>Unisex</option>
+  </select>
+  <select id="fst" onchange="render()">
+    <option value="">Alle Stoffe</option>
+    <option>Jersey</option><option>Webware</option><option>Strick</option><option>Sonstiges</option>
+  </select>
+  <select id="fss" onchange="render()">
+    <option value="">Alle Status</option>
+    <option>Vorhanden</option><option>Genäht</option><option>In Planung</option><option>Wunschliste</option>
+  </select>
+  <select id="fm" onchange="render()"><option value="">Alle Marken</option></select>
+  <button class="btn-ghost-dark" id="btn-rst" onclick="resetF()" style="display:none">✕ Reset</button>
+</div>
+
+<div class="main">
+  <div class="stats-bar" id="stats"></div>
+  <div id="area"></div>
+</div>
+
+<!-- Form modal -->
+<div class="overlay" id="mform">
+  <div class="modal">
+    <div class="modal-top">
+      <h2 id="mtitle">Neues Schnittmuster</h2>
+      <button onclick="closeM()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="fg">
+        <div class="fw"><label class="lbl">Name *</label><input type="text" id="fn" placeholder="z. B. Nina Bluse" oninput="chkSub()"></div>
+        <div><label class="lbl">Marke</label>
+          <select id="fmk"><option value="">—</option>
+            <option>Burda</option><option>Schnittreif</option><option>Makerist</option>
+            <option>Ottobre</option><option>Pattydoo</option><option>Eigen</option><option>Sonstiges</option>
+        <div><label class="lbl">Marke</label>
+          <input type="text" id="fmk" list="marken-list" placeholder="z. B. Pattydoo" autocomplete="off">
+          <datalist id="marken-list"></datalist></div>
+          </select></div>
+        <div><label class="lbl">Oberkategorie</label>
+          <select id="fok2" onchange="syncTypM()">
+            <option value="">—</option>
+            <option>Oberteil</option><option>Unterteil</option><option>Kleid</option>
+            <option>Einteiler</option><option>Lingerie</option><option>Accessoires</option>
+            <option>Taschen</option><option>Sonstiges</option>
+          </select></div>
+        <div><label class="lbl">Typ</label><select id="ft2"><option value="">—</option></select></div>
+        <div><label class="lbl">Stoffart</label>
+          <select id="fst2"><option value="">—</option>
+            <option>Jersey</option><option>Webware</option><option>Strick</option><option>Sonstiges</option>
+          </select></div>
+        <div><label class="lbl">Größe</label><input type="text" id="fgr" placeholder="z. B. 36–44"></div>
+        <div><label class="lbl">Format</label>
+          <select id="ffo"><option value="">—</option>
+            <option>PDF</option><option>Papierschnitt</option><option>Magazin</option>
+          </select></div>
+        <div><label class="lbl">Status</label>
+          <select id="fss2"><option value="">—</option>
+            <option>Vorhanden</option><option>Genäht</option><option>In Planung</option><option>Wunschliste</option>
+          </select></div>
+        <div class="fw"><label class="lbl">Datei / Link</label><input type="url" id="flk" placeholder="https://…"></div>
+        <div class="fw">
+          <label class="lbl">Vorschaubild</label>
+          <div class="img-upload-area" id="upload-area">
+            📷  Bild auswählen oder Foto aufnehmen
+            <input type="file" id="fimg-file" accept="image/*" onchange="handleImgUpload(this)">
+          </div>
+          <div id="img-preview-wrap" style="display:none;margin-top:8px">
+            <div class="img-preview-wrap">
+              <img id="img-preview" class="img-preview" src="" alt="">
+              <button class="img-remove" onclick="removeImg()" type="button">✕</button>
+            </div>
+          </div>
+          <input type="url" id="fbi" placeholder="… oder Bild-URL eingeben" style="margin-top:8px" oninput="syncUrlPreview()">
+        </div>
+        <div class="fw"><label class="lbl">Notizen</label><textarea id="fno" rows="3" placeholder="Erfahrungen, Anpassungen, Tipps …"></textarea></div>
+      </div>
+      <div class="fa">
+        <button class="btn-cancel" onclick="closeM()">Abbrechen</button>
+        <button class="btn-submit" id="bsub" onclick="subF()" disabled>Hinzufügen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirm -->
+<div class="overlay" id="mdel">
+  <div class="smodal">
+    <div class="smodal-top"><h2>Schnittmuster löschen?</h2></div>
+    <div class="smodal-body">
+      <p>Diese Aktion kann nicht rückgängig gemacht werden.</p>
+      <div class="ca">
+        <button class="btn-ghost-dark" onclick="closeM()">Abbrechen</button>
+        <button class="btn-danger" onclick="doDel()">Löschen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Import modal -->
+<div class="overlay" id="mimport">
+  <div class="smodal" style="width:min(460px,100%)">
+    <div class="smodal-top"><h2>CSV importieren</h2></div>
+    <div class="smodal-body">
+      <p>Bestehende Einträge bleiben erhalten — Duplikate (gleicher Name) werden übersprungen.</p>
+      <div class="import-drop" id="drop-zone" onclick="document.getElementById('csv-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
+        📂  CSV hierher ziehen oder klicken
+        <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="fileSelected(this)">
+      </div>
+      <div id="import-preview" style="display:none"></div>
+      <div class="ca">
+        <button class="btn-ghost-dark" onclick="closeImport()">Abbrechen</button>
+        <button id="btn-do-import" onclick="doImport()" disabled style="background:var(--grad);color:#fff;border-color:transparent;padding:9px 20px;font-size:14px;font-weight:800">Importieren</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const TM={Oberteil:['Shirt','Bluse','Top','Sweatshirt','Jacke','Mantel','Weste'],Unterteil:['Rock','Hose','Shorts','Leggings'],Kleid:['Kleid'],Einteiler:['Jumpsuit','Overall'],Lingerie:['BH','Slip','Unterwäsche','Badeanzug','Bikini','Schlafanzug','Nachthemd'],Accessoires:['Mütze','Gürtel','Handschuhe'],Taschen:['Shopper','Rucksack','Clutch','Kosmetiktasche'],Sonstiges:['Deko','Kissen','Spielzeug','Sonstiges']};
+const SC={'Vorhanden':'vorhanden','Genäht':'genaht','In Planung':'planung','Wunschliste':'wunsch'};
+const ZGC={'Damen':'damen','Herren':'herren','Kinder':'kinder','Baby':'baby','Unisex':'unisex'};
+const HDRS=['Name','Marke','Kollektion','Zielgruppe','Oberkategorie','Typ','Stoffart','Größe','Format','Status','Link','Notizen'];
+const KEYS=['name','marke','kollektion','zielgruppe','oberkategorie','typ','stoffart','groesse','format','status','link','notizen'];
+const COLS=[{k:'name',l:'Name'},{k:'marke',l:'Marke'},{k:'zielgruppe',l:'Zielgruppe'},{k:'oberkategorie',l:'Kategorie'},{k:'typ',l:'Typ'},{k:'stoffart',l:'Stoff'},{k:'groesse',l:'Größe'},{k:'status',l:'Status'}];
+
+let P=[],eid=null,did=null,sc='name',sd='asc',importRows=[],currentImgData='',view='list';
+const SK='sm-data-v2';
+
+function load(){try{const d=localStorage.getItem(SK);if(d)P=JSON.parse(d);}catch(e){}updateMarken();render();}
+function save(){try{localStorage.setItem(SK,JSON.stringify(P));}catch(e){toast('Speicherfehler – Bilder zu groß?');}}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
+function e(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function gv(id){return document.getElementById(id).value;}
+function sv(id,v){document.getElementById(id).value=v||'';}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+function setView(v){view=v;document.getElementById('btn-list').classList.toggle('active',v==='list');document.getElementById('btn-grid').classList.toggle('active',v==='grid');render();}
+function openLightbox(src){document.getElementById('lightbox-img').src=src;document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+
+function handleImgUpload(inp){const file=inp.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{currentImgData=ev.target.result;sv('fbi','');showImgPreview(currentImgData);};r.readAsDataURL(file);}
+function syncUrlPreview(){const url=gv('fbi');if(url){currentImgData='';showImgPreview(url);}else{currentImgData='';hideImgPreview();}}
+function showImgPreview(src){document.getElementById('img-preview').src=src;document.getElementById('img-preview-wrap').style.display='block';document.getElementById('upload-area').style.display='none';}
+function hideImgPreview(){document.getElementById('img-preview-wrap').style.display='none';document.getElementById('upload-area').style.display='block';document.getElementById('img-preview').src='';}
+function removeImg(){currentImgData='';sv('fbi','');hideImgPreview();}
+function getImgSrc(){return currentImgData||gv('fbi');}
+
+function updateMarken(){const marken=[...new Set(P.map(p=>p.marke).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"de"));const cur=gv("fm");const sel=document.getElementById("fm");sel.innerHTML="<option value="">Alle Marken</option>";marken.forEach(m=>{const o=document.createElement("option");o.value=m;o.textContent=m;sel.appendChild(o);});if(cur)sel.value=cur;const dl=document.getElementById("marken-list");if(dl){dl.innerHTML="";marken.forEach(m=>{const o=document.createElement("option");o.value=m;dl.appendChild(o);});}}
+function syncTypF(){const ok=gv('fok'),sel=document.getElementById('ft');sel.innerHTML='<option value="">Alle Typen</option>';(TM[ok]||[]).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});}
+function syncTypM(){const ok=gv('fok2'),sel=document.getElementById('ft2');sel.innerHTML='<option value="">—</option>';(TM[ok]||[]).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});sel.disabled=!ok;}
+function chkSub(){document.getElementById('bsub').disabled=!gv('fn').trim();}
+function resetF(){document.getElementById('fs').value='';['fok','ft','fzg','fst','fss','fm'].forEach(id=>sv(id,''));syncTypF();render();}
+
+function getFiltered(){
+  const s=gv('fs').toLowerCase(),ok=gv('fok'),typ=gv('ft'),zg=gv('fzg'),stf=gv('fst'),sts=gv('fss'),mk=gv('fm');
+  document.getElementById('btn-rst').style.display=(s||ok||typ||zg||stf||sts||mk)?'':'none';
+  document.getElementById('btn-export').style.display=P.length?'':'none';
+  let rows=P.filter(p=>{
+    if(s&&!p.name.toLowerCase().includes(s)&&!(p.marke||'').toLowerCase().includes(s)&&!(p.kollektion||'').toLowerCase().includes(s))return false;
+    if(ok&&p.oberkategorie!==ok)return false;
+    if(typ&&p.typ!==typ)return false;
+    if(zg&&p.zielgruppe!==zg)return false;
+    if(stf&&p.stoffart!==stf)return false;
+    if(sts&&p.status!==sts)return false;
+    if(mk&&p.marke!==mk)return false;
+    return true;
+  });
+  rows.sort((a,b)=>{const av=(a[sc]||'').toLowerCase(),bv=(b[sc]||'').toLowerCase();return sd==='asc'?av.localeCompare(bv,'de'):bv.localeCompare(av,'de');});
+  return rows;
+}
+
+function render(){
+  const rows=getFiltered();
+  document.getElementById('count').textContent=rows.length+' von '+P.length+' Einträgen';
+  document.getElementById('stats').textContent=rows.length+' von '+P.length+' Einträgen';
+  const area=document.getElementById('area');
+  if(!P.length){area.innerHTML='<div class="empty"><div class="icon">✂️</div><p>Noch keine Schnittmuster</p><small>„+ Neu" klicken oder CSV importieren</small></div>';return;}
+  if(!rows.length){area.innerHTML='<div class="empty"><div class="icon">🔍</div><p>Keine Treffer</p><small>Filter anpassen oder zurücksetzen</small></div>';return;}
+  view==='list'?renderList(rows):renderGrid(rows);
+}
+
+function badgeSt(p){return p.status?`<span class="badge s-${SC[p.status]||''}">${e(p.status)}</span>`:'—';}
+function badgeZg(p){return p.zielgruppe?`<span class="badge zg-${ZGC[p.zielgruppe]||''}">${e(p.zielgruppe)}</span>`:'—';}
+function thumbHtml(p){const src=p.bild||'';return src?`<img class="thumb" src="${e(src)}" alt="" onerror="this.style.display='none'" onclick="openLightbox('${e(src)}')">`:`<div class="thumb-placeholder">✂</div>`;}
+
+function renderList(rows){
+  const si=k=>k===sc?(sd==='asc'?' ↑':' ↓'):'';
+  let h='<div class="table-wrap"><table><thead><tr>';
+  COLS.forEach(c=>{h+=`<th onclick="ts('${c.k}')">${c.l}${si(c.k)}</th>`;});
+  h+='<th></th></tr></thead><tbody>';
+  rows.forEach(p=>{
+    const lnk=p.link?`<a href="${e(p.link)}" target="_blank">↗</a>`:'';
+    h+=`<tr>
+      <td><div class="name-cell">${thumbHtml(p)}<span class="name-text">${e(p.name)}</span></div></td>
+      <td class="muted">${e(p.marke)||'—'}</td>
+      <td>${badgeZg(p)}</td>
+      <td>${e(p.oberkategorie)||'—'}</td>
+      <td class="muted">${e(p.typ)||'—'}</td>
+      <td>${e(p.stoffart)||'—'}</td>
+      <td class="muted">${e(p.groesse)||'—'}</td>
+      <td>${badgeSt(p)}</td>
+      <td><div class="act">${lnk}<button onclick="openEdit('${p.id}')" title="Bearbeiten" style="background:var(--bg);color:var(--orange);border-color:var(--border)">✎</button><button class="btn-danger" onclick="askDel('${p.id}')" title="Löschen" style="background:var(--bg)">✕</button></div></td>
+    </tr>`;
+  });
+  h+='</tbody></table></div>';
+  document.getElementById('area').innerHTML=h;
+}
+
+function renderGrid(rows){
+  let h='<div class="card-grid">';
+  rows.forEach(p=>{
+    const src=p.bild||'';
+    const imgHtml=src?`<img class="card-img" src="${e(src)}" alt="${e(p.name)}" onerror="this.outerHTML='<div class=\'card-img-placeholder\'>✂</div>'" onclick="openLightbox('${e(src)}')">`:`<div class="card-img-placeholder">✂</div>`;
+    const lnk=p.link?`<a href="${e(p.link)}" target="_blank">↗ Link</a>`:'';
+    h+=`<div class="card">
+      ${imgHtml}
+      <div class="card-body">
+        <div class="card-name" title="${e(p.name)}">${e(p.name)}</div>
+        <div class="card-meta">${e(p.marke)||'—'}${p.typ?' · '+e(p.typ):''}</div>
+        <div class="card-badges">${badgeZg(p)} ${badgeSt(p)}</div>
+        <div class="card-actions">${lnk}<button onclick="openEdit('${p.id}')">✎</button><button class="btn-danger" style="background:#fff" onclick="askDel('${p.id}')">✕</button></div>
+      </div>
+    </div>`;
+  });
+  h+='</div>';
+  document.getElementById('area').innerHTML=h;
+}
+
+function ts(col){if(sc===col)sd=sd==='asc'?'desc':'asc';else{sc=col;sd='asc';}render();}
+
+function openAdd(){eid=null;currentImgData='';document.getElementById('mtitle').textContent='Neues Schnittmuster';document.getElementById('bsub').textContent='Hinzufügen';['fn','fkl','fgr','flk','fbi'].forEach(id=>sv(id,''));document.getElementById('fno').value='';['fok2','ft2','fst2','ffo','fss2','fzgf'].forEach(id=>sv(id,''));document.getElementById('fmk').value='';hideImgPreview();syncTypM();chkSub();document.getElementById('mform').classList.add('open');}
+function openEdit(id){const p=P.find(x=>x.id===id);if(!p)return;eid=id;currentImgData='';document.getElementById('mtitle').textContent='Schnittmuster bearbeiten';document.getElementById('bsub').textContent='Speichern';sv('fn',p.name);document.getElementById('fmk').value=p.marke||'';sv('fkl',p.kollektion);sv('fzgf',p.zielgruppe);sv('fok2',p.oberkategorie);syncTypM();sv('ft2',p.typ);sv('fst2',p.stoffart);sv('fgr',p.groesse);sv('ffo',p.format);sv('fss2',p.status);sv('flk',p.link);document.getElementById('fno').value=p.notizen||'';if(p.bild){if(p.bild.startsWith('data:')){currentImgData=p.bild;showImgPreview(p.bild);}else{sv('fbi',p.bild);showImgPreview(p.bild);}}else{sv('fbi','');hideImgPreview();}chkSub();document.getElementById('mform').classList.add('open');}
+function closeM(){['mform','mdel'].forEach(id=>document.getElementById(id).classList.remove('open'));did=null;}
+function subF(){if(!gv('fn').trim())return;const p={name:gv('fn').trim(),marke:document.getElementById('fmk').value.trim(),kollektion:gv('fkl').trim(),zielgruppe:gv('fzgf'),oberkategorie:gv('fok2'),typ:gv('ft2'),stoffart:gv('fst2'),groesse:gv('fgr').trim(),format:gv('ffo'),status:gv('fss2'),link:gv('flk').trim(),bild:getImgSrc(),notizen:document.getElementById('fno').value.trim()};if(eid){P=P.map(x=>x.id===eid?{...p,id:eid}:x);}else{P.push({...p,id:uid(),created:Date.now()});}save();updateMarken();closeM();render();toast(eid?'Gespeichert ✓':'Hinzugefügt ✓');}
+function askDel(id){did=id;document.getElementById('mdel').classList.add('open');}
+function doDel(){if(!did)return;P=P.filter(p=>p.id!==did);save();closeM();render();toast('Gelöscht');}
+
+function exportCSV(){const rows=P.map(p=>KEYS.map(k=>{let v=p[k]||'';if(k==='bild'&&v.startsWith('data:'))v='[Bild hochgeladen]';return`"${v.replace(/"/g,'""')}"`;}).join(','));const csv=[HDRS.join(','),...rows].join('\n');const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='schnittmuster.csv';a.click();}
+
+function parseCSV(text){const lines=text.trim().split('\n');if(lines.length<2)return[];const hdrs=parseLine(lines[0]).map(h=>h.trim());const idxMap={};HDRS.forEach((h,i)=>{const idx=hdrs.findIndex(x=>x.toLowerCase()===h.toLowerCase());if(idx>=0)idxMap[i]=idx;});const rows=[];for(let i=1;i<lines.length;i++){const vals=parseLine(lines[i]);const obj={};KEYS.forEach((k,ki)=>{obj[k]=idxMap[ki]!==undefined?(vals[idxMap[ki]]||'').trim():'';});if(obj.name)rows.push(obj);}return rows;}
+function parseLine(line){const res=[];let cur='',inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}else if(c===','&&!inQ){res.push(cur);cur='';}else cur+=c;}res.push(cur);return res;}
+function openImport(){importRows=[];document.getElementById('import-preview').style.display='none';document.getElementById('btn-do-import').disabled=true;sv('csv-input','');document.getElementById('mimport').classList.add('open');}
+function closeImport(){document.getElementById('mimport').classList.remove('open');}
+function dragOver(e){e.preventDefault();document.getElementById('drop-zone').classList.add('drag');}
+function dragLeave(){document.getElementById('drop-zone').classList.remove('drag');}
+function dropFile(e){e.preventDefault();dragLeave();const f=e.dataTransfer.files[0];if(f)readFile(f);}
+function fileSelected(inp){if(inp.files[0])readFile(inp.files[0]);}
+function readFile(file){const r=new FileReader();r.onload=ev=>{importRows=parseCSV(ev.target.result);const existing=new Set(P.map(p=>p.name.toLowerCase()));const neu=importRows.filter(p=>!existing.has(p.name.toLowerCase()));const skip=importRows.length-neu.length;const prev=document.getElementById('import-preview');prev.style.display='block';prev.innerHTML=`<div class="import-info"><strong>${importRows.length} Einträge gefunden</strong>${neu.length} neu · ${skip} bereits vorhanden (übersprungen)</div>`;document.getElementById('btn-do-import').disabled=neu.length===0;importRows=neu;};r.readAsText(file,'UTF-8');}
+function doImport(){if(!importRows.length)return;importRows.forEach(p=>P.push({...p,id:uid(),created:Date.now()}));save();updateMarken();closeImport();render();toast(`${importRows.length} Schnittmuster importiert ✓`);importRows=[];}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeM();closeImport();closeLightbox();}});
+load();
+</script>
+</body>
+</html>
