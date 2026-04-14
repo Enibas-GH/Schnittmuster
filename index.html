@@ -398,9 +398,7 @@ let sortCol = 'name', sortDir = 'asc', viewMode = 'list', imgData = '';
 // ── Persist ──
 async function loadData() {
   try { const d = localStorage.getItem(SK); if (d) P = JSON.parse(d); } catch(e) {}
-  if (!P.length) {
-    await fetchDefaultCSV();
-  }
+  await fetchDefaultCSV();
   updateMarkenList();
   render();
 }
