@@ -3,39 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#faf7f2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Schnittmuster">
 <title>Schnittmuster</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 16px; background: #fafaf8; color: #1a1a1a; font-size: 14px; }
-  h1 { font-size: 22px; font-weight: 500; margin: 0 0 4px; }
-  h2 { font-size: 18px; font-weight: 500; margin: 0 0 1.25rem; }
-  input, select, textarea, button { font-family: inherit; font-size: 14px; }
-  input, select, textarea { width: 100%; padding: 7px 10px; border: 1px solid #ddd; border-radius: 8px; background: #fff; color: #1a1a1a; }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.12); }
-  textarea { resize: vertical; }
-  button { cursor: pointer; padding: 7px 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; color: #1a1a1a; }
-  button:hover { background: #f5f5f3; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #faf7f2;
+    --surface: #ffffff;
+    --surface2: #f5f1ea;
+    --border: #e8e0d4;
+    --border2: #d4c9b8;
+    --text: #2c2416;
+    --text2: #7a6a54;
+    --text3: #b0a090;
+    --accent: #8b5e3c;
+    --accent-light: #f5ede4;
+    --accent-border: #d4a882;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; min-height: 100vh; }
+
+  /* Header */
+  .app-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; position: sticky; top: 0; z-index: 10; }
+  .app-title { font-size: 20px; font-weight: 600; color: var(--accent); letter-spacing: -0.3px; }
+  .app-subtitle { font-size: 12px; color: var(--text3); margin-top: 1px; }
+  .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* Buttons */
+  button { cursor: pointer; font-family: inherit; font-size: 13px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); color: var(--text); padding: 7px 13px; transition: background 0.15s, border-color 0.15s; }
+  button:hover { background: var(--surface2); border-color: var(--border2); }
   button:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn-primary { background: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
-  .btn-primary:hover { background: #DBEAFE; }
+  .btn-accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-accent:hover { background: #7a5234; border-color: #7a5234; }
+  .btn-ghost { background: transparent; border-color: transparent; color: var(--text2); }
+  .btn-ghost:hover { background: var(--surface2); border-color: var(--border); }
   .btn-danger { color: #991B1B; border-color: #FECACA; }
   .btn-danger:hover { background: #FEF2F2; }
-  .btn-sm { font-size: 13px; padding: 5px 10px; }
-  .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid #eee; flex-wrap: wrap; gap: 8px; }
-  .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-  .meta { font-size: 13px; color: #666; margin: 0; }
-  .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1rem; }
-  .filter-bar input { flex: 1; min-width: 140px; }
-  .filter-bar select { width: auto; min-width: 110px; }
-  table { width: 100%; border-collapse: collapse; }
-  th { text-align: left; padding: 8px 10px; font-weight: 500; font-size: 13px; color: #666; cursor: pointer; white-space: nowrap; user-select: none; border-bottom: 1px solid #eee; }
-  th:hover { color: #1a1a1a; }
-  td { padding: 8px 10px; border-bottom: 1px solid #f5f5f3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
-  tr:hover td { background: #f9f9f7; }
-  .badge { font-size: 12px; padding: 2px 8px; border-radius: 6px; white-space: nowrap; display: inline-block; }
+  .icon-btn { padding: 7px 10px; font-size: 15px; }
+
+  /* Filter bar */
+  .filter-wrap { padding: 12px 20px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  input[type=search], select { font-family: inherit; font-size: 13px; padding: 7px 11px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); }
+  input[type=search]:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(139,94,60,0.12); }
+  input[type=search] { flex: 1; min-width: 140px; }
+  select { min-width: 110px; }
+  .view-toggle { display: flex; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .view-toggle button { border: none; border-radius: 0; padding: 7px 11px; font-size: 15px; }
+  .view-toggle button.active { background: var(--accent-light); color: var(--accent); }
+
+  /* Main content */
+  .main { padding: 20px; }
+  .stats-bar { font-size: 12px; color: var(--text3); margin-bottom: 14px; }
+
+  /* TABLE VIEW */
+  .table-wrap { overflow-x: auto; background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+  th { padding: 11px 14px; font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; border-bottom: 1px solid var(--border); background: var(--surface2); user-select: none; }
+  th:first-child { border-radius: var(--radius-lg) 0 0 0; }
+  th:last-child { border-radius: 0 var(--radius-lg) 0 0; }
+  th:hover { color: var(--accent); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--accent-light); }
+  .name-cell { display: flex; align-items: center; gap: 10px; }
+  .thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 8px; flex-shrink: 0; cursor: pointer; transition: transform 0.15s; border: 1px solid var(--border); }
+  .thumb:hover { transform: scale(1.05); }
+  .thumb-placeholder { width: 48px; height: 48px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--text3); }
+  .name-text { font-weight: 500; }
+  td.muted { color: var(--text2); }
+  .act { display: flex; gap: 4px; }
+  .act a { font-size: 12px; padding: 4px 8px; text-decoration: none; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text2); }
+  .act a:hover { background: var(--surface2); }
+
+  /* CARD VIEW */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: box-shadow 0.15s, transform 0.15s; }
+  .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-1px); }
+  .card-img { width: 100%; height: 140px; object-fit: cover; cursor: pointer; display: block; }
+  .card-img-placeholder { width: 100%; height: 140px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--text3); }
+  .card-body { padding: 12px; }
+  .card-name { font-weight: 500; font-size: 14px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card-meta { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+  .card-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .card-actions { display: flex; gap: 6px; }
+  .card-actions button, .card-actions a { font-size: 12px; padding: 4px 10px; flex: 1; text-align: center; text-decoration: none; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text2); cursor: pointer; }
+  .card-actions button:hover, .card-actions a:hover { background: var(--surface2); }
+
+  /* Badges */
+  .badge { font-size: 11px; padding: 2px 7px; border-radius: 20px; white-space: nowrap; display: inline-block; font-weight: 500; }
   .s-vorhanden { background: #E1F5EE; color: #0F6E56; }
   .s-genaht    { background: #EAF3DE; color: #3B6D11; }
   .s-planung   { background: #FAEEDA; color: #854F0B; }
@@ -45,59 +103,79 @@
   .zg-kinder   { background: #EAF3DE; color: #3B6D11; }
   .zg-baby     { background: #FAEEDA; color: #854F0B; }
   .zg-unisex   { background: #F1EFE8; color: #5F5E5A; }
-  .empty { text-align: center; padding: 3rem 1rem; color: #999; border: 1px dashed #ddd; border-radius: 12px; }
-  .table-wrap { overflow-x: auto; }
-  .act { display: flex; gap: 4px; align-items: center; }
-  .act a, .act button { font-size: 12px; padding: 2px 6px; }
-  .act a { text-decoration: none; border: 1px solid #ddd; border-radius: 4px; background: #f9f9f7; color: #666; }
-  .thumb { width: 32px; height: 32px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
-  .thumb-placeholder { width: 32px; height: 32px; border-radius: 6px; background: #f0f0ee; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #ccc; }
-  .nc { display: flex; align-items: center; gap: 8px; }
-  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 100; align-items: flex-start; justify-content: center; padding: 2rem 1rem; overflow-y: auto; }
+
+  /* Empty state */
+  .empty { text-align: center; padding: 4rem 1rem; color: var(--text3); }
+  .empty .icon { font-size: 48px; margin-bottom: 1rem; }
+  .empty p { font-size: 15px; color: var(--text2); margin-bottom: 0.5rem; }
+  .empty small { font-size: 13px; }
+
+  /* Overlay & modal */
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
   .overlay.open { display: flex; }
-  .modal { background: #fff; border-radius: 12px; border: 1px solid #eee; padding: 1.5rem; width: min(560px, 100%); }
+  .modal { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 1.5rem; width: min(580px, 100%); max-height: 90vh; overflow-y: auto; }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+  .modal-header h2 { font-size: 18px; font-weight: 600; }
   .fg { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .fw { grid-column: 1 / -1; }
-  .lbl { font-size: 13px; color: #666; display: block; margin-bottom: 4px; }
-  .fa { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
-  .cbox { background: #fff; border-radius: 12px; border: 1px solid #eee; padding: 1.5rem; width: min(380px,100%); }
-  .cbox h2 { margin-bottom: 0.75rem; }
-  .cbox p { color: #666; font-size: 13px; margin: 0 0 1rem; line-height: 1.5; }
-  .ca { display: flex; gap: 8px; justify-content: flex-end; }
-  .import-drop { border: 1px dashed #ccc; border-radius: 8px; padding: 1.5rem; text-align: center; color: #999; cursor: pointer; margin-bottom: 1rem; }
-  .import-drop:hover, .import-drop.drag { border-color: #2563eb; color: #1D4ED8; background: #EFF6FF; }
-  .import-preview { background: #f9f9f7; border-radius: 8px; padding: 0.75rem 1rem; font-size: 13px; color: #444; margin-bottom: 1rem; border: 1px solid #eee; }
-  .import-preview strong { display: block; margin-bottom: 4px; color: #1a1a1a; }
-  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #fff; padding: 10px 18px; border-radius: 8px; font-size: 13px; z-index: 200; opacity: 0; transition: opacity 0.2s; pointer-events: none; white-space: nowrap; }
-  .toast.show { opacity: 1; }
+  .fw { grid-column: 1/-1; }
+  .lbl { font-size: 12px; color: var(--text2); display: block; margin-bottom: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px; }
+  input[type=text], input[type=url], textarea, .fg select, .fw select { width: 100%; padding: 8px 11px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); font-family: inherit; font-size: 14px; }
+  input[type=text]:focus, input[type=url]:focus, textarea:focus, .fg select:focus, .fw select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(139,94,60,0.12); }
+  textarea { resize: vertical; }
+  .fa { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+
+  /* Confirm / small modal */
+  .smodal { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 1.5rem; width: min(360px,100%); }
+  .smodal h2 { font-size: 16px; font-weight: 600; margin-bottom: 0.5rem; }
+  .smodal p { font-size: 13px; color: var(--text2); margin-bottom: 1.25rem; line-height: 1.5; }
+  .smodal .ca { display: flex; gap: 8px; justify-content: flex-end; }
 
   /* Image upload */
-  .img-upload-area { border: 1px dashed #ccc; border-radius: 8px; padding: 1rem; text-align: center; cursor: pointer; color: #999; font-size: 13px; position: relative; }
-  .img-upload-area:hover { border-color: #2563eb; color: #1D4ED8; background: #EFF6FF; }
+  .img-upload-area { border: 1px dashed var(--border2); border-radius: var(--radius); padding: 1rem; text-align: center; cursor: pointer; color: var(--text3); font-size: 13px; position: relative; background: var(--bg); transition: all 0.15s; }
+  .img-upload-area:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
   .img-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
   .img-preview-wrap { position: relative; display: inline-block; margin-top: 8px; }
-  .img-preview { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; display: block; }
-  .img-remove { position: absolute; top: -6px; right: -6px; background: #1a1a1a; color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .img-preview { width: 90px; height: 90px; object-fit: cover; border-radius: var(--radius); display: block; border: 1px solid var(--border); }
+  .img-remove { position: absolute; top: -6px; right: -6px; background: var(--text); color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
-  @media (max-width: 520px) { .fg { grid-template-columns: 1fr; } .fw { grid-column: 1; } }
+  /* Lightbox */
+  .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; align-items: center; justify-content: center; padding: 1rem; cursor: zoom-out; }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: var(--radius-lg); }
+
+  /* Import */
+  .import-drop { border: 1px dashed var(--border2); border-radius: var(--radius); padding: 1.5rem; text-align: center; cursor: pointer; color: var(--text3); font-size: 13px; margin-bottom: 1rem; transition: all 0.15s; }
+  .import-drop:hover, .import-drop.drag { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .import-info { background: var(--surface2); border-radius: var(--radius); padding: 0.75rem 1rem; font-size: 13px; color: var(--text2); margin-bottom: 1rem; border: 1px solid var(--border); }
+  .import-info strong { display: block; color: var(--text); margin-bottom: 2px; }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--text); color: #fff; padding: 10px 18px; border-radius: 20px; font-size: 13px; z-index: 300; opacity: 0; transition: opacity 0.2s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 520px) { .fg { grid-template-columns: 1fr; } .fw { grid-column: 1; } .card-grid { grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); } }
 </style>
 </head>
 <body>
 
-<div class="header">
+<div class="app-header">
   <div>
-    <h1>Schnittmuster</h1>
-    <p class="meta" id="count">0 Einträge</p>
+    <div class="app-title">✂ Schnittmuster</div>
+    <div class="app-subtitle" id="count">0 Einträge</div>
   </div>
   <div class="header-actions">
-    <button class="btn-sm" onclick="openImport()">↑ Import</button>
-    <button class="btn-sm" id="btn-export" onclick="exportCSV()" style="display:none">↓ Export</button>
-    <button class="btn-primary" onclick="openAdd()">+ Neu</button>
+    <div class="view-toggle">
+      <button id="btn-list" class="active icon-btn" onclick="setView('list')" title="Liste">☰</button>
+      <button id="btn-grid" class="icon-btn" onclick="setView('grid')" title="Galerie">⊞</button>
+    </div>
+    <button onclick="openImport()">↑ Import</button>
+    <button id="btn-export" onclick="exportCSV()" style="display:none">↓ Export</button>
+    <button class="btn-accent" onclick="openAdd()">+ Neu</button>
   </div>
 </div>
 
-<div class="filter-bar">
-  <input type="search" id="fs" placeholder="Suche …" oninput="render()">
+<div class="filter-wrap">
+  <input type="search" id="fs" placeholder="🔍 Suche …" oninput="render()">
   <select id="fok" onchange="syncTypF();render()">
     <option value="">Alle Kategorien</option>
     <option>Oberteil</option><option>Unterteil</option><option>Kleid</option>
@@ -122,23 +200,26 @@
     <option>Burda</option><option>Schnittreif</option><option>Makerist</option>
     <option>Ottobre</option><option>Pattydoo</option><option>Eigen</option><option>Sonstiges</option>
   </select>
-  <button id="btn-rst" onclick="resetF()" style="display:none;font-size:13px">✕ Reset</button>
+  <button class="btn-ghost" id="btn-rst" onclick="resetF()" style="display:none">✕ Reset</button>
 </div>
 
-<div id="area"></div>
+<div class="main" id="area"></div>
 
 <!-- Form modal -->
 <div class="overlay" id="mform">
   <div class="modal">
-    <h2 id="mtitle">Neues Schnittmuster</h2>
+    <div class="modal-header">
+      <h2 id="mtitle">Neues Schnittmuster</h2>
+      <button class="btn-ghost icon-btn" onclick="closeM()">✕</button>
+    </div>
     <div class="fg">
-      <div class="fw"><label class="lbl">Name *</label><input id="fn" placeholder="z. B. Nina Bluse" oninput="chkSub()"></div>
+      <div class="fw"><label class="lbl">Name *</label><input type="text" id="fn" placeholder="z. B. Nina Bluse" oninput="chkSub()"></div>
       <div><label class="lbl">Marke</label>
         <select id="fmk"><option value="">—</option>
           <option>Burda</option><option>Schnittreif</option><option>Makerist</option>
           <option>Ottobre</option><option>Pattydoo</option><option>Eigen</option><option>Sonstiges</option>
         </select></div>
-      <div><label class="lbl">Kollektion</label><input id="fkl" placeholder="z. B. Frühjahr 2024"></div>
+      <div><label class="lbl">Kollektion</label><input type="text" id="fkl" placeholder="z. B. Frühjahr 2024"></div>
       <div><label class="lbl">Zielgruppe</label>
         <select id="fzgf"><option value="">—</option>
           <option>Damen</option><option>Herren</option><option>Kinder</option><option>Baby</option><option>Unisex</option>
@@ -155,7 +236,7 @@
         <select id="fst2"><option value="">—</option>
           <option>Jersey</option><option>Webware</option><option>Strick</option><option>Sonstiges</option>
         </select></div>
-      <div><label class="lbl">Größe</label><input id="fgr" placeholder="z. B. 36–44"></div>
+      <div><label class="lbl">Größe</label><input type="text" id="fgr" placeholder="z. B. 36–44"></div>
       <div><label class="lbl">Format</label>
         <select id="ffo"><option value="">—</option>
           <option>PDF</option><option>Papierschnitt</option><option>Magazin</option>
@@ -164,12 +245,12 @@
         <select id="fss2"><option value="">—</option>
           <option>Vorhanden</option><option>Genäht</option><option>In Planung</option><option>Wunschliste</option>
         </select></div>
-      <div class="fw"><label class="lbl">Datei / Link</label><input id="flk" type="url" placeholder="https://…"></div>
+      <div class="fw"><label class="lbl">Datei / Link</label><input type="url" id="flk" placeholder="https://…"></div>
       <div class="fw">
         <label class="lbl">Vorschaubild</label>
-        <div class="img-upload-area" id="upload-area" onclick="document.getElementById('fimg-file').click()">
-          Bild auswählen oder Foto aufnehmen
-          <input type="file" id="fimg-file" accept="image/*" onchange="handleImgUpload(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%">
+        <div class="img-upload-area" id="upload-area">
+          📷 Bild auswählen oder Foto aufnehmen
+          <input type="file" id="fimg-file" accept="image/*" onchange="handleImgUpload(this)">
         </div>
         <div id="img-preview-wrap" style="display:none;margin-top:8px">
           <div class="img-preview-wrap">
@@ -177,20 +258,20 @@
             <button class="img-remove" onclick="removeImg()" type="button">✕</button>
           </div>
         </div>
-        <input id="fbi" type="url" placeholder="… oder Bild-URL eingeben" style="margin-top:8px" oninput="syncUrlPreview()">
+        <input type="url" id="fbi" placeholder="… oder Bild-URL" style="margin-top:8px;width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);font-family:inherit;font-size:14px" oninput="syncUrlPreview()">
       </div>
-      <div class="fw"><label class="lbl">Notizen</label><textarea id="fno" rows="3"></textarea></div>
+      <div class="fw"><label class="lbl">Notizen</label><textarea id="fno" rows="3" placeholder="Erfahrungen, Anpassungen …"></textarea></div>
     </div>
     <div class="fa">
       <button onclick="closeM()">Abbrechen</button>
-      <button class="btn-primary" id="bsub" onclick="subF()" disabled>Hinzufügen</button>
+      <button class="btn-accent" id="bsub" onclick="subF()" disabled>Hinzufügen</button>
     </div>
   </div>
 </div>
 
 <!-- Delete confirm -->
 <div class="overlay" id="mdel">
-  <div class="cbox">
+  <div class="smodal">
     <h2>Schnittmuster löschen?</h2>
     <p>Diese Aktion kann nicht rückgängig gemacht werden.</p>
     <div class="ca">
@@ -202,114 +283,68 @@
 
 <!-- Import modal -->
 <div class="overlay" id="mimport">
-  <div class="cbox" style="width:min(480px,100%)">
+  <div class="smodal" style="width:min(460px,100%)">
     <h2>CSV importieren</h2>
     <p>Bestehende Einträge bleiben erhalten — Duplikate (gleicher Name) werden übersprungen.</p>
     <div class="import-drop" id="drop-zone" onclick="document.getElementById('csv-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
-      CSV hierher ziehen oder klicken
+      📂 CSV hierher ziehen oder klicken
       <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="fileSelected(this)">
     </div>
     <div id="import-preview" style="display:none"></div>
     <div class="ca">
       <button onclick="closeImport()">Abbrechen</button>
-      <button class="btn-primary" id="btn-do-import" onclick="doImport()" disabled>Importieren</button>
+      <button class="btn-accent" id="btn-do-import" onclick="doImport()" disabled>Importieren</button>
     </div>
   </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt="">
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const TM = {
-  Oberteil:['Shirt','Bluse','Top','Sweatshirt','Jacke','Mantel','Weste'],
-  Unterteil:['Rock','Hose','Shorts','Leggings'],
-  Kleid:['Kleid'],
-  Einteiler:['Jumpsuit','Overall'],
-  Lingerie:['BH','Slip','Unterwäsche','Badeanzug','Bikini','Schlafanzug','Nachthemd'],
-  Accessoires:['Mütze','Gürtel','Handschuhe'],
-  Taschen:['Shopper','Rucksack','Clutch','Kosmetiktasche'],
-  Sonstiges:['Deko','Kissen','Spielzeug','Sonstiges'],
-};
-const SC = {'Vorhanden':'vorhanden','Genäht':'genaht','In Planung':'planung','Wunschliste':'wunsch'};
-const ZGC = {'Damen':'damen','Herren':'herren','Kinder':'kinder','Baby':'baby','Unisex':'unisex'};
-const COLS = [
-  {k:'name',l:'Name'},
-  {k:'marke',l:'Marke'},
-  {k:'zielgruppe',l:'Zielgruppe'},
-  {k:'oberkategorie',l:'Kategorie'},
-  {k:'typ',l:'Typ'},
-  {k:'stoffart',l:'Stoff'},
-  {k:'status',l:'Status'},
-];
-const HDRS = ['Name','Marke','Kollektion','Zielgruppe','Oberkategorie','Typ','Stoffart','Größe','Format','Status','Link','Notizen'];
-const KEYS = ['name','marke','kollektion','zielgruppe','oberkategorie','typ','stoffart','groesse','format','status','link','notizen'];
+const TM={Oberteil:['Shirt','Bluse','Top','Sweatshirt','Jacke','Mantel','Weste'],Unterteil:['Rock','Hose','Shorts','Leggings'],Kleid:['Kleid'],Einteiler:['Jumpsuit','Overall'],Lingerie:['BH','Slip','Unterwäsche','Badeanzug','Bikini','Schlafanzug','Nachthemd'],Accessoires:['Mütze','Gürtel','Handschuhe'],Taschen:['Shopper','Rucksack','Clutch','Kosmetiktasche'],Sonstiges:['Deko','Kissen','Spielzeug','Sonstiges']};
+const SC={'Vorhanden':'vorhanden','Genäht':'genaht','In Planung':'planung','Wunschliste':'wunsch'};
+const ZGC={'Damen':'damen','Herren':'herren','Kinder':'kinder','Baby':'baby','Unisex':'unisex'};
+const HDRS=['Name','Marke','Kollektion','Zielgruppe','Oberkategorie','Typ','Stoffart','Größe','Format','Status','Link','Notizen'];
+const KEYS=['name','marke','kollektion','zielgruppe','oberkategorie','typ','stoffart','groesse','format','status','link','notizen'];
+const COLS=[{k:'name',l:'Name'},{k:'marke',l:'Marke'},{k:'zielgruppe',l:'Zielgruppe'},{k:'oberkategorie',l:'Kategorie'},{k:'typ',l:'Typ'},{k:'stoffart',l:'Stoff'},{k:'groesse',l:'Größe'},{k:'status',l:'Status'}];
 
-let P=[], eid=null, did=null, sc='name', sd='asc', importRows=[], currentImgData='';
+let P=[],eid=null,did=null,sc='name',sd='asc',importRows=[],currentImgData='',view='list';
 const SK='sm-data-v2';
 
 function load(){try{const d=localStorage.getItem(SK);if(d)P=JSON.parse(d);}catch(e){}render();}
-function save(){try{localStorage.setItem(SK,JSON.stringify(P));}catch(e){toast('Speicherfehler – zu viele Bilder?');}}
+function save(){try{localStorage.setItem(SK,JSON.stringify(P));}catch(e){toast('Speicherfehler – Bilder zu groß?');}}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
 function e(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function gv(id){return document.getElementById(id).value;}
 function sv(id,v){document.getElementById(id).value=v||'';}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
-// Image handling
-function handleImgUpload(inp){
-  const file=inp.files[0]; if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    currentImgData=ev.target.result;
-    sv('fbi','');
-    showImgPreview(currentImgData);
-  };
-  reader.readAsDataURL(file);
-}
-function syncUrlPreview(){
-  const url=gv('fbi');
-  if(url){currentImgData='';showImgPreview(url);}
-  else{currentImgData='';hideImgPreview();}
-}
-function showImgPreview(src){
-  document.getElementById('img-preview').src=src;
-  document.getElementById('img-preview-wrap').style.display='block';
-  document.getElementById('upload-area').style.display='none';
-}
-function hideImgPreview(){
-  document.getElementById('img-preview-wrap').style.display='none';
-  document.getElementById('upload-area').style.display='block';
-  document.getElementById('img-preview').src='';
-}
-function removeImg(){currentImgData='';sv('fbi','');hideImgPreview();}
+function setView(v){view=v;document.getElementById('btn-list').classList.toggle('active',v==='list');document.getElementById('btn-grid').classList.toggle('active',v==='grid');render();}
 
+function openLightbox(src){document.getElementById('lightbox-img').src=src;document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+
+function handleImgUpload(inp){const file=inp.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{currentImgData=ev.target.result;sv('fbi','');showImgPreview(currentImgData);};r.readAsDataURL(file);}
+function syncUrlPreview(){const url=gv('fbi');if(url){currentImgData='';showImgPreview(url);}else{currentImgData='';hideImgPreview();}}
+function showImgPreview(src){document.getElementById('img-preview').src=src;document.getElementById('img-preview-wrap').style.display='block';document.getElementById('upload-area').style.display='none';}
+function hideImgPreview(){document.getElementById('img-preview-wrap').style.display='none';document.getElementById('upload-area').style.display='block';document.getElementById('img-preview').src='';}
+function removeImg(){currentImgData='';sv('fbi','');hideImgPreview();}
 function getImgSrc(){return currentImgData||gv('fbi');}
 
-function syncTypF(){
-  const ok=gv('fok'),sel=document.getElementById('ft');
-  sel.innerHTML='<option value="">Alle Typen</option>';
-  (TM[ok]||[]).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});
-}
-function syncTypM(){
-  const ok=gv('fok2'),sel=document.getElementById('ft2');
-  sel.innerHTML='<option value="">—</option>';
-  (TM[ok]||[]).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});
-  sel.disabled=!ok;
-}
+function syncTypF(){const ok=gv('fok'),sel=document.getElementById('ft');sel.innerHTML='<option value="">Alle Typen</option>';(TM[ok]||[]).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});}
+function syncTypM(){const ok=gv('fok2'),sel=document.getElementById('ft2');sel.innerHTML='<option value="">—</option>';(TM[ok]||[]).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});sel.disabled=!ok;}
 function chkSub(){document.getElementById('bsub').disabled=!gv('fn').trim();}
+function resetF(){document.getElementById('fs').value='';['fok','ft','fzg','fst','fss','fm'].forEach(id=>sv(id,''));syncTypF();render();}
 
-function resetF(){
-  document.getElementById('fs').value='';
-  ['fok','ft','fzg','fst','fss','fm'].forEach(id=>sv(id,''));
-  syncTypF();render();
-}
-
-function render(){
+function getFiltered(){
   const s=gv('fs').toLowerCase(),ok=gv('fok'),typ=gv('ft'),zg=gv('fzg'),stf=gv('fst'),sts=gv('fss'),mk=gv('fm');
-  const hasF=s||ok||typ||zg||stf||sts||mk;
-  document.getElementById('btn-rst').style.display=hasF?'':'none';
+  document.getElementById('btn-rst').style.display=(s||ok||typ||zg||stf||sts||mk)?'':'none';
   document.getElementById('btn-export').style.display=P.length?'':'none';
-
   let rows=P.filter(p=>{
     if(s&&!p.name.toLowerCase().includes(s)&&!(p.marke||'').toLowerCase().includes(s)&&!(p.kollektion||'').toLowerCase().includes(s))return false;
     if(ok&&p.oberkategorie!==ok)return false;
@@ -321,157 +356,88 @@ function render(){
     return true;
   });
   rows.sort((a,b)=>{const av=(a[sc]||'').toLowerCase(),bv=(b[sc]||'').toLowerCase();return sd==='asc'?av.localeCompare(bv,'de'):bv.localeCompare(av,'de');});
+  return rows;
+}
 
+function render(){
+  const rows=getFiltered();
   document.getElementById('count').textContent=rows.length+' von '+P.length+' Einträgen';
   const area=document.getElementById('area');
+  if(!P.length){area.innerHTML='<div class="empty"><div class="icon">✂</div><p>Noch keine Schnittmuster</p><small>„+ Neu" klicken oder CSV importieren</small></div>';return;}
+  if(!rows.length){area.innerHTML='<div class="empty"><div class="icon">🔍</div><p>Keine Treffer</p><small>Filter anpassen oder zurücksetzen</small></div>';return;}
+  view==='list'?renderList(rows):renderGrid(rows);
+}
 
-  if(!P.length){area.innerHTML='<div class="empty"><p style="margin:0 0 0.5rem;font-size:15px">Noch keine Schnittmuster</p><p style="margin:0;font-size:13px">„+ Neu" klicken oder CSV importieren</p></div>';return;}
-  if(!rows.length){area.innerHTML='<div class="empty">Keine Treffer für diese Filter</div>';return;}
+function badgeSt(p){return p.status?`<span class="badge s-${SC[p.status]||''}">${e(p.status)}</span>`:'—';}
+function badgeZg(p){return p.zielgruppe?`<span class="badge zg-${ZGC[p.zielgruppe]||''}">${e(p.zielgruppe)}</span>`:'—';}
+function thumbHtml(p,size=48){const src=p.bild||'';return src?`<img class="thumb" style="width:${size}px;height:${size}px" src="${e(src)}" alt="" onerror="this.style.display='none'" onclick="openLightbox('${e(src)}')">`:`<div class="thumb-placeholder" style="width:${size}px;height:${size}px">✂</div>`;}
 
+function renderList(rows){
   const si=k=>k===sc?(sd==='asc'?' ↑':' ↓'):'';
   let h='<div class="table-wrap"><table><thead><tr>';
   COLS.forEach(c=>{h+=`<th onclick="ts('${c.k}')">${c.l}${si(c.k)}</th>`;});
   h+='<th></th></tr></thead><tbody>';
-
   rows.forEach(p=>{
-    const statusBadge=p.status?`<span class="badge s-${SC[p.status]||''}">${e(p.status)}</span>`:'—';
-    const zgBadge=p.zielgruppe?`<span class="badge zg-${ZGC[p.zielgruppe]||''}">${e(p.zielgruppe)}</span>`:'—';
-    const imgSrc=p.bild||'';
-    const thumb=imgSrc
-      ?`<img class="thumb" src="${e(imgSrc)}" alt="" onerror="this.style.display='none'">`
-      :`<div class="thumb-placeholder">✂</div>`;
     const lnk=p.link?`<a href="${e(p.link)}" target="_blank">↗</a>`:'';
     h+=`<tr>
-      <td style="max-width:180px"><div class="nc">${thumb}<span style="overflow:hidden;text-overflow:ellipsis">${e(p.name)||'—'}</span></div></td>
-      <td style="color:#666;max-width:80px">${e(p.marke)||'—'}</td>
-      <td>${zgBadge}</td>
-      <td style="max-width:100px">${e(p.oberkategorie)||'—'}</td>
-      <td style="color:#666;max-width:90px">${e(p.typ)||'—'}</td>
-      <td style="max-width:80px">${e(p.stoffart)||'—'}</td>
-      <td>${statusBadge}</td>
-      <td><div class="act">${lnk}<button onclick="openEdit('${p.id}')">✎</button><button class="btn-danger" onclick="askDel('${p.id}')">✕</button></div></td>
+      <td><div class="name-cell">${thumbHtml(p)}<span class="name-text">${e(p.name)}</span></div></td>
+      <td class="muted">${e(p.marke)||'—'}</td>
+      <td>${badgeZg(p)}</td>
+      <td>${e(p.oberkategorie)||'—'}</td>
+      <td class="muted">${e(p.typ)||'—'}</td>
+      <td>${e(p.stoffart)||'—'}</td>
+      <td class="muted">${e(p.groesse)||'—'}</td>
+      <td>${badgeSt(p)}</td>
+      <td><div class="act">${lnk}<button onclick="openEdit('${p.id}')" title="Bearbeiten">✎</button><button class="btn-danger" onclick="askDel('${p.id}')" title="Löschen">✕</button></div></td>
     </tr>`;
   });
   h+='</tbody></table></div>';
-  area.innerHTML=h;
+  document.getElementById('area').innerHTML=h;
+}
+
+function renderGrid(rows){
+  let h='<div class="card-grid">';
+  rows.forEach(p=>{
+    const src=p.bild||'';
+    const imgHtml=src?`<img class="card-img" src="${e(src)}" alt="${e(p.name)}" onerror="this.outerHTML='<div class=\'card-img-placeholder\'>✂</div>'" onclick="openLightbox('${e(src)}')">`:`<div class="card-img-placeholder">✂</div>`;
+    const lnk=p.link?`<a href="${e(p.link)}" target="_blank">↗ Link</a>`:'';
+    h+=`<div class="card">
+      ${imgHtml}
+      <div class="card-body">
+        <div class="card-name" title="${e(p.name)}">${e(p.name)}</div>
+        <div class="card-meta">${e(p.marke)||'—'}${p.typ?' · '+e(p.typ):''}</div>
+        <div class="card-badges">${badgeZg(p)} ${badgeSt(p)}</div>
+        <div class="card-actions">${lnk}<button onclick="openEdit('${p.id}')">✎ Bearbeiten</button><button class="btn-danger" onclick="askDel('${p.id}')">✕</button></div>
+      </div>
+    </div>`;
+  });
+  h+='</div>';
+  document.getElementById('area').innerHTML=h;
 }
 
 function ts(col){if(sc===col)sd=sd==='asc'?'desc':'asc';else{sc=col;sd='asc';}render();}
 
-function openAdd(){
-  eid=null; currentImgData='';
-  document.getElementById('mtitle').textContent='Neues Schnittmuster';
-  document.getElementById('bsub').textContent='Hinzufügen';
-  ['fn','fkl','fgr','flk','fbi'].forEach(id=>sv(id,''));
-  document.getElementById('fno').value='';
-  ['fmk','fok2','ft2','fst2','ffo','fss2','fzgf'].forEach(id=>sv(id,''));
-  hideImgPreview(); syncTypM(); chkSub();
-  document.getElementById('mform').classList.add('open');
-}
-
-function openEdit(id){
-  const p=P.find(x=>x.id===id);if(!p)return;
-  eid=id; currentImgData='';
-  document.getElementById('mtitle').textContent='Schnittmuster bearbeiten';
-  document.getElementById('bsub').textContent='Speichern';
-  sv('fn',p.name);sv('fmk',p.marke);sv('fkl',p.kollektion);sv('fzgf',p.zielgruppe);
-  sv('fok2',p.oberkategorie);syncTypM();sv('ft2',p.typ);
-  sv('fst2',p.stoffart);sv('fgr',p.groesse);sv('ffo',p.format);
-  sv('fss2',p.status);sv('flk',p.link);
-  document.getElementById('fno').value=p.notizen||'';
-  if(p.bild){
-    if(p.bild.startsWith('data:')){currentImgData=p.bild;showImgPreview(p.bild);}
-    else{sv('fbi',p.bild);showImgPreview(p.bild);}
-  } else {sv('fbi','');hideImgPreview();}
-  chkSub();
-  document.getElementById('mform').classList.add('open');
-}
-
-function closeM(){
-  ['mform','mdel'].forEach(id=>document.getElementById(id).classList.remove('open'));
-  did=null;
-}
-
-function subF(){
-  if(!gv('fn').trim())return;
-  const imgSrc=getImgSrc();
-  const p={name:gv('fn').trim(),marke:gv('fmk'),kollektion:gv('fkl').trim(),zielgruppe:gv('fzgf'),oberkategorie:gv('fok2'),typ:gv('ft2'),stoffart:gv('fst2'),groesse:gv('fgr').trim(),format:gv('ffo'),status:gv('fss2'),link:gv('flk').trim(),bild:imgSrc,notizen:document.getElementById('fno').value.trim()};
-  if(eid){P=P.map(x=>x.id===eid?{...p,id:eid}:x);}
-  else{P.push({...p,id:uid(),created:Date.now()});}
-  save();closeM();render();
-  toast(eid?'Gespeichert ✓':'Hinzugefügt ✓');
-}
-
+function openAdd(){eid=null;currentImgData='';document.getElementById('mtitle').textContent='Neues Schnittmuster';document.getElementById('bsub').textContent='Hinzufügen';['fn','fkl','fgr','flk','fbi'].forEach(id=>sv(id,''));document.getElementById('fno').value='';['fmk','fok2','ft2','fst2','ffo','fss2','fzgf'].forEach(id=>sv(id,''));hideImgPreview();syncTypM();chkSub();document.getElementById('mform').classList.add('open');}
+function openEdit(id){const p=P.find(x=>x.id===id);if(!p)return;eid=id;currentImgData='';document.getElementById('mtitle').textContent='Schnittmuster bearbeiten';document.getElementById('bsub').textContent='Speichern';sv('fn',p.name);sv('fmk',p.marke);sv('fkl',p.kollektion);sv('fzgf',p.zielgruppe);sv('fok2',p.oberkategorie);syncTypM();sv('ft2',p.typ);sv('fst2',p.stoffart);sv('fgr',p.groesse);sv('ffo',p.format);sv('fss2',p.status);sv('flk',p.link);document.getElementById('fno').value=p.notizen||'';if(p.bild){if(p.bild.startsWith('data:')){currentImgData=p.bild;showImgPreview(p.bild);}else{sv('fbi',p.bild);showImgPreview(p.bild);}}else{sv('fbi','');hideImgPreview();}chkSub();document.getElementById('mform').classList.add('open');}
+function closeM(){['mform','mdel'].forEach(id=>document.getElementById(id).classList.remove('open'));did=null;}
+function subF(){if(!gv('fn').trim())return;const p={name:gv('fn').trim(),marke:gv('fmk'),kollektion:gv('fkl').trim(),zielgruppe:gv('fzgf'),oberkategorie:gv('fok2'),typ:gv('ft2'),stoffart:gv('fst2'),groesse:gv('fgr').trim(),format:gv('ffo'),status:gv('fss2'),link:gv('flk').trim(),bild:getImgSrc(),notizen:document.getElementById('fno').value.trim()};if(eid){P=P.map(x=>x.id===eid?{...p,id:eid}:x);}else{P.push({...p,id:uid(),created:Date.now()});}save();closeM();render();toast(eid?'Gespeichert ✓':'Hinzugefügt ✓');}
 function askDel(id){did=id;document.getElementById('mdel').classList.add('open');}
 function doDel(){if(!did)return;P=P.filter(p=>p.id!==did);save();closeM();render();toast('Gelöscht');}
 
-function exportCSV(){
-  const rows=P.map(p=>KEYS.map(k=>{
-    let v=p[k]||'';
-    if(k==='bild'&&v.startsWith('data:'))v='[Bild hochgeladen]';
-    return `"${v.replace(/"/g,'""')}"`;
-  }).join(','));
-  const csv=[HDRS.join(','),...rows].join('\n');
-  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='schnittmuster.csv';a.click();
-}
+function exportCSV(){const rows=P.map(p=>KEYS.map(k=>{let v=p[k]||'';if(k==='bild'&&v.startsWith('data:'))v='[Bild hochgeladen]';return`"${v.replace(/"/g,'""')}"`;}).join(','));const csv=[HDRS.join(','),...rows].join('\n');const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='schnittmuster.csv';a.click();}
 
-// CSV Import
-function parseCSV(text){
-  const lines=text.trim().split('\n');
-  if(lines.length<2)return[];
-  const hdrs=parseLine(lines[0]).map(h=>h.trim());
-  const idxMap={};
-  HDRS.forEach((h,i)=>{const idx=hdrs.findIndex(x=>x.toLowerCase()===h.toLowerCase());if(idx>=0)idxMap[i]=idx;});
-  const rows=[];
-  for(let i=1;i<lines.length;i++){
-    const vals=parseLine(lines[i]);
-    const obj={};
-    KEYS.forEach((k,ki)=>{obj[k]=idxMap[ki]!==undefined?(vals[idxMap[ki]]||'').trim():'';});
-    if(obj.name)rows.push(obj);
-  }
-  return rows;
-}
-function parseLine(line){
-  const res=[];let cur='',inQ=false;
-  for(let i=0;i<line.length;i++){
-    const c=line[i];
-    if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}
-    else if(c===','&&!inQ){res.push(cur);cur='';}
-    else cur+=c;
-  }
-  res.push(cur);return res;
-}
-
+function parseCSV(text){const lines=text.trim().split('\n');if(lines.length<2)return[];const hdrs=parseLine(lines[0]).map(h=>h.trim());const idxMap={};HDRS.forEach((h,i)=>{const idx=hdrs.findIndex(x=>x.toLowerCase()===h.toLowerCase());if(idx>=0)idxMap[i]=idx;});const rows=[];for(let i=1;i<lines.length;i++){const vals=parseLine(lines[i]);const obj={};KEYS.forEach((k,ki)=>{obj[k]=idxMap[ki]!==undefined?(vals[idxMap[ki]]||'').trim():'';});if(obj.name)rows.push(obj);}return rows;}
+function parseLine(line){const res=[];let cur='',inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}else if(c===','&&!inQ){res.push(cur);cur='';}else cur+=c;}res.push(cur);return res;}
 function openImport(){importRows=[];document.getElementById('import-preview').style.display='none';document.getElementById('btn-do-import').disabled=true;sv('csv-input','');document.getElementById('mimport').classList.add('open');}
 function closeImport(){document.getElementById('mimport').classList.remove('open');}
 function dragOver(e){e.preventDefault();document.getElementById('drop-zone').classList.add('drag');}
 function dragLeave(){document.getElementById('drop-zone').classList.remove('drag');}
 function dropFile(e){e.preventDefault();dragLeave();const f=e.dataTransfer.files[0];if(f)readFile(f);}
 function fileSelected(inp){if(inp.files[0])readFile(inp.files[0]);}
-function readFile(file){
-  const r=new FileReader();
-  r.onload=ev=>{
-    importRows=parseCSV(ev.target.result);
-    const existing=new Set(P.map(p=>p.name.toLowerCase()));
-    const neu=importRows.filter(p=>!existing.has(p.name.toLowerCase()));
-    const skip=importRows.length-neu.length;
-    const prev=document.getElementById('import-preview');
-    prev.style.display='block';
-    prev.innerHTML=`<div class="import-preview"><strong>${importRows.length} Einträge gefunden</strong>${neu.length} neu · ${skip} bereits vorhanden (übersprungen)</div>`;
-    document.getElementById('btn-do-import').disabled=neu.length===0;
-    importRows=neu;
-  };
-  r.readAsText(file,'UTF-8');
-}
-function doImport(){
-  if(!importRows.length)return;
-  importRows.forEach(p=>P.push({...p,id:uid(),created:Date.now()}));
-  save();closeImport();render();
-  toast(`${importRows.length} Schnittmuster importiert ✓`);
-  importRows=[];
-}
+function readFile(file){const r=new FileReader();r.onload=ev=>{importRows=parseCSV(ev.target.result);const existing=new Set(P.map(p=>p.name.toLowerCase()));const neu=importRows.filter(p=>!existing.has(p.name.toLowerCase()));const skip=importRows.length-neu.length;const prev=document.getElementById('import-preview');prev.style.display='block';prev.innerHTML=`<div class="import-info"><strong>${importRows.length} Einträge gefunden</strong>${neu.length} neu · ${skip} bereits vorhanden (übersprungen)</div>`;document.getElementById('btn-do-import').disabled=neu.length===0;importRows=neu;};r.readAsText(file,'UTF-8');}
+function doImport(){if(!importRows.length)return;importRows.forEach(p=>P.push({...p,id:uid(),created:Date.now()}));save();closeImport();render();toast(`${importRows.length} Schnittmuster importiert ✓`);importRows=[];}
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeM();closeImport();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeM();closeImport();closeLightbox();}});
 load();
 </script>
 </body>
