@@ -4,479 +4,779 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#ff6b2b">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Schnittmuster">
 <title>Schnittmuster</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --orange: #ff6b2b;
-    --orange2: #ff8c00;
-    --pink: #ff3d7f;
-    --yellow: #ffd23f;
-    --grad: linear-gradient(135deg, #ff6b2b 0%, #ff8c00 50%, #ffd23f 100%);
-    --grad2: linear-gradient(135deg, #ff3d7f 0%, #ff6b2b 100%);
-    --surface: #ffffff;
-    --bg: #fff8f4;
-    --border: #ffe0cc;
-    --text: #1a0a00;
-    --text2: #7a4020;
-    --text3: #c4885a;
-    --radius: 12px;
-    --radius-lg: 18px;
-    --radius-xl: 24px;
-  }
-  body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; min-height: 100vh; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange: #ff6b2b;
+  --pink: #ff3d7f;
+  --grad: linear-gradient(135deg, #ff6b2b 0%, #ff8c00 50%, #ffd23f 100%);
+  --grad2: linear-gradient(135deg, #ff3d7f 0%, #ff6b2b 100%);
+  --surface: #ffffff;
+  --bg: #fff8f4;
+  --border: #ffe0cc;
+  --border2: #ffc8a0;
+  --text: #1a0a00;
+  --text2: #7a4020;
+  --text3: #c4885a;
+  --r: 12px;
+  --rl: 18px;
+  --rx: 24px;
+}
+body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; min-height: 100vh; }
 
-  /* Header with gradient */
-  .app-header {
-    background: var(--grad);
-    padding: 18px 20px 16px;
-    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-    position: sticky; top: 0; z-index: 10;
-    box-shadow: 0 4px 20px rgba(255,107,43,0.3);
-  }
-  .app-title { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.5px; text-shadow: 0 1px 3px rgba(0,0,0,0.15); }
-  .app-title span { font-size: 20px; }
-  .app-subtitle { font-size: 12px; color: rgba(255,255,255,0.8); margin-top: 1px; font-weight: 600; }
-  .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+/* ── Header ── */
+.hdr { background: var(--grad); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 20px rgba(255,107,43,.3); }
+.hdr-title { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -.5px; }
+.hdr-sub { font-size: 12px; color: rgba(255,255,255,.8); font-weight: 600; margin-top: 2px; }
+.hdr-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-  /* Buttons */
-  button { cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; border-radius: var(--radius); border: 2px solid transparent; background: rgba(255,255,255,0.2); color: #fff; padding: 7px 14px; transition: all 0.15s; backdrop-filter: blur(4px); }
-  button:hover { background: rgba(255,255,255,0.35); }
-  button:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn-white { background: #fff; color: var(--orange); border-color: #fff; }
-  .btn-white:hover { background: #fff5ee; }
-  .btn-danger { background: #fff; color: #dc2626; border-color: #fecaca; }
-  .btn-danger:hover { background: #fef2f2; }
-  .btn-ghost-dark { background: transparent; border-color: var(--border); color: var(--text2); }
-  .btn-ghost-dark:hover { background: #fff0e8; }
+/* ── Buttons ── */
+button { cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 13px; border-radius: var(--r); border: 2px solid transparent; background: rgba(255,255,255,.2); color: #fff; padding: 7px 14px; transition: all .15s; }
+button:hover { background: rgba(255,255,255,.35); }
+button:disabled { opacity: .4; cursor: not-allowed; }
+.btn-white { background: #fff; color: var(--orange); border-color: #fff; }
+.btn-white:hover { background: #fff5ee; }
+.btn-outline { background: transparent; border-color: var(--border2); color: var(--text2); }
+.btn-outline:hover { background: #fff0e8; }
+.btn-accent { background: var(--grad); color: #fff; border-color: transparent; }
+.btn-accent:hover { opacity: .9; }
+.btn-danger { background: #fff; color: #dc2626; border-color: #fecaca; }
+.btn-danger:hover { background: #fef2f2; }
 
-  /* Filter bar */
-  .filter-wrap {
-    padding: 14px 20px;
-    background: var(--surface);
-    border-bottom: 2px solid var(--border);
-    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
-  }
-  input[type=search], select {
-    font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600;
-    padding: 8px 12px; border: 2px solid var(--border); border-radius: var(--radius);
-    background: var(--bg); color: var(--text);
-  }
-  input[type=search]:focus, select:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255,107,43,0.15); }
-  input[type=search] { flex: 1; min-width: 140px; }
-  select { min-width: 110px; }
-  .view-toggle { display: flex; border: 2px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--bg); }
-  .view-toggle button { border: none; border-radius: 0; padding: 7px 12px; font-size: 16px; background: transparent; color: var(--text2); }
-  .view-toggle button.active { background: var(--grad); color: #fff; }
+/* ── Filter bar ── */
+.filters { padding: 12px 20px; background: var(--surface); border-bottom: 2px solid var(--border); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+input, select, textarea { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); }
+.filters input[type=search], .filters select { padding: 7px 11px; border: 2px solid var(--border); border-radius: var(--r); background: var(--bg); }
+.filters input[type=search]:focus, .filters select:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255,107,43,.12); }
+.filters input[type=search] { flex: 1; min-width: 140px; }
+.filters select { min-width: 110px; }
+.view-toggle { display: flex; border: 2px solid var(--border); border-radius: var(--r); overflow: hidden; background: var(--bg); }
+.view-toggle button { border: none; border-radius: 0; padding: 7px 12px; font-size: 16px; background: transparent; color: var(--text2); }
+.view-toggle button.active { background: var(--grad); color: #fff; }
 
-  /* Main */
-  .main { padding: 20px; }
-  .stats-bar { font-size: 12px; font-weight: 700; color: var(--text3); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+/* ── Main ── */
+.main { padding: 20px; }
+.stats { font-size: 12px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 14px; }
 
-  /* TABLE VIEW */
-  .table-wrap { overflow-x: auto; background: var(--surface); border-radius: var(--radius-lg); border: 2px solid var(--border); box-shadow: 0 4px 20px rgba(255,107,43,0.08); }
-  table { width: 100%; border-collapse: collapse; white-space: nowrap; }
-  th {
-    padding: 12px 14px; font-size: 11px; font-weight: 800; color: var(--orange);
-    text-transform: uppercase; letter-spacing: 0.8px; cursor: pointer;
-    border-bottom: 2px solid var(--border); background: #fff8f4; user-select: none; text-align: left;
-  }
-  th:hover { color: var(--pink); }
-  td { padding: 10px 14px; border-bottom: 1px solid #fff0e8; vertical-align: middle; font-weight: 600; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #fff5ee; }
-  .name-cell { display: flex; align-items: center; gap: 10px; }
-  .thumb { width: 52px; height: 52px; object-fit: cover; border-radius: 10px; flex-shrink: 0; cursor: pointer; transition: transform 0.15s; border: 2px solid var(--border); }
-  .thumb:hover { transform: scale(1.08); border-color: var(--orange); }
-  .thumb-placeholder { width: 52px; height: 52px; border-radius: 10px; background: linear-gradient(135deg,#fff0e8,#ffe4cc); border: 2px dashed var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; }
-  .name-text { font-weight: 700; color: var(--text); }
-  td.muted { color: var(--text2); font-weight: 600; }
-  .act { display: flex; gap: 4px; }
-  .act a { font-size: 12px; font-weight: 700; padding: 4px 8px; text-decoration: none; border: 2px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--orange); }
-  .act a:hover { background: #fff0e8; border-color: var(--orange); }
-  .act button { font-size: 13px; padding: 4px 9px; }
+/* ── Table ── */
+.tbl-wrap { overflow-x: auto; background: var(--surface); border-radius: var(--rl); border: 2px solid var(--border); box-shadow: 0 4px 20px rgba(255,107,43,.08); }
+table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+th { padding: 12px 14px; font-size: 11px; font-weight: 800; color: var(--orange); text-transform: uppercase; letter-spacing: .8px; cursor: pointer; border-bottom: 2px solid var(--border); background: #fff8f4; user-select: none; text-align: left; }
+th:hover { color: var(--pink); }
+td { padding: 10px 14px; border-bottom: 1px solid #fff0e8; vertical-align: middle; font-weight: 600; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #fff5ee; }
+.nc { display: flex; align-items: center; gap: 10px; }
+.thumb { width: 52px; height: 52px; object-fit: cover; border-radius: 10px; flex-shrink: 0; cursor: pointer; border: 2px solid var(--border); transition: transform .15s, border-color .15s; }
+.thumb:hover { transform: scale(1.08); border-color: var(--orange); }
+.no-img { width: 52px; height: 52px; border-radius: 10px; background: linear-gradient(135deg,#fff0e8,#ffe4cc); border: 2px dashed var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.name-txt { font-weight: 700; }
+td.dim { color: var(--text2); }
+.row-act { display: flex; gap: 4px; }
+.row-act button { font-size: 12px; padding: 3px 8px; }
+.row-act a { font-size: 12px; font-weight: 700; padding: 3px 8px; text-decoration: none; border: 2px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--orange); }
+.row-act a:hover { border-color: var(--orange); }
 
-  /* CARD VIEW */
-  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap: 16px; }
-  .card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; }
-  .card:hover { box-shadow: 0 8px 30px rgba(255,107,43,0.18); transform: translateY(-3px); border-color: var(--orange); }
-  .card-img { width: 100%; height: 150px; object-fit: cover; cursor: pointer; display: block; transition: transform 0.2s; }
-  .card:hover .card-img { transform: scale(1.03); }
-  .card-img-placeholder { width: 100%; height: 150px; background: linear-gradient(135deg,#fff0e8,#ffd0b0); display: flex; align-items: center; justify-content: center; font-size: 42px; }
-  .card-body { padding: 12px 14px; }
-  .card-name { font-weight: 800; font-size: 14px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
-  .card-meta { font-size: 12px; color: var(--text2); font-weight: 600; margin-bottom: 8px; }
-  .card-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
-  .card-actions { display: flex; gap: 6px; }
-  .card-actions button, .card-actions a { font-size: 12px; font-weight: 700; padding: 5px 10px; flex: 1; text-align: center; text-decoration: none; border: 2px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text2); cursor: pointer; font-family: 'Nunito',sans-serif; }
-  .card-actions button:hover, .card-actions a:hover { border-color: var(--orange); color: var(--orange); background: #fff5ee; }
+/* ── Cards ── */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap: 16px; }
+.card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--rx); overflow: hidden; transition: box-shadow .2s, transform .2s, border-color .2s; }
+.card:hover { box-shadow: 0 8px 30px rgba(255,107,43,.18); transform: translateY(-3px); border-color: var(--orange); }
+.card-img { width: 100%; height: 150px; object-fit: cover; cursor: pointer; display: block; }
+.card-noimg { width: 100%; height: 150px; background: linear-gradient(135deg,#fff0e8,#ffd0b0); display: flex; align-items: center; justify-content: center; font-size: 42px; }
+.card-body { padding: 12px 14px; }
+.card-name { font-weight: 800; font-size: 14px; margin-bottom: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card-meta { font-size: 12px; color: var(--text2); font-weight: 600; margin-bottom: 8px; }
+.card-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.card-act { display: flex; gap: 6px; }
+.card-act button, .card-act a { font-size: 12px; font-weight: 700; padding: 5px 10px; flex: 1; text-align: center; text-decoration: none; border: 2px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text2); cursor: pointer; font-family: 'Nunito',sans-serif; }
+.card-act button:hover, .card-act a:hover { border-color: var(--orange); color: var(--orange); }
 
-  /* Badges */
-  .badge { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 20px; white-space: nowrap; display: inline-block; letter-spacing: 0.2px; }
-  .s-vorhanden { background: #d1fae5; color: #065f46; }
-  .s-genaht    { background: #dcfce7; color: #14532d; }
-  .s-planung   { background: #fef9c3; color: #713f12; }
-  .s-wunsch    { background: #fce7f3; color: #831843; }
-  .zg-damen    { background: #fce7f3; color: #9d174d; }
-  .zg-herren   { background: #dbeafe; color: #1e3a8a; }
-  .zg-kinder   { background: #d1fae5; color: #064e3b; }
-  .zg-baby     { background: #fef9c3; color: #78350f; }
-  .zg-unisex   { background: #f3f4f6; color: #374151; }
+/* ── Badges ── */
+.badge { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 20px; display: inline-block; white-space: nowrap; }
+.s-vorhanden { background: #d1fae5; color: #065f46; }
+.s-genaht    { background: #dcfce7; color: #14532d; }
+.s-planung   { background: #fef9c3; color: #713f12; }
+.s-wunsch    { background: #fce7f3; color: #831843; }
+.zg-damen    { background: #fce7f3; color: #9d174d; }
+.zg-herren   { background: #dbeafe; color: #1e3a8a; }
+.zg-kinder   { background: #d1fae5; color: #064e3b; }
+.zg-baby     { background: #fef9c3; color: #78350f; }
+.zg-unisex   { background: #f3f4f6; color: #374151; }
 
-  /* Empty */
-  .empty { text-align: center; padding: 4rem 1rem; color: var(--text3); }
-  .empty .icon { font-size: 52px; margin-bottom: 1rem; }
-  .empty p { font-size: 16px; font-weight: 700; color: var(--text2); margin-bottom: 0.5rem; }
-  .empty small { font-size: 13px; font-weight: 600; }
+/* ── Empty ── */
+.empty { text-align: center; padding: 4rem 1rem; }
+.empty .ico { font-size: 52px; margin-bottom: 1rem; }
+.empty p { font-size: 16px; font-weight: 700; color: var(--text2); margin-bottom: .5rem; }
+.empty small { font-size: 13px; color: var(--text3); font-weight: 600; }
 
-  /* Overlay */
-  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: flex-start; justify-content: center; padding: 1rem; overflow-y: auto; }
-  .overlay.open { display: flex; }
-  .modal { background: var(--surface); border-radius: var(--radius-xl); border: 2px solid var(--border); padding: 0; width: min(580px, 100%); max-height: none; overflow-y: visible; box-shadow: 0 20px 60px rgba(255,107,43,0.2); margin: auto; }
-  .modal-top { background: var(--grad); padding: 1.25rem 1.5rem; border-radius: var(--radius-xl) var(--radius-xl) 0 0; display: flex; align-items: center; justify-content: space-between; }
-  .modal-top h2 { font-size: 18px; font-weight: 800; color: #fff; }
-  .modal-top button { background: rgba(255,255,255,0.2); color: #fff; border-color: transparent; padding: 4px 10px; font-size: 16px; }
-  .modal-top button:hover { background: rgba(255,255,255,0.35); }
-  .modal-body { padding: 1.5rem; }
-  .fg { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .fw { grid-column: 1/-1; }
-  .lbl { font-size: 11px; font-weight: 800; color: var(--orange); display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-  input[type=text], input[type=url], textarea, .fg select, .fw select {
-    width: 100%; padding: 9px 12px; border: 2px solid var(--border); border-radius: var(--radius);
-    background: var(--bg); color: var(--text); font-family: 'Nunito',sans-serif; font-size: 14px; font-weight: 600;
-  }
-  input[type=text]:focus, input[type=url]:focus, textarea:focus, .fg select:focus, .fw select:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255,107,43,0.15); }
-  textarea { resize: vertical; }
-  .fa { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; padding-top: 1rem; border-top: 2px solid var(--border); }
-  .fa .btn-submit { background: var(--grad); color: #fff; border-color: transparent; padding: 9px 20px; font-size: 14px; }
-  .fa .btn-submit:hover { opacity: 0.9; }
-  .fa .btn-submit:disabled { opacity: 0.4; }
-  .fa .btn-cancel { background: var(--bg); color: var(--text2); border-color: var(--border); }
+/* ── Overlay ── */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 100; align-items: center; justify-content: center; padding: 1rem; overflow-y: auto; }
+.overlay.open { display: flex; }
 
-  /* Small modal */
-  .smodal { background: var(--surface); border-radius: var(--radius-xl); border: 2px solid var(--border); overflow: hidden; width: min(360px,100%); box-shadow: 0 20px 60px rgba(0,0,0,0.2); margin: auto; }
-  .smodal-top { background: var(--grad2); padding: 1.25rem 1.5rem; }
-  .smodal-top h2 { font-size: 17px; font-weight: 800; color: #fff; }
-  .smodal-body { padding: 1.25rem 1.5rem; }
-  .smodal-body p { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 1.25rem; line-height: 1.6; }
-  .smodal-body .ca { display: flex; gap: 8px; justify-content: flex-end; }
+/* ── Form modal ── */
+.modal { background: var(--surface); border-radius: var(--rx); width: min(580px,100%); max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(255,107,43,.2); }
+.modal-hdr { background: var(--grad); padding: 1.25rem 1.5rem; border-radius: var(--rx) var(--rx) 0 0; display: flex; align-items: center; justify-content: space-between; }
+.modal-hdr h2 { font-size: 18px; font-weight: 800; color: #fff; }
+.modal-hdr button { background: rgba(255,255,255,.2); color: #fff; border-color: transparent; padding: 4px 10px; font-size: 16px; }
+.modal-body { padding: 1.5rem; }
+.fg { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fw { grid-column: 1/-1; }
+.lbl { font-size: 11px; font-weight: 800; color: var(--orange); display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px; }
+.fi { width: 100%; padding: 9px 12px; border: 2px solid var(--border); border-radius: var(--r); background: var(--bg); font-family: 'Nunito',sans-serif; font-size: 14px; font-weight: 600; color: var(--text); }
+.fi:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255,107,43,.12); }
+textarea.fi { resize: vertical; }
+.modal-foot { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; padding-top: 1rem; border-top: 2px solid var(--border); }
 
-  /* Image upload */
-  .img-upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; cursor: pointer; color: var(--text3); font-size: 13px; font-weight: 700; position: relative; background: var(--bg); transition: all 0.15s; }
-  .img-upload-area:hover { border-color: var(--orange); color: var(--orange); background: #fff5ee; }
-  .img-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
-  .img-preview-wrap { position: relative; display: inline-block; margin-top: 8px; }
-  .img-preview { width: 90px; height: 90px; object-fit: cover; border-radius: var(--radius); display: block; border: 2px solid var(--border); }
-  .img-remove { position: absolute; top: -6px; right: -6px; background: var(--pink); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 11px; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 800; }
+/* ── Small modal ── */
+.sm { background: var(--surface); border-radius: var(--rx); width: min(400px,100%); overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
+.sm-hdr { background: var(--grad2); padding: 1.25rem 1.5rem; }
+.sm-hdr h2 { font-size: 17px; font-weight: 800; color: #fff; }
+.sm-body { padding: 1.25rem 1.5rem; }
+.sm-body p { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 1.25rem; line-height: 1.6; }
+.sm-foot { display: flex; gap: 8px; justify-content: flex-end; }
 
-  /* Lightbox */
-  .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 200; align-items: center; justify-content: center; padding: 1rem; cursor: zoom-out; }
-  .lightbox.open { display: flex; }
-  .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: var(--radius-lg); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+/* ── Image upload ── */
+.img-drop { border: 2px dashed var(--border2); border-radius: var(--r); padding: 1rem; text-align: center; cursor: pointer; color: var(--text3); font-size: 13px; font-weight: 700; position: relative; background: var(--bg); transition: all .15s; }
+.img-drop:hover { border-color: var(--orange); color: var(--orange); background: #fff5ee; }
+.img-drop input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+.img-prev-wrap { position: relative; display: inline-block; margin-top: 8px; }
+.img-prev { width: 90px; height: 90px; object-fit: cover; border-radius: var(--r); display: block; border: 2px solid var(--border); }
+.img-rm { position: absolute; top: -6px; right: -6px; background: var(--pink); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 11px; padding: 0; display: flex; align-items: center; justify-content: center; }
 
-  /* Import */
-  .import-drop { border: 2px dashed var(--border); border-radius: var(--radius); padding: 1.5rem; text-align: center; cursor: pointer; color: var(--text3); font-size: 13px; font-weight: 700; margin-bottom: 1rem; transition: all 0.15s; }
-  .import-drop:hover, .import-drop.drag { border-color: var(--orange); color: var(--orange); background: #fff5ee; }
-  .import-info { background: #fff5ee; border-radius: var(--radius); padding: 0.75rem 1rem; font-size: 13px; font-weight: 700; color: var(--text2); margin-bottom: 1rem; border: 2px solid var(--border); }
-  .import-info strong { display: block; color: var(--text); margin-bottom: 2px; font-size: 14px; }
+/* ── Lightbox ── */
+.lb { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.9); z-index: 200; align-items: center; justify-content: center; padding: 1rem; cursor: zoom-out; }
+.lb.open { display: flex; }
+.lb img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: var(--rl); }
 
-  /* Toast */
-  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--grad); color: #fff; padding: 11px 22px; border-radius: 30px; font-size: 13px; font-weight: 800; z-index: 300; opacity: 0; transition: opacity 0.2s; pointer-events: none; white-space: nowrap; box-shadow: 0 4px 20px rgba(255,107,43,0.4); }
-  .toast.show { opacity: 1; }
+/* ── Import ── */
+.imp-drop { border: 2px dashed var(--border2); border-radius: var(--r); padding: 1.5rem; text-align: center; cursor: pointer; color: var(--text3); font-size: 13px; font-weight: 700; margin-bottom: 1rem; transition: all .15s; }
+.imp-drop:hover, .imp-drop.drag { border-color: var(--orange); color: var(--orange); background: #fff5ee; }
+.imp-info { background: #fff5ee; border-radius: var(--r); padding: .75rem 1rem; font-size: 13px; font-weight: 700; color: var(--text2); margin-bottom: 1rem; border: 2px solid var(--border); }
+.imp-info strong { display: block; color: var(--text); font-size: 14px; margin-bottom: 2px; }
 
-  @media (max-width: 520px) { .fg { grid-template-columns: 1fr; } .fw { grid-column: 1; } .card-grid { grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); } }
+/* ── Toast ── */
+.toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--grad); color: #fff; padding: 11px 22px; border-radius: 30px; font-size: 13px; font-weight: 800; z-index: 300; opacity: 0; transition: opacity .2s; pointer-events: none; white-space: nowrap; box-shadow: 0 4px 20px rgba(255,107,43,.4); }
+.toast.show { opacity: 1; }
+
+@media (max-width: 520px) {
+  .fg { grid-template-columns: 1fr; }
+  .fw { grid-column: 1; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); }
+}
 </style>
 </head>
 <body>
 
-<div class="app-header">
+<!-- HEADER -->
+<div class="hdr">
   <div>
-    <div class="app-title"><span>✂</span> Schnittmuster</div>
-    <div class="app-subtitle" id="count">0 Einträge</div>
+    <div class="hdr-title">✂ Schnittmuster</div>
+    <div class="hdr-sub" id="hdr-count">0 Einträge</div>
   </div>
-  <div class="header-actions">
+  <div class="hdr-actions">
     <div class="view-toggle">
       <button id="btn-list" class="active" onclick="setView('list')" title="Liste">☰</button>
       <button id="btn-grid" onclick="setView('grid')" title="Galerie">⊞</button>
     </div>
     <button onclick="openImport()">↑ Import</button>
-    <button id="btn-export" onclick="exportCSV()" style="display:none">↓ Export</button>
+    <button id="btn-export" onclick="doExport()" style="display:none">↓ Export</button>
     <button class="btn-white" onclick="openAdd()">+ Neu</button>
   </div>
 </div>
 
-<div class="filter-wrap">
-  <input type="search" id="fs" placeholder="🔍  Suche …" oninput="render()">
-  <select id="fok" onchange="syncTypF();render()">
+<!-- FILTERS -->
+<div class="filters">
+  <input type="search" id="f-q" placeholder="🔍 Suche …" oninput="render()">
+  <select id="f-ok" onchange="syncFiltTyp();render()">
     <option value="">Alle Kategorien</option>
     <option>Oberteil</option><option>Unterteil</option><option>Kleid</option>
     <option>Einteiler</option><option>Lingerie</option><option>Accessoires</option>
     <option>Taschen</option><option>Sonstiges</option>
   </select>
-  <select id="ft" onchange="render()"><option value="">Alle Typen</option></select>
-  <select id="fzg" onchange="render()">
+  <select id="f-typ" onchange="render()"><option value="">Alle Typen</option></select>
+  <select id="f-zg" onchange="render()">
     <option value="">Alle Zielgruppen</option>
     <option>Damen</option><option>Herren</option><option>Kinder</option><option>Baby</option><option>Unisex</option>
   </select>
-  <select id="fst" onchange="render()">
+  <select id="f-stoff" onchange="render()">
     <option value="">Alle Stoffe</option>
     <option>Jersey</option><option>Webware</option><option>Strick</option><option>Sonstiges</option>
   </select>
-  <select id="fss" onchange="render()">
+  <select id="f-status" onchange="render()">
     <option value="">Alle Status</option>
     <option>Vorhanden</option><option>Genäht</option><option>In Planung</option><option>Wunschliste</option>
   </select>
-  <select id="fm" onchange="render()"><option value="">Alle Marken</option></select>
-  <button class="btn-ghost-dark" id="btn-rst" onclick="resetF()" style="display:none">✕ Reset</button>
+  <select id="f-marke" onchange="render()"><option value="">Alle Marken</option></select>
+  <button class="btn-outline" id="btn-reset" onclick="resetFilters()" style="display:none">✕ Reset</button>
 </div>
 
+<!-- MAIN -->
 <div class="main">
-  <div class="stats-bar" id="stats"></div>
+  <div class="stats" id="stats"></div>
   <div id="area"></div>
 </div>
 
-<!-- Form modal -->
-<div class="overlay" id="mform">
+<!-- FORM MODAL -->
+<div class="overlay" id="modal-form">
   <div class="modal">
-    <div class="modal-top">
-      <h2 id="mtitle">Neues Schnittmuster</h2>
-      <button onclick="closeM()">✕</button>
+    <div class="modal-hdr">
+      <h2 id="form-title">Neues Schnittmuster</h2>
+      <button onclick="closeModals()">✕</button>
     </div>
     <div class="modal-body">
       <div class="fg">
-        <div class="fw"><label class="lbl">Name *</label><input type="text" id="fn" placeholder="z. B. Nina Bluse" oninput="chkSub()"></div>
-        <div><label class="lbl">Marke</label>
-          <select id="fmk"><option value="">—</option>
-            <option>Burda</option><option>Schnittreif</option><option>Makerist</option>
-            <option>Ottobre</option><option>Pattydoo</option><option>Eigen</option><option>Sonstiges</option>
-        <div><label class="lbl">Marke</label>
-          <input type="text" id="fmk" list="marken-list" placeholder="z. B. Pattydoo" autocomplete="off">
-          <datalist id="marken-list"></datalist></div>
-          </select></div>
-        <div><label class="lbl">Oberkategorie</label>
-          <select id="fok2" onchange="syncTypM()">
+        <div class="fw">
+          <label class="lbl">Name *</label>
+          <input type="text" id="f-name" class="fi" placeholder="z. B. Nina Bluse" oninput="checkSubmit()">
+        </div>
+        <div>
+          <label class="lbl">Marke</label>
+          <input type="text" id="f-marke" class="fi" list="marken-dl" placeholder="z. B. Pattydoo" autocomplete="off">
+          <datalist id="marken-dl"></datalist>
+        </div>
+        <div>
+          <label class="lbl">Kollektion</label>
+          <input type="text" id="f-koll" class="fi" placeholder="z. B. Frühjahr 2024">
+        </div>
+        <div>
+          <label class="lbl">Zielgruppe</label>
+          <select id="f-zielgruppe" class="fi">
+            <option value="">—</option>
+            <option>Damen</option><option>Herren</option><option>Kinder</option><option>Baby</option><option>Unisex</option>
+          </select>
+        </div>
+        <div>
+          <label class="lbl">Oberkategorie</label>
+          <select id="f-oberkat" class="fi" onchange="syncFormTyp()">
             <option value="">—</option>
             <option>Oberteil</option><option>Unterteil</option><option>Kleid</option>
             <option>Einteiler</option><option>Lingerie</option><option>Accessoires</option>
             <option>Taschen</option><option>Sonstiges</option>
-          </select></div>
-        <div><label class="lbl">Typ</label><select id="ft2"><option value="">—</option></select></div>
-        <div><label class="lbl">Stoffart</label>
-          <select id="fst2"><option value="">—</option>
+          </select>
+        </div>
+        <div>
+          <label class="lbl">Typ</label>
+          <select id="f-typ2" class="fi"><option value="">—</option></select>
+        </div>
+        <div>
+          <label class="lbl">Stoffart</label>
+          <select id="f-stoff2" class="fi">
+            <option value="">—</option>
             <option>Jersey</option><option>Webware</option><option>Strick</option><option>Sonstiges</option>
-          </select></div>
-        <div><label class="lbl">Größe</label><input type="text" id="fgr" placeholder="z. B. 36–44"></div>
-        <div><label class="lbl">Format</label>
-          <select id="ffo"><option value="">—</option>
+          </select>
+        </div>
+        <div>
+          <label class="lbl">Größe</label>
+          <input type="text" id="f-groesse" class="fi" placeholder="z. B. 36–44">
+        </div>
+        <div>
+          <label class="lbl">Format</label>
+          <select id="f-format" class="fi">
+            <option value="">—</option>
             <option>PDF</option><option>Papierschnitt</option><option>Magazin</option>
-          </select></div>
-        <div><label class="lbl">Status</label>
-          <select id="fss2"><option value="">—</option>
+          </select>
+        </div>
+        <div>
+          <label class="lbl">Status</label>
+          <select id="f-status2" class="fi">
+            <option value="">—</option>
             <option>Vorhanden</option><option>Genäht</option><option>In Planung</option><option>Wunschliste</option>
-          </select></div>
-        <div class="fw"><label class="lbl">Datei / Link</label><input type="url" id="flk" placeholder="https://…"></div>
+          </select>
+        </div>
+        <div class="fw">
+          <label class="lbl">Datei / Link</label>
+          <input type="url" id="f-link" class="fi" placeholder="https://…">
+        </div>
         <div class="fw">
           <label class="lbl">Vorschaubild</label>
-          <div class="img-upload-area" id="upload-area">
-            📷  Bild auswählen oder Foto aufnehmen
-            <input type="file" id="fimg-file" accept="image/*" onchange="handleImgUpload(this)">
+          <div class="img-drop" id="img-drop">
+            📷 Bild auswählen oder Foto aufnehmen
+            <input type="file" id="f-imgfile" accept="image/*" onchange="handleImg(this)">
           </div>
-          <div id="img-preview-wrap" style="display:none;margin-top:8px">
-            <div class="img-preview-wrap">
-              <img id="img-preview" class="img-preview" src="" alt="">
-              <button class="img-remove" onclick="removeImg()" type="button">✕</button>
+          <div id="img-prev-wrap" style="display:none; margin-top:8px">
+            <div class="img-prev-wrap">
+              <img id="img-prev" class="img-prev" src="" alt="">
+              <button class="img-rm" onclick="removeImg()" type="button">✕</button>
             </div>
           </div>
-          <input type="url" id="fbi" placeholder="… oder Bild-URL eingeben" style="margin-top:8px" oninput="syncUrlPreview()">
+          <input type="url" id="f-bildurl" class="fi" placeholder="… oder Bild-URL eingeben" style="margin-top:8px" oninput="syncUrlPrev()">
         </div>
-        <div class="fw"><label class="lbl">Notizen</label><textarea id="fno" rows="3" placeholder="Erfahrungen, Anpassungen, Tipps …"></textarea></div>
+        <div class="fw">
+          <label class="lbl">Notizen</label>
+          <textarea id="f-notizen" class="fi" rows="3" placeholder="Erfahrungen, Anpassungen, Tipps …"></textarea>
+        </div>
       </div>
-      <div class="fa">
-        <button class="btn-cancel" onclick="closeM()">Abbrechen</button>
-        <button class="btn-submit" id="bsub" onclick="subF()" disabled>Hinzufügen</button>
+      <div class="modal-foot">
+        <button class="btn-outline" onclick="closeModals()">Abbrechen</button>
+        <button class="btn-accent" id="btn-submit" onclick="submitForm()" disabled>Hinzufügen</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Delete confirm -->
-<div class="overlay" id="mdel">
-  <div class="smodal">
-    <div class="smodal-top"><h2>Schnittmuster löschen?</h2></div>
-    <div class="smodal-body">
+<!-- DELETE MODAL -->
+<div class="overlay" id="modal-del">
+  <div class="sm">
+    <div class="sm-hdr"><h2>Schnittmuster löschen?</h2></div>
+    <div class="sm-body">
       <p>Diese Aktion kann nicht rückgängig gemacht werden.</p>
-      <div class="ca">
-        <button class="btn-ghost-dark" onclick="closeM()">Abbrechen</button>
-        <button class="btn-danger" onclick="doDel()">Löschen</button>
+      <div class="sm-foot">
+        <button class="btn-outline" onclick="closeModals()">Abbrechen</button>
+        <button class="btn-danger" onclick="confirmDelete()">Löschen</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Import modal -->
-<div class="overlay" id="mimport">
-  <div class="smodal" style="width:min(460px,100%)">
-    <div class="smodal-top"><h2>CSV importieren</h2></div>
-    <div class="smodal-body">
+<!-- IMPORT MODAL -->
+<div class="overlay" id="modal-import">
+  <div class="sm" style="width:min(460px,100%)">
+    <div class="sm-hdr"><h2>CSV importieren</h2></div>
+    <div class="sm-body">
       <p>Bestehende Einträge bleiben erhalten — Duplikate (gleicher Name) werden übersprungen.</p>
-      <div class="import-drop" id="drop-zone" onclick="document.getElementById('csv-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
-        📂  CSV hierher ziehen oder klicken
-        <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="fileSelected(this)">
+      <div class="imp-drop" id="imp-drop"
+        onclick="document.getElementById('imp-file').click()"
+        ondragover="event.preventDefault();this.classList.add('drag')"
+        ondragleave="this.classList.remove('drag')"
+        ondrop="event.preventDefault();this.classList.remove('drag');handleImportDrop(event)">
+        📂 CSV hierher ziehen oder klicken
+        <input type="file" id="imp-file" accept=".csv" style="display:none" onchange="handleImportFile(this)">
       </div>
-      <div id="import-preview" style="display:none"></div>
-      <div class="ca">
-        <button class="btn-ghost-dark" onclick="closeImport()">Abbrechen</button>
-        <button id="btn-do-import" onclick="doImport()" disabled style="background:var(--grad);color:#fff;border-color:transparent;padding:9px 20px;font-size:14px;font-weight:800">Importieren</button>
+      <div id="imp-preview" style="display:none"></div>
+      <div class="sm-foot">
+        <button class="btn-outline" onclick="closeModals()">Abbrechen</button>
+        <button class="btn-accent" id="btn-import-do" onclick="doImport()" disabled>Importieren</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Lightbox -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <img id="lightbox-img" src="" alt="">
+<!-- LIGHTBOX -->
+<div class="lb" id="lightbox" onclick="closeLightbox()">
+  <img id="lb-img" src="" alt="">
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const TM={Oberteil:['Shirt','Bluse','Top','Sweatshirt','Jacke','Mantel','Weste'],Unterteil:['Rock','Hose','Shorts','Leggings'],Kleid:['Kleid'],Einteiler:['Jumpsuit','Overall'],Lingerie:['BH','Slip','Unterwäsche','Badeanzug','Bikini','Schlafanzug','Nachthemd'],Accessoires:['Mütze','Gürtel','Handschuhe'],Taschen:['Shopper','Rucksack','Clutch','Kosmetiktasche'],Sonstiges:['Deko','Kissen','Spielzeug','Sonstiges']};
-const SC={'Vorhanden':'vorhanden','Genäht':'genaht','In Planung':'planung','Wunschliste':'wunsch'};
-const ZGC={'Damen':'damen','Herren':'herren','Kinder':'kinder','Baby':'baby','Unisex':'unisex'};
-const HDRS=['Name','Marke','Kollektion','Zielgruppe','Oberkategorie','Typ','Stoffart','Größe','Format','Status','Link','Notizen'];
-const KEYS=['name','marke','kollektion','zielgruppe','oberkategorie','typ','stoffart','groesse','format','status','link','notizen'];
-const COLS=[{k:'name',l:'Name'},{k:'marke',l:'Marke'},{k:'zielgruppe',l:'Zielgruppe'},{k:'oberkategorie',l:'Kategorie'},{k:'typ',l:'Typ'},{k:'stoffart',l:'Stoff'},{k:'groesse',l:'Größe'},{k:'status',l:'Status'}];
+// ── Constants ──
+const TM = {
+  Oberteil: ['Shirt','Bluse','Top','Sweatshirt','Jacke','Mantel','Weste'],
+  Unterteil: ['Rock','Hose','Shorts','Leggings'],
+  Kleid: ['Kleid'],
+  Einteiler: ['Jumpsuit','Overall'],
+  Lingerie: ['BH','Slip','Unterwäsche','Badeanzug','Bikini','Schlafanzug','Nachthemd'],
+  Accessoires: ['Mütze','Gürtel','Handschuhe'],
+  Taschen: ['Shopper','Rucksack','Clutch','Kosmetiktasche'],
+  Sonstiges: ['Deko','Kissen','Spielzeug','Sonstiges']
+};
+const SC = { Vorhanden:'vorhanden', Genäht:'genaht', 'In Planung':'planung', Wunschliste:'wunsch' };
+const ZC = { Damen:'damen', Herren:'herren', Kinder:'kinder', Baby:'baby', Unisex:'unisex' };
+const CSV_HDRS = ['Name','Marke','Kollektion','Zielgruppe','Oberkategorie','Typ','Stoffart','Größe','Format','Status','Link','Notizen'];
+const CSV_KEYS = ['name','marke','kollektion','zielgruppe','oberkategorie','typ','stoffart','groesse','format','status','link','notizen'];
+const TBL_COLS = [
+  {k:'name', l:'Name'},
+  {k:'marke', l:'Marke'},
+  {k:'zielgruppe', l:'Zielgruppe'},
+  {k:'oberkategorie', l:'Kategorie'},
+  {k:'typ', l:'Typ'},
+  {k:'stoffart', l:'Stoff'},
+  {k:'groesse', l:'Größe'},
+  {k:'status', l:'Status'}
+];
+const SK = 'sm-v3';
 
-let P=[],eid=null,did=null,sc='name',sd='asc',importRows=[],currentImgData='',view='list';
-const SK='sm-data-v2';
+// ── State ──
+let P = [], editId = null, deleteId = null, pendingImport = [];
+let sortCol = 'name', sortDir = 'asc', viewMode = 'list', imgData = '';
 
-function load(){try{const d=localStorage.getItem(SK);if(d)P=JSON.parse(d);}catch(e){}updateMarken();render();}
-function save(){try{localStorage.setItem(SK,JSON.stringify(P));}catch(e){toast('Speicherfehler – Bilder zu groß?');}}
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
-function e(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function gv(id){return document.getElementById(id).value;}
-function sv(id,v){document.getElementById(id).value=v||'';}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+// ── Persist ──
+function loadData() {
+  try { const d = localStorage.getItem(SK); if (d) P = JSON.parse(d); } catch(e) {}
+  updateMarkenList();
+  render();
+}
+function saveData() {
+  try { localStorage.setItem(SK, JSON.stringify(P)); }
+  catch(e) { showToast('Speicherfehler – Bilder zu groß?'); }
+}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
 
-function setView(v){view=v;document.getElementById('btn-list').classList.toggle('active',v==='list');document.getElementById('btn-grid').classList.toggle('active',v==='grid');render();}
-function openLightbox(src){document.getElementById('lightbox-img').src=src;document.getElementById('lightbox').classList.add('open');}
-function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+// ── Helpers ──
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function gv(id) { return document.getElementById(id).value; }
+function sv(id, v) { document.getElementById(id).value = v || ''; }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
 
-function handleImgUpload(inp){const file=inp.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{currentImgData=ev.target.result;sv('fbi','');showImgPreview(currentImgData);};r.readAsDataURL(file);}
-function syncUrlPreview(){const url=gv('fbi');if(url){currentImgData='';showImgPreview(url);}else{currentImgData='';hideImgPreview();}}
-function showImgPreview(src){document.getElementById('img-preview').src=src;document.getElementById('img-preview-wrap').style.display='block';document.getElementById('upload-area').style.display='none';}
-function hideImgPreview(){document.getElementById('img-preview-wrap').style.display='none';document.getElementById('upload-area').style.display='block';document.getElementById('img-preview').src='';}
-function removeImg(){currentImgData='';sv('fbi','');hideImgPreview();}
-function getImgSrc(){return currentImgData||gv('fbi');}
+// ── Marken ──
+function updateMarkenList() {
+  const marken = [...new Set(P.map(p => p.marke).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de'));
+  // Filter dropdown
+  const curFilt = gv('f-marke');
+  const fSel = document.getElementById('f-marke');
+  fSel.innerHTML = '<option value="">Alle Marken</option>';
+  marken.forEach(m => {
+    const o = document.createElement('option');
+    o.value = m; o.textContent = m;
+    fSel.appendChild(o);
+  });
+  if (curFilt) fSel.value = curFilt;
+  // Form datalist
+  const dl = document.getElementById('marken-dl');
+  dl.innerHTML = '';
+  marken.forEach(m => {
+    const o = document.createElement('option');
+    o.value = m; dl.appendChild(o);
+  });
+}
 
-function updateMarken(){const marken=[...new Set(P.map(p=>p.marke).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"de"));const cur=gv("fm");const sel=document.getElementById("fm");sel.innerHTML="<option value="">Alle Marken</option>";marken.forEach(m=>{const o=document.createElement("option");o.value=m;o.textContent=m;sel.appendChild(o);});if(cur)sel.value=cur;const dl=document.getElementById("marken-list");if(dl){dl.innerHTML="";marken.forEach(m=>{const o=document.createElement("option");o.value=m;dl.appendChild(o);});}}
-function syncTypF(){const ok=gv('fok'),sel=document.getElementById('ft');sel.innerHTML='<option value="">Alle Typen</option>';(TM[ok]||[]).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});}
-function syncTypM(){const ok=gv('fok2'),sel=document.getElementById('ft2');sel.innerHTML='<option value="">—</option>';(TM[ok]||[]).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});sel.disabled=!ok;}
-function chkSub(){document.getElementById('bsub').disabled=!gv('fn').trim();}
-function resetF(){document.getElementById('fs').value='';['fok','ft','fzg','fst','fss','fm'].forEach(id=>sv(id,''));syncTypF();render();}
+// ── View toggle ──
+function setView(v) {
+  viewMode = v;
+  document.getElementById('btn-list').classList.toggle('active', v === 'list');
+  document.getElementById('btn-grid').classList.toggle('active', v === 'grid');
+  render();
+}
 
-function getFiltered(){
-  const s=gv('fs').toLowerCase(),ok=gv('fok'),typ=gv('ft'),zg=gv('fzg'),stf=gv('fst'),sts=gv('fss'),mk=gv('fm');
-  document.getElementById('btn-rst').style.display=(s||ok||typ||zg||stf||sts||mk)?'':'none';
-  document.getElementById('btn-export').style.display=P.length?'':'none';
-  let rows=P.filter(p=>{
-    if(s&&!p.name.toLowerCase().includes(s)&&!(p.marke||'').toLowerCase().includes(s)&&!(p.kollektion||'').toLowerCase().includes(s))return false;
-    if(ok&&p.oberkategorie!==ok)return false;
-    if(typ&&p.typ!==typ)return false;
-    if(zg&&p.zielgruppe!==zg)return false;
-    if(stf&&p.stoffart!==stf)return false;
-    if(sts&&p.status!==sts)return false;
-    if(mk&&p.marke!==mk)return false;
+// ── Lightbox ──
+function openLightbox(src) {
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+// ── Filters ──
+function syncFiltTyp() {
+  const ok = gv('f-ok');
+  const sel = document.getElementById('f-typ');
+  sel.innerHTML = '<option value="">Alle Typen</option>';
+  (TM[ok] || []).forEach(t => {
+    const o = document.createElement('option');
+    o.value = t; o.textContent = t; sel.appendChild(o);
+  });
+}
+function resetFilters() {
+  document.getElementById('f-q').value = '';
+  ['f-ok','f-typ','f-zg','f-stoff','f-status','f-marke'].forEach(id => sv(id,''));
+  syncFiltTyp(); render();
+}
+function getFiltered() {
+  const q = gv('f-q').toLowerCase();
+  const ok = gv('f-ok'), typ = gv('f-typ'), zg = gv('f-zg');
+  const stoff = gv('f-stoff'), status = gv('f-status'), marke = gv('f-marke');
+  const hasF = q||ok||typ||zg||stoff||status||marke;
+  document.getElementById('btn-reset').style.display = hasF ? '' : 'none';
+  document.getElementById('btn-export').style.display = P.length ? '' : 'none';
+  let rows = P.filter(p => {
+    if (q && !p.name.toLowerCase().includes(q) && !(p.marke||'').toLowerCase().includes(q) && !(p.kollektion||'').toLowerCase().includes(q)) return false;
+    if (ok && p.oberkategorie !== ok) return false;
+    if (typ && p.typ !== typ) return false;
+    if (zg && p.zielgruppe !== zg) return false;
+    if (stoff && p.stoffart !== stoff) return false;
+    if (status && p.status !== status) return false;
+    if (marke && p.marke !== marke) return false;
     return true;
   });
-  rows.sort((a,b)=>{const av=(a[sc]||'').toLowerCase(),bv=(b[sc]||'').toLowerCase();return sd==='asc'?av.localeCompare(bv,'de'):bv.localeCompare(av,'de');});
+  rows.sort((a,b) => {
+    const av = (a[sortCol]||'').toLowerCase(), bv = (b[sortCol]||'').toLowerCase();
+    return sortDir === 'asc' ? av.localeCompare(bv,'de') : bv.localeCompare(av,'de');
+  });
   return rows;
 }
 
-function render(){
-  const rows=getFiltered();
-  document.getElementById('count').textContent=rows.length+' von '+P.length+' Einträgen';
-  document.getElementById('stats').textContent=rows.length+' von '+P.length+' Einträgen';
-  const area=document.getElementById('area');
-  if(!P.length){area.innerHTML='<div class="empty"><div class="icon">✂️</div><p>Noch keine Schnittmuster</p><small>„+ Neu" klicken oder CSV importieren</small></div>';return;}
-  if(!rows.length){area.innerHTML='<div class="empty"><div class="icon">🔍</div><p>Keine Treffer</p><small>Filter anpassen oder zurücksetzen</small></div>';return;}
-  view==='list'?renderList(rows):renderGrid(rows);
+// ── Render ──
+function render() {
+  const rows = getFiltered();
+  const cnt = rows.length + ' von ' + P.length + ' Einträgen';
+  document.getElementById('hdr-count').textContent = cnt;
+  document.getElementById('stats').textContent = cnt;
+  const area = document.getElementById('area');
+  if (!P.length) {
+    area.innerHTML = '<div class="empty"><div class="ico">✂️</div><p>Noch keine Schnittmuster</p><small>„+ Neu" klicken oder CSV importieren</small></div>';
+    return;
+  }
+  if (!rows.length) {
+    area.innerHTML = '<div class="empty"><div class="ico">🔍</div><p>Keine Treffer</p><small>Filter anpassen oder zurücksetzen</small></div>';
+    return;
+  }
+  viewMode === 'list' ? renderList(rows) : renderGrid(rows);
 }
 
-function badgeSt(p){return p.status?`<span class="badge s-${SC[p.status]||''}">${e(p.status)}</span>`:'—';}
-function badgeZg(p){return p.zielgruppe?`<span class="badge zg-${ZGC[p.zielgruppe]||''}">${e(p.zielgruppe)}</span>`:'—';}
-function thumbHtml(p){const src=p.bild||'';return src?`<img class="thumb" src="${e(src)}" alt="" onerror="this.style.display='none'" onclick="openLightbox('${e(src)}')">`:`<div class="thumb-placeholder">✂</div>`;}
+function badgeSt(p) {
+  return p.status ? '<span class="badge s-' + (SC[p.status]||'') + '">' + esc(p.status) + '</span>' : '—';
+}
+function badgeZg(p) {
+  return p.zielgruppe ? '<span class="badge zg-' + (ZC[p.zielgruppe]||'') + '">' + esc(p.zielgruppe) + '</span>' : '—';
+}
+function thumbEl(p) {
+  if (p.bild) {
+    return '<img class="thumb" src="' + esc(p.bild) + '" alt="" onerror="this.style.display=\'none\'" onclick="openLightbox(\'' + esc(p.bild) + '\')">';
+  }
+  return '<div class="no-img">✂</div>';
+}
 
-function renderList(rows){
-  const si=k=>k===sc?(sd==='asc'?' ↑':' ↓'):'';
-  let h='<div class="table-wrap"><table><thead><tr>';
-  COLS.forEach(c=>{h+=`<th onclick="ts('${c.k}')">${c.l}${si(c.k)}</th>`;});
-  h+='<th></th></tr></thead><tbody>';
-  rows.forEach(p=>{
-    const lnk=p.link?`<a href="${e(p.link)}" target="_blank">↗</a>`:'';
-    h+=`<tr>
-      <td><div class="name-cell">${thumbHtml(p)}<span class="name-text">${e(p.name)}</span></div></td>
-      <td class="muted">${e(p.marke)||'—'}</td>
-      <td>${badgeZg(p)}</td>
-      <td>${e(p.oberkategorie)||'—'}</td>
-      <td class="muted">${e(p.typ)||'—'}</td>
-      <td>${e(p.stoffart)||'—'}</td>
-      <td class="muted">${e(p.groesse)||'—'}</td>
-      <td>${badgeSt(p)}</td>
-      <td><div class="act">${lnk}<button onclick="openEdit('${p.id}')" title="Bearbeiten" style="background:var(--bg);color:var(--orange);border-color:var(--border)">✎</button><button class="btn-danger" onclick="askDel('${p.id}')" title="Löschen" style="background:var(--bg)">✕</button></div></td>
-    </tr>`;
+function renderList(rows) {
+  const si = k => k === sortCol ? (sortDir === 'asc' ? ' ↑' : ' ↓') : '';
+  let h = '<div class="tbl-wrap"><table><thead><tr>';
+  TBL_COLS.forEach(c => { h += '<th onclick="sortBy(\'' + c.k + '\')">' + c.l + si(c.k) + '</th>'; });
+  h += '<th></th></tr></thead><tbody>';
+  rows.forEach(p => {
+    const lnk = p.link ? '<a href="' + esc(p.link) + '" target="_blank">↗</a>' : '';
+    h += '<tr>';
+    h += '<td><div class="nc">' + thumbEl(p) + '<span class="name-txt">' + esc(p.name) + '</span></div></td>';
+    h += '<td class="dim">' + esc(p.marke||'—') + '</td>';
+    h += '<td>' + badgeZg(p) + '</td>';
+    h += '<td>' + esc(p.oberkategorie||'—') + '</td>';
+    h += '<td class="dim">' + esc(p.typ||'—') + '</td>';
+    h += '<td>' + esc(p.stoffart||'—') + '</td>';
+    h += '<td class="dim">' + esc(p.groesse||'—') + '</td>';
+    h += '<td>' + badgeSt(p) + '</td>';
+    h += '<td><div class="row-act">' + lnk;
+    h += '<button onclick="openEdit(\'' + p.id + '\')" style="background:var(--bg);color:var(--orange);border-color:var(--border)">✎</button>';
+    h += '<button class="btn-danger" onclick="askDelete(\'' + p.id + '\')">✕</button>';
+    h += '</div></td></tr>';
   });
-  h+='</tbody></table></div>';
-  document.getElementById('area').innerHTML=h;
+  h += '</tbody></table></div>';
+  document.getElementById('area').innerHTML = h;
 }
 
-function renderGrid(rows){
-  let h='<div class="card-grid">';
-  rows.forEach(p=>{
-    const src=p.bild||'';
-    const imgHtml=src?`<img class="card-img" src="${e(src)}" alt="${e(p.name)}" onerror="this.outerHTML='<div class=\'card-img-placeholder\'>✂</div>'" onclick="openLightbox('${e(src)}')">`:`<div class="card-img-placeholder">✂</div>`;
-    const lnk=p.link?`<a href="${e(p.link)}" target="_blank">↗ Link</a>`:'';
-    h+=`<div class="card">
-      ${imgHtml}
-      <div class="card-body">
-        <div class="card-name" title="${e(p.name)}">${e(p.name)}</div>
-        <div class="card-meta">${e(p.marke)||'—'}${p.typ?' · '+e(p.typ):''}</div>
-        <div class="card-badges">${badgeZg(p)} ${badgeSt(p)}</div>
-        <div class="card-actions">${lnk}<button onclick="openEdit('${p.id}')">✎</button><button class="btn-danger" style="background:#fff" onclick="askDel('${p.id}')">✕</button></div>
-      </div>
-    </div>`;
+function renderGrid(rows) {
+  let h = '<div class="grid">';
+  rows.forEach(p => {
+    const imgH = p.bild
+      ? '<img class="card-img" src="' + esc(p.bild) + '" alt="' + esc(p.name) + '" onerror="this.outerHTML=\'<div class=\\\'card-noimg\\\'>✂</div>\'" onclick="openLightbox(\'' + esc(p.bild) + '\')">'
+      : '<div class="card-noimg">✂</div>';
+    const lnk = p.link ? '<a href="' + esc(p.link) + '" target="_blank">↗ Link</a>' : '';
+    h += '<div class="card">';
+    h += imgH;
+    h += '<div class="card-body">';
+    h += '<div class="card-name" title="' + esc(p.name) + '">' + esc(p.name) + '</div>';
+    h += '<div class="card-meta">' + esc(p.marke||'—') + (p.typ ? ' · ' + esc(p.typ) : '') + '</div>';
+    h += '<div class="card-badges">' + badgeZg(p) + ' ' + badgeSt(p) + '</div>';
+    h += '<div class="card-act">' + lnk;
+    h += '<button onclick="openEdit(\'' + p.id + '\')">✎</button>';
+    h += '<button class="btn-danger" style="background:#fff" onclick="askDelete(\'' + p.id + '\')">✕</button>';
+    h += '</div></div></div>';
   });
-  h+='</div>';
-  document.getElementById('area').innerHTML=h;
+  h += '</div>';
+  document.getElementById('area').innerHTML = h;
 }
 
-function ts(col){if(sc===col)sd=sd==='asc'?'desc':'asc';else{sc=col;sd='asc';}render();}
+function sortBy(col) {
+  if (sortCol === col) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  else { sortCol = col; sortDir = 'asc'; }
+  render();
+}
 
-function openAdd(){eid=null;currentImgData='';document.getElementById('mtitle').textContent='Neues Schnittmuster';document.getElementById('bsub').textContent='Hinzufügen';['fn','fkl','fgr','flk','fbi'].forEach(id=>sv(id,''));document.getElementById('fno').value='';['fok2','ft2','fst2','ffo','fss2','fzgf'].forEach(id=>sv(id,''));document.getElementById('fmk').value='';hideImgPreview();syncTypM();chkSub();document.getElementById('mform').classList.add('open');}
-function openEdit(id){const p=P.find(x=>x.id===id);if(!p)return;eid=id;currentImgData='';document.getElementById('mtitle').textContent='Schnittmuster bearbeiten';document.getElementById('bsub').textContent='Speichern';sv('fn',p.name);document.getElementById('fmk').value=p.marke||'';sv('fkl',p.kollektion);sv('fzgf',p.zielgruppe);sv('fok2',p.oberkategorie);syncTypM();sv('ft2',p.typ);sv('fst2',p.stoffart);sv('fgr',p.groesse);sv('ffo',p.format);sv('fss2',p.status);sv('flk',p.link);document.getElementById('fno').value=p.notizen||'';if(p.bild){if(p.bild.startsWith('data:')){currentImgData=p.bild;showImgPreview(p.bild);}else{sv('fbi',p.bild);showImgPreview(p.bild);}}else{sv('fbi','');hideImgPreview();}chkSub();document.getElementById('mform').classList.add('open');}
-function closeM(){['mform','mdel'].forEach(id=>document.getElementById(id).classList.remove('open'));did=null;}
-function subF(){if(!gv('fn').trim())return;const p={name:gv('fn').trim(),marke:document.getElementById('fmk').value.trim(),kollektion:gv('fkl').trim(),zielgruppe:gv('fzgf'),oberkategorie:gv('fok2'),typ:gv('ft2'),stoffart:gv('fst2'),groesse:gv('fgr').trim(),format:gv('ffo'),status:gv('fss2'),link:gv('flk').trim(),bild:getImgSrc(),notizen:document.getElementById('fno').value.trim()};if(eid){P=P.map(x=>x.id===eid?{...p,id:eid}:x);}else{P.push({...p,id:uid(),created:Date.now()});}save();updateMarken();closeM();render();toast(eid?'Gespeichert ✓':'Hinzugefügt ✓');}
-function askDel(id){did=id;document.getElementById('mdel').classList.add('open');}
-function doDel(){if(!did)return;P=P.filter(p=>p.id!==did);save();closeM();render();toast('Gelöscht');}
+// ── Form ──
+function syncFormTyp() {
+  const ok = gv('f-oberkat');
+  const sel = document.getElementById('f-typ2');
+  sel.innerHTML = '<option value="">—</option>';
+  (TM[ok] || []).forEach(t => {
+    const o = document.createElement('option');
+    o.value = t; o.textContent = t; sel.appendChild(o);
+  });
+  sel.disabled = !ok;
+}
+function checkSubmit() {
+  document.getElementById('btn-submit').disabled = !gv('f-name').trim();
+}
+function clearForm() {
+  ['f-name','f-marke','f-koll','f-groesse','f-link','f-bildurl'].forEach(id => sv(id,''));
+  document.getElementById('f-notizen').value = '';
+  ['f-zielgruppe','f-oberkat','f-typ2','f-stoff2','f-format','f-status2'].forEach(id => sv(id,''));
+  syncFormTyp();
+  imgData = '';
+  hideImgPrev();
+  checkSubmit();
+}
+function openAdd() {
+  editId = null;
+  clearForm();
+  document.getElementById('form-title').textContent = 'Neues Schnittmuster';
+  document.getElementById('btn-submit').textContent = 'Hinzufügen';
+  document.getElementById('modal-form').classList.add('open');
+}
+function openEdit(id) {
+  const p = P.find(x => x.id === id);
+  if (!p) return;
+  editId = id;
+  clearForm();
+  sv('f-name', p.name); sv('f-marke', p.marke); sv('f-koll', p.kollektion);
+  sv('f-zielgruppe', p.zielgruppe); sv('f-oberkat', p.oberkategorie);
+  syncFormTyp(); sv('f-typ2', p.typ);
+  sv('f-stoff2', p.stoffart); sv('f-groesse', p.groesse);
+  sv('f-format', p.format); sv('f-status2', p.status);
+  sv('f-link', p.link);
+  document.getElementById('f-notizen').value = p.notizen || '';
+  if (p.bild) {
+    if (p.bild.startsWith('data:')) { imgData = p.bild; showImgPrev(p.bild); }
+    else { sv('f-bildurl', p.bild); showImgPrev(p.bild); }
+  }
+  checkSubmit();
+  document.getElementById('form-title').textContent = 'Schnittmuster bearbeiten';
+  document.getElementById('btn-submit').textContent = 'Speichern';
+  document.getElementById('modal-form').classList.add('open');
+}
+function submitForm() {
+  const name = gv('f-name').trim();
+  if (!name) return;
+  const bild = imgData || gv('f-bildurl').trim();
+  const p = {
+    name, marke: gv('f-marke').trim(), kollektion: gv('f-koll').trim(),
+    zielgruppe: gv('f-zielgruppe'), oberkategorie: gv('f-oberkat'), typ: gv('f-typ2'),
+    stoffart: gv('f-stoff2'), groesse: gv('f-groesse').trim(),
+    format: gv('f-format'), status: gv('f-status2'),
+    link: gv('f-link').trim(), bild,
+    notizen: document.getElementById('f-notizen').value.trim()
+  };
+  if (editId) {
+    P = P.map(x => x.id === editId ? {...p, id: editId} : x);
+  } else {
+    P.push({...p, id: uid(), created: Date.now()});
+  }
+  saveData(); updateMarkenList(); closeModals(); render();
+  showToast(editId ? 'Gespeichert ✓' : 'Hinzugefügt ✓');
+}
 
-function exportCSV(){const rows=P.map(p=>KEYS.map(k=>{let v=p[k]||'';if(k==='bild'&&v.startsWith('data:'))v='[Bild hochgeladen]';return`"${v.replace(/"/g,'""')}"`;}).join(','));const csv=[HDRS.join(','),...rows].join('\n');const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='schnittmuster.csv';a.click();}
+// ── Delete ──
+function askDelete(id) { deleteId = id; document.getElementById('modal-del').classList.add('open'); }
+function confirmDelete() {
+  if (!deleteId) return;
+  P = P.filter(p => p.id !== deleteId);
+  saveData(); updateMarkenList(); closeModals(); render();
+  showToast('Gelöscht');
+}
 
-function parseCSV(text){const lines=text.trim().split('\n');if(lines.length<2)return[];const hdrs=parseLine(lines[0]).map(h=>h.trim());const idxMap={};HDRS.forEach((h,i)=>{const idx=hdrs.findIndex(x=>x.toLowerCase()===h.toLowerCase());if(idx>=0)idxMap[i]=idx;});const rows=[];for(let i=1;i<lines.length;i++){const vals=parseLine(lines[i]);const obj={};KEYS.forEach((k,ki)=>{obj[k]=idxMap[ki]!==undefined?(vals[idxMap[ki]]||'').trim():'';});if(obj.name)rows.push(obj);}return rows;}
-function parseLine(line){const res=[];let cur='',inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}else if(c===','&&!inQ){res.push(cur);cur='';}else cur+=c;}res.push(cur);return res;}
-function openImport(){importRows=[];document.getElementById('import-preview').style.display='none';document.getElementById('btn-do-import').disabled=true;sv('csv-input','');document.getElementById('mimport').classList.add('open');}
-function closeImport(){document.getElementById('mimport').classList.remove('open');}
-function dragOver(e){e.preventDefault();document.getElementById('drop-zone').classList.add('drag');}
-function dragLeave(){document.getElementById('drop-zone').classList.remove('drag');}
-function dropFile(e){e.preventDefault();dragLeave();const f=e.dataTransfer.files[0];if(f)readFile(f);}
-function fileSelected(inp){if(inp.files[0])readFile(inp.files[0]);}
-function readFile(file){const r=new FileReader();r.onload=ev=>{importRows=parseCSV(ev.target.result);const existing=new Set(P.map(p=>p.name.toLowerCase()));const neu=importRows.filter(p=>!existing.has(p.name.toLowerCase()));const skip=importRows.length-neu.length;const prev=document.getElementById('import-preview');prev.style.display='block';prev.innerHTML=`<div class="import-info"><strong>${importRows.length} Einträge gefunden</strong>${neu.length} neu · ${skip} bereits vorhanden (übersprungen)</div>`;document.getElementById('btn-do-import').disabled=neu.length===0;importRows=neu;};r.readAsText(file,'UTF-8');}
-function doImport(){if(!importRows.length)return;importRows.forEach(p=>P.push({...p,id:uid(),created:Date.now()}));save();updateMarken();closeImport();render();toast(`${importRows.length} Schnittmuster importiert ✓`);importRows=[];}
+// ── Modals ──
+function closeModals() {
+  ['modal-form','modal-del','modal-import'].forEach(id => document.getElementById(id).classList.remove('open'));
+  deleteId = null;
+}
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeM();closeImport();closeLightbox();}});
-load();
+// ── Image ──
+function handleImg(inp) {
+  const file = inp.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => { imgData = ev.target.result; sv('f-bildurl',''); showImgPrev(imgData); };
+  r.readAsDataURL(file);
+}
+function syncUrlPrev() {
+  const url = gv('f-bildurl');
+  if (url) { imgData = ''; showImgPrev(url); }
+  else { imgData = ''; hideImgPrev(); }
+}
+function showImgPrev(src) {
+  document.getElementById('img-prev').src = src;
+  document.getElementById('img-prev-wrap').style.display = 'block';
+  document.getElementById('img-drop').style.display = 'none';
+}
+function hideImgPrev() {
+  document.getElementById('img-prev-wrap').style.display = 'none';
+  document.getElementById('img-drop').style.display = 'block';
+  document.getElementById('img-prev').src = '';
+}
+function removeImg() { imgData = ''; sv('f-bildurl',''); hideImgPrev(); }
+
+// ── Export ──
+function doExport() {
+  const rows = P.map(p => CSV_KEYS.map(k => {
+    let v = p[k] || '';
+    if (k === 'bild' && v.startsWith('data:')) v = '[Bild hochgeladen]';
+    return '"' + v.replace(/"/g,'""') + '"';
+  }).join(','));
+  const csv = [CSV_HDRS.join(','), ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csv);
+  a.download = 'schnittmuster.csv'; a.click();
+}
+
+// ── Import ──
+function openImport() {
+  pendingImport = [];
+  document.getElementById('imp-preview').style.display = 'none';
+  document.getElementById('btn-import-do').disabled = true;
+  document.getElementById('imp-file').value = '';
+  document.getElementById('modal-import').classList.add('open');
+}
+function handleImportDrop(e) {
+  const f = e.dataTransfer.files[0]; if (f) readCSV(f);
+}
+function handleImportFile(inp) {
+  if (inp.files[0]) readCSV(inp.files[0]);
+}
+function readCSV(file) {
+  const r = new FileReader();
+  r.onload = ev => {
+    const all = parseCSV(ev.target.result);
+    const existing = new Set(P.map(p => p.name.toLowerCase()));
+    const neu = all.filter(p => !existing.has(p.name.toLowerCase()));
+    const skip = all.length - neu.length;
+    const prev = document.getElementById('imp-preview');
+    prev.style.display = 'block';
+    prev.innerHTML = '<div class="imp-info"><strong>' + all.length + ' Einträge gefunden</strong>' + neu.length + ' neu · ' + skip + ' bereits vorhanden (übersprungen)</div>';
+    document.getElementById('btn-import-do').disabled = neu.length === 0;
+    pendingImport = neu;
+  };
+  r.readAsText(file, 'UTF-8');
+}
+function doImport() {
+  if (!pendingImport.length) return;
+  pendingImport.forEach(p => P.push({...p, id: uid(), created: Date.now()}));
+  saveData(); updateMarkenList(); closeModals(); render();
+  showToast(pendingImport.length + ' Schnittmuster importiert ✓');
+  pendingImport = [];
+}
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  const hdrs = parseLine(lines[0]).map(h => h.trim());
+  const idxMap = {};
+  CSV_HDRS.forEach((h, i) => {
+    const idx = hdrs.findIndex(x => x.toLowerCase() === h.toLowerCase());
+    if (idx >= 0) idxMap[i] = idx;
+  });
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const vals = parseLine(lines[i]);
+    const obj = {};
+    CSV_KEYS.forEach((k, ki) => {
+      obj[k] = idxMap[ki] !== undefined ? (vals[idxMap[ki]] || '').trim() : '';
+    });
+    if (obj.name) rows.push(obj);
+  }
+  return rows;
+}
+function parseLine(line) {
+  const res = []; let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { if (inQ && line[i+1] === '"') { cur += '"'; i++; } else inQ = !inQ; }
+    else if (c === ',' && !inQ) { res.push(cur); cur = ''; }
+    else cur += c;
+  }
+  res.push(cur);
+  return res;
+}
+
+// ── Keyboard ──
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModals(); closeLightbox(); }
+});
+
+loadData();
 </script>
 </body>
 </html>
