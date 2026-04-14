@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Schnittmuster">
+<title>Schnittmuster</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 16px; background: #fafaf8; color: #1a1a1a; font-size: 14px; }
+  h1 { font-size: 22px; font-weight: 500; margin: 0 0 4px; }
+  h2 { font-size: 18px; font-weight: 500; margin: 0 0 1.25rem; }
+  input, select, textarea, button { font-family: inherit; font-size: 14px; }
+  input, select, textarea { width: 100%; padding: 7px 10px; border: 1px solid #ddd; border-radius: 8px; background: #fff; color: #1a1a1a; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.12); }
+  textarea { resize: vertical; }
+  button { cursor: pointer; padding: 7px 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; color: #1a1a1a; }
+  button:hover { background: #f5f5f3; }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary { background: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
+  .btn-primary:hover { background: #DBEAFE; }
+  .btn-danger { color: #991B1B; border-color: #FECACA; }
+  .btn-danger:hover { background: #FEF2F2; }
+  .btn-sm { font-size: 13px; padding: 5px 10px; }
+  .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid #eee; }
+  .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .meta { font-size: 13px; color: #666; margin: 0; }
+  .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1rem; }
+  .filter-bar input { flex: 1; min-width: 140px; }
+  .filter-bar select { width: auto; min-width: 120px; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; padding: 8px 10px; font-weight: 500; font-size: 13px; color: #666; cursor: pointer; white-space: nowrap; user-select: none; border-bottom: 1px solid #eee; }
+  th:hover { color: #1a1a1a; }
+  td { padding: 8px 10px; border-bottom: 1px solid #f5f5f3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
+  tr:hover td { background: #f9f9f7; }
+  .badge { font-size: 12px; padding: 2px 8px; border-radius: 6px; white-space: nowrap; display: inline-block; }
+  .s-vorhanden { background: #E1F5EE; color: #0F6E56; }
+  .s-genaht    { background: #EAF3DE; color: #3B6D11; }
+  .s-planung   { background: #FAEEDA; color: #854F0B; }
+  .s-wunsch    { background: #FBEAF0; color: #993556; }
+  .empty { text-align: center; padding: 3rem 1rem; color: #999; border: 1px dashed #ddd; border-radius: 12px; }
+  .table-wrap { overflow-x: auto; }
+  .act { display: flex; gap: 4px; align-items: center; }
+  .act a, .act button { font-size: 12px; padding: 2px 6px; }
+  .act a { text-decoration: none; border: 1px solid #ddd; border-radius: 4px; background: #f9f9f7; color: #666; }
+  .thumb { width: 26px; height: 26px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+  .nc { display: flex; align-items: center; gap: 8px; }
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 100; align-items: flex-start; justify-content: center; padding: 2rem 1rem; overflow-y: auto; }
+  .overlay.open { display: flex; }
+  .modal { background: #fff; border-radius: 12px; border: 1px solid #eee; padding: 1.5rem; width: min(540px, 100%); }
+  .fg { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .fw { grid-column: 1 / -1; }
+  .lbl { font-size: 13px; color: #666; display: block; margin-bottom: 4px; }
+  .fa { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
+  .cbox { background: #fff; border-radius: 12px; border: 1px solid #eee; padding: 1.5rem; width: min(380px,100%); }
+  .cbox h2 { margin-bottom: 0.75rem; }
+  .cbox p { color: #666; font-size: 13px; margin: 0 0 1rem; line-height: 1.5; }
+  .ca { display: flex; gap: 8px; justify-content: flex-end; }
+  .import-drop { border: 1px dashed #ccc; border-radius: 8px; padding: 1.5rem; text-align: center; color: #999; cursor: pointer; margin-bottom: 1rem; transition: border-color 0.15s; }
+  .import-drop:hover, .import-drop.drag { border-color: #2563eb; color: #1D4ED8; background: #EFF6FF; }
+  .import-preview { background: #f9f9f7; border-radius: 8px; padding: 0.75rem 1rem; font-size: 13px; color: #444; margin-bottom: 1rem; border: 1px solid #eee; }
+  .import-preview strong { display: block; margin-bottom: 4px; color: #1a1a1a; }
+  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #fff; padding: 10px 18px; border-radius: 8px; font-size: 13px; z-index: 200; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  @media (max-width: 520px) { .fg { grid-template-columns: 1fr; } .fw { grid-column: 1; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Schnittmuster</h1>
+    <p class="meta" id="count">0 Einträge</p>
+  </div>
+  <div class="header-actions">
+    <button class="btn-sm" id="btn-import" onclick="openImport()">↑ Import</button>
+    <button class="btn-sm" id="btn-export" onclick="exportCSV()" style="display:none">↓ Export</button>
+    <button class="btn-primary" onclick="openAdd()">+ Neu</button>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <input type="search" id="fs" placeholder="Suche …" oninput="render()">
+  <select id="fok" onchange="syncTypF();render()">
+    <option value="">Alle Kategorien</option>
+    <option>Oberteil</option><option>Unterteil</option><option>Kleid</option>
+    <option>Einteiler</option><option>Lingerie</option><option>Accessoires</option>
+    <option>Taschen</option><option>Sonstiges</option>
+  </select>
+  <select id="ft" onchange="render()"><option value="">Alle Typen</option></select>
+  <select id="fst" onchange="render()">
+    <option value="">Alle Stoffe</option>
+    <option>Jersey</option><option>Webware</option><option>Strick</option><option>Sonstiges</option>
+  </select>
+  <select id="fss" onchange="render()">
+    <option value="">Alle Status</option>
+    <option>Vorhanden</option><option>Genäht</option><option>In Planung</option><option>Wunschliste</option>
+  </select>
+  <select id="fm" onchange="render()">
+    <option value="">Alle Marken</option>
+    <option>Burda</option><option>Schnittreif</option><option>Makerist</option>
+    <option>Ottobre</option><option>Pattydoo</option><option>Eigen</option><option>Sonstiges</option>
+  </select>
+  <button id="btn-rst" onclick="resetF()" style="display:none;font-size:13px">✕ Reset</button>
+</div>
+
+<div id="area"></div>
+
+<!-- Form modal -->
+<div class="overlay" id="mform">
+  <div class="modal">
+    <h2 id="mtitle">Neues Schnittmuster</h2>
+    <div class="fg">
+      <div class="fw"><label class="lbl">Name *</label><input id="fn" placeholder="z. B. Nina Bluse" oninput="chkSub()"></div>
+      <div><label class="lbl">Marke</label>
+        <select id="fmk"><option value="">—</option>
+          <option>Burda</option><option>Schnittreif</option><option>Makerist</option>
+          <option>Ottobre</option><option>Pattydoo</option><option>Eigen</option><option>Sonstiges</option>
+        </select></div>
+      <div><label class="lbl">Kollektion</label><input id="fkl" placeholder="z. B. Frühjahr 2024"></div>
+      <div><label class="lbl">Oberkategorie</label>
+        <select id="fok2" onchange="syncTypM()">
+          <option value="">—</option>
+          <option>Oberteil</option><option>Unterteil</option><option>Kleid</option>
+          <option>Einteiler</option><option>Lingerie</option><option>Accessoires</option>
+          <option>Taschen</option><option>Sonstiges</option>
+        </select></div>
+      <div><label class="lbl">Typ</label><select id="ft2"><option value="">—</option></select></div>
+      <div><label class="lbl">Stoffart</label>
+        <select id="fst2"><option value="">—</option>
+          <option>Jersey</option><option>Webware</option><option>Strick</option><option>Sonstiges</option>
+        </select></div>
+      <div><label class="lbl">Größe</label><input id="fgr" placeholder="z. B. 36–44"></div>
+      <div><label class="lbl">Format</label>
+        <select id="ffo"><option value="">—</option>
+          <option>PDF</option><option>Papierschnitt</option><option>Magazin</option>
+        </select></div>
+      <div><label class="lbl">Status</label>
+        <select id="fss2"><option value="">—</option>
+          <option>Vorhanden</option><option>Genäht</option><option>In Planung</option><option>Wunschliste</option>
+        </select></div>
+      <div class="fw"><label class="lbl">Datei / Link</label><input id="flk" type="url" placeholder="https://…"></div>
+      <div class="fw"><label class="lbl">Vorschaubild (URL)</label><input id="fbi" type="url" placeholder="https://…"></div>
+      <div class="fw"><label class="lbl">Notizen</label><textarea id="fno" rows="3"></textarea></div>
+    </div>
+    <div class="fa">
+      <button onclick="closeM()">Abbrechen</button>
+      <button class="btn-primary" id="bsub" onclick="subF()" disabled>Hinzufügen</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirm -->
+<div class="overlay" id="mdel">
+  <div class="cbox">
+    <h2>Schnittmuster löschen?</h2>
+    <p>Diese Aktion kann nicht rückgängig gemacht werden.</p>
+    <div class="ca">
+      <button onclick="closeM()">Abbrechen</button>
+      <button class="btn-danger" onclick="doDel()">Löschen</button>
+    </div>
+  </div>
+</div>
+
+<!-- Import modal -->
+<div class="overlay" id="mimport">
+  <div class="cbox" style="width:min(480px,100%)">
+    <h2>CSV importieren</h2>
+    <p>Importiere eine CSV-Datei im Format des Schnittmuster-Exports. Bestehende Einträge bleiben erhalten — Duplikate werden anhand des Namens übersprungen.</p>
+    <div class="import-drop" id="drop-zone" onclick="document.getElementById('csv-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
+      CSV hierher ziehen oder klicken zum Auswählen
+      <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="fileSelected(this)">
+    </div>
+    <div id="import-preview" style="display:none"></div>
+    <div class="ca">
+      <button onclick="closeImport()">Abbrechen</button>
+      <button class="btn-primary" id="btn-do-import" onclick="doImport()" disabled>Importieren</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const TM = {
+  Oberteil:['Shirt','Bluse','Top','Sweatshirt','Jacke','Mantel','Weste'],
+  Unterteil:['Rock','Hose','Shorts','Leggings'],
+  Kleid:['Kleid'],
+  Einteiler:['Jumpsuit','Overall'],
+  Lingerie:['BH','Slip','Unterwäsche','Badeanzug','Bikini','Schlafanzug','Nachthemd'],
+  Accessoires:['Mütze','Gürtel','Handschuhe'],
+  Taschen:['Shopper','Rucksack','Clutch','Kosmetiktasche'],
+  Sonstiges:['Deko','Kissen','Spielzeug','Sonstiges'],
+};
+const SC = {'Vorhanden':'vorhanden','Genäht':'genaht','In Planung':'planung','Wunschliste':'wunsch'};
+const COLS = [{k:'name',l:'Name'},{k:'marke',l:'Marke'},{k:'oberkategorie',l:'Kategorie'},{k:'typ',l:'Typ'},{k:'stoffart',l:'Stoff'},{k:'groesse',l:'Größe'},{k:'format',l:'Format'},{k:'status',l:'Status'}];
+const HDRS = ['Name','Marke','Kollektion','Oberkategorie','Typ','Stoffart','Größe','Format','Status','Link','Notizen'];
+const KEYS = ['name','marke','kollektion','oberkategorie','typ','stoffart','groesse','format','status','link','notizen'];
+let P=[], eid=null, did=null, sc='name', sd='asc', importRows=[];
+const SK='sm-data-v1';
+
+function load(){try{const d=localStorage.getItem(SK);if(d)P=JSON.parse(d);}catch(e){}render();}
+function save(){try{localStorage.setItem(SK,JSON.stringify(P));}catch(e){}}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
+function e(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function gv(id){return document.getElementById(id).value;}
+function sv(id,v){document.getElementById(id).value=v||'';}
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+function syncTypF(){
+  const ok=gv('fok'),sel=document.getElementById('ft');
+  sel.innerHTML='<option value="">Alle Typen</option>';
+  (TM[ok]||[]).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});
+}
+function syncTypM(){
+  const ok=gv('fok2'),sel=document.getElementById('ft2');
+  sel.innerHTML='<option value="">—</option>';
+  (TM[ok]||[]).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});
+  sel.disabled=!ok;
+}
+function chkSub(){document.getElementById('bsub').disabled=!gv('fn').trim();}
+
+function resetF(){
+  document.getElementById('fs').value='';
+  ['fok','ft','fst','fss','fm'].forEach(id=>sv(id,''));
+  syncTypF();render();
+}
+
+function render(){
+  const s=gv('fs').toLowerCase(),ok=gv('fok'),typ=gv('ft'),stf=gv('fst'),sts=gv('fss'),mk=gv('fm');
+  const hasF=s||ok||typ||stf||sts||mk;
+  document.getElementById('btn-rst').style.display=hasF?'':'none';
+  document.getElementById('btn-export').style.display=P.length?'':'none';
+
+  let rows=P.filter(p=>{
+    if(s&&!p.name.toLowerCase().includes(s)&&!(p.marke||'').toLowerCase().includes(s)&&!(p.kollektion||'').toLowerCase().includes(s))return false;
+    if(ok&&p.oberkategorie!==ok)return false;
+    if(typ&&p.typ!==typ)return false;
+    if(stf&&p.stoffart!==stf)return false;
+    if(sts&&p.status!==sts)return false;
+    if(mk&&p.marke!==mk)return false;
+    return true;
+  });
+  rows.sort((a,b)=>{const av=(a[sc]||'').toLowerCase(),bv=(b[sc]||'').toLowerCase();return sd==='asc'?av.localeCompare(bv,'de'):bv.localeCompare(av,'de');});
+
+  document.getElementById('count').textContent=rows.length+' von '+P.length+' Einträgen';
+  const area=document.getElementById('area');
+
+  if(!P.length){area.innerHTML='<div class="empty"><p style="margin:0 0 0.5rem;font-size:15px">Noch keine Schnittmuster</p><p style="margin:0;font-size:13px">„+ Neu" klicken oder CSV importieren um loszulegen</p></div>';return;}
+  if(!rows.length){area.innerHTML='<div class="empty">Keine Treffer für diese Filter</div>';return;}
+
+  const si=k=>k===sc?(sd==='asc'?' ↑':' ↓'):'';
+  let h='<div class="table-wrap"><table><thead><tr>';
+  COLS.forEach(c=>{h+=`<th onclick="ts('${c.k}')">${c.l}${si(c.k)}</th>`;});
+  h+='<th></th></tr></thead><tbody>';
+  rows.forEach(p=>{
+    const badge=p.status?`<span class="badge s-${SC[p.status]||''}">${e(p.status)}</span>`:'—';
+    const thumb=p.bild?`<img class="thumb" src="${e(p.bild)}" alt="" onerror="this.style.display='none'">`:'';
+    const lnk=p.link?`<a href="${e(p.link)}" target="_blank">↗</a>`:'';
+    h+=`<tr>
+      <td style="max-width:180px"><div class="nc">${thumb}<span style="overflow:hidden;text-overflow:ellipsis">${e(p.name)||'—'}</span></div></td>
+      <td style="color:#666;max-width:90px">${e(p.marke)||'—'}</td>
+      <td style="max-width:100px">${e(p.oberkategorie)||'—'}</td>
+      <td style="color:#666;max-width:90px">${e(p.typ)||'—'}</td>
+      <td style="max-width:80px">${e(p.stoffart)||'—'}</td>
+      <td style="color:#666;max-width:65px">${e(p.groesse)||'—'}</td>
+      <td style="max-width:90px">${e(p.format)||'—'}</td>
+      <td>${badge}</td>
+      <td><div class="act">${lnk}<button onclick="openEdit('${p.id}')">✎</button><button class="btn-danger" onclick="askDel('${p.id}')">✕</button></div></td>
+    </tr>`;
+  });
+  h+='</tbody></table></div>';
+  area.innerHTML=h;
+}
+
+function ts(col){if(sc===col)sd=sd==='asc'?'desc':'asc';else{sc=col;sd='asc';}render();}
+
+function openAdd(){
+  eid=null;
+  document.getElementById('mtitle').textContent='Neues Schnittmuster';
+  document.getElementById('bsub').textContent='Hinzufügen';
+  ['fn','fkl','fgr','flk','fbi'].forEach(id=>sv(id,''));
+  document.getElementById('fno').value='';
+  ['fmk','fok2','ft2','fst2','ffo','fss2'].forEach(id=>sv(id,''));
+  syncTypM();chkSub();
+  document.getElementById('mform').classList.add('open');
+}
+
+function openEdit(id){
+  const p=P.find(x=>x.id===id);if(!p)return;
+  eid=id;
+  document.getElementById('mtitle').textContent='Schnittmuster bearbeiten';
+  document.getElementById('bsub').textContent='Speichern';
+  sv('fn',p.name);sv('fmk',p.marke);sv('fkl',p.kollektion);
+  sv('fok2',p.oberkategorie);syncTypM();sv('ft2',p.typ);
+  sv('fst2',p.stoffart);sv('fgr',p.groesse);sv('ffo',p.format);
+  sv('fss2',p.status);sv('flk',p.link);sv('fbi',p.bild);
+  document.getElementById('fno').value=p.notizen||'';
+  chkSub();
+  document.getElementById('mform').classList.add('open');
+}
+
+function closeM(){
+  ['mform','mdel'].forEach(id=>document.getElementById(id).classList.remove('open'));
+  did=null;
+}
+
+function subF(){
+  if(!gv('fn').trim())return;
+  const p={name:gv('fn').trim(),marke:gv('fmk'),kollektion:gv('fkl').trim(),oberkategorie:gv('fok2'),typ:gv('ft2'),stoffart:gv('fst2'),groesse:gv('fgr').trim(),format:gv('ffo'),status:gv('fss2'),link:gv('flk').trim(),bild:gv('fbi').trim(),notizen:document.getElementById('fno').value.trim()};
+  if(eid){P=P.map(x=>x.id===eid?{...p,id:eid}:x);}
+  else{P.push({...p,id:uid(),created:Date.now()});}
+  save();closeM();render();
+  toast(eid?'Gespeichert':'Hinzugefügt');
+}
+
+function askDel(id){did=id;document.getElementById('mdel').classList.add('open');}
+function doDel(){if(!did)return;P=P.filter(p=>p.id!==did);save();closeM();render();toast('Gelöscht');}
+
+// CSV Export
+function exportCSV(){
+  const rows=P.map(p=>KEYS.map(k=>`"${(p[k]||'').replace(/"/g,'""')}"`).join(','));
+  const csv=[HDRS.join(','),...rows].join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='schnittmuster.csv';a.click();
+}
+
+// CSV Import
+function parseCSV(text){
+  const lines=text.trim().split('\n');
+  if(lines.length<2)return[];
+  const hdrs=parseLine(lines[0]).map(h=>h.trim());
+  const idxMap={};
+  HDRS.forEach((h,i)=>{const idx=hdrs.findIndex(x=>x.toLowerCase()===h.toLowerCase());if(idx>=0)idxMap[i]=idx;});
+  const rows=[];
+  for(let i=1;i<lines.length;i++){
+    const vals=parseLine(lines[i]);
+    const obj={};
+    KEYS.forEach((k,ki)=>{obj[k]=idxMap[ki]!==undefined?(vals[idxMap[ki]]||'').trim():'';});
+    if(obj.name)rows.push(obj);
+  }
+  return rows;
+}
+
+function parseLine(line){
+  const res=[];let cur='',inQ=false;
+  for(let i=0;i<line.length;i++){
+    const c=line[i];
+    if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}
+    else if(c===','&&!inQ){res.push(cur);cur='';}
+    else cur+=c;
+  }
+  res.push(cur);
+  return res;
+}
+
+function openImport(){importRows=[];document.getElementById('import-preview').style.display='none';document.getElementById('btn-do-import').disabled=true;sv('csv-input','');document.getElementById('mimport').classList.add('open');}
+function closeImport(){document.getElementById('mimport').classList.remove('open');}
+function dragOver(e){e.preventDefault();document.getElementById('drop-zone').classList.add('drag');}
+function dragLeave(){document.getElementById('drop-zone').classList.remove('drag');}
+function dropFile(e){e.preventDefault();dragLeave();const f=e.dataTransfer.files[0];if(f)readFile(f);}
+function fileSelected(inp){if(inp.files[0])readFile(inp.files[0]);}
+
+function readFile(file){
+  const r=new FileReader();
+  r.onload=ev=>{
+    importRows=parseCSV(ev.target.result);
+    const existing=new Set(P.map(p=>p.name.toLowerCase()));
+    const neu=importRows.filter(p=>!existing.has(p.name.toLowerCase()));
+    const skip=importRows.length-neu.length;
+    const prev=document.getElementById('import-preview');
+    prev.style.display='block';
+    prev.innerHTML=`<div class="import-preview"><strong>${importRows.length} Einträge gefunden</strong>${neu.length} neu · ${skip} bereits vorhanden (werden übersprungen)</div>`;
+    document.getElementById('btn-do-import').disabled=neu.length===0;
+    importRows=neu;
+  };
+  r.readAsText(file,'UTF-8');
+}
+
+function doImport(){
+  if(!importRows.length)return;
+  importRows.forEach(p=>P.push({...p,id:uid(),created:Date.now()}));
+  save();closeImport();render();
+  toast(`${importRows.length} Schnittmuster importiert`);
+  importRows=[];
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeM();closeImport();}});
+load();
+</script>
+</body>
+</html>
