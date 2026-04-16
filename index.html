@@ -9,7 +9,6 @@
 <meta name="apple-mobile-web-app-title" content="Schnittmuster">
 <title>Schnittmuster</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -154,17 +153,7 @@ textarea.fi { resize: vertical; }
 .lb.open { display: flex; }
 .lb img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: var(--rl); }
 
-/* ── PDF Analyze ── */
-.pdf-drop { border: 2px dashed var(--border2); border-radius: var(--r); padding: 2rem 1rem; text-align: center; cursor: pointer; color: var(--text3); font-size: 13px; font-weight: 700; transition: all .15s; position: relative; background: var(--bg); }
-.pdf-drop:hover, .pdf-drop.drag { border-color: var(--orange); color: var(--orange); background: #fff5ee; }
-.pdf-drop input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
-.pdf-preview-wrap { display: none; text-align: center; margin: 1rem 0; }
-.pdf-preview-wrap img { max-width: 100%; max-height: 260px; border-radius: var(--r); border: 2px solid var(--border); box-shadow: 0 4px 16px rgba(255,107,43,.1); }
-.ai-status { background: linear-gradient(135deg,#fff5ee,#fff0e8); border: 2px solid var(--border); border-radius: var(--r); padding: .75rem 1rem; font-size: 13px; font-weight: 700; color: var(--text2); display: none; text-align: center; margin-top: .75rem; }
-.ai-status.active { display: block; }
-.ai-result { background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: var(--r); padding: .75rem 1rem; font-size: 12px; font-weight: 700; color: #065f46; display: none; margin-top: .75rem; }
-.ai-result.active { display: block; }
-
+/* ── Import ── */
 .imp-drop { border: 2px dashed var(--border2); border-radius: var(--r); padding: 1.5rem; text-align: center; cursor: pointer; color: var(--text3); font-size: 13px; font-weight: 700; margin-bottom: 1rem; transition: all .15s; }
 .imp-drop:hover, .imp-drop.drag { border-color: var(--orange); color: var(--orange); background: #fff5ee; }
 .imp-info { background: #fff5ee; border-radius: var(--r); padding: .75rem 1rem; font-size: 13px; font-weight: 700; color: var(--text2); margin-bottom: 1rem; border: 2px solid var(--border); }
@@ -194,7 +183,6 @@ textarea.fi { resize: vertical; }
       <button id="btn-list" class="active" onclick="setView('list')" title="Liste">☰</button>
       <button id="btn-grid" onclick="setView('grid')" title="Galerie">⊞</button>
     </div>
-    <button onclick="openPdfAnalyze()">📄 PDF</button>
     <button onclick="openImport()">↑ Import</button>
     <button id="btn-export" onclick="doExport()" style="display:none">↓ Export</button>
     <button class="btn-white" onclick="openAdd()">+ Neu</button>
@@ -379,32 +367,6 @@ textarea.fi { resize: vertical; }
       <div class="sm-foot">
         <button class="btn-outline" onclick="closeModals()">Abbrechen</button>
         <button class="btn-accent" id="btn-import-do" onclick="doImport()" disabled>Importieren</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PDF ANALYZE MODAL -->
-<div class="overlay" id="modal-pdf">
-  <div class="sm" style="width:min(500px,100%)">
-    <div class="sm-hdr" style="background:var(--grad)"><h2>📄 PDF analysieren</h2></div>
-    <div class="sm-body">
-      <p>Seite 1 wird als Vorschaubild übernommen — Claude befüllt das Formular automatisch.</p>
-      <div class="pdf-drop" id="pdf-drop"
-        ondragover="event.preventDefault();this.classList.add('drag')"
-        ondragleave="this.classList.remove('drag')"
-        ondrop="event.preventDefault();this.classList.remove('drag');handlePdfDrop(event)">
-        📄 PDF hier ablegen oder klicken
-        <input type="file" id="pdf-file" accept=".pdf" onchange="handlePdfFile(this)">
-      </div>
-      <div class="pdf-preview-wrap" id="pdf-preview-wrap">
-        <img id="pdf-preview-img" src="" alt="Seite 1">
-      </div>
-      <div class="ai-status" id="ai-status">🤖 Claude analysiert …</div>
-      <div class="ai-result" id="ai-result"></div>
-      <div class="sm-foot" style="margin-top:1rem">
-        <button class="btn-outline" onclick="closeModals()">Abbrechen</button>
-        <button class="btn-accent" id="btn-pdf-analyze" onclick="runPdfAnalyze()" disabled>Analysieren</button>
       </div>
     </div>
   </div>
@@ -742,7 +704,7 @@ function confirmDelete() {
 
 // ── Modals ──
 function closeModals() {
-  ['modal-form','modal-del','modal-import','modal-pdf'].forEach(id => document.getElementById(id).classList.remove('open'));
+  ['modal-form','modal-del','modal-import'].forEach(id => document.getElementById(id).classList.remove('open'));
   deleteId = null;
 }
 
@@ -849,130 +811,6 @@ function parseLine(line) {
   }
   res.push(cur);
   return res;
-}
-
-// ── PDF Analyze ──
-let pdfImgBase64 = '';
-
-function openPdfAnalyze() {
-  pdfImgBase64 = '';
-  document.getElementById('pdf-file').value = '';
-  document.getElementById('pdf-preview-wrap').style.display = 'none';
-  document.getElementById('pdf-preview-img').src = '';
-  document.getElementById('ai-status').classList.remove('active');
-  document.getElementById('ai-result').classList.remove('active');
-  document.getElementById('btn-pdf-analyze').disabled = true;
-  document.getElementById('modal-pdf').classList.add('open');
-}
-
-function handlePdfDrop(e) {
-  const f = e.dataTransfer.files[0];
-  if (f && f.type === 'application/pdf') renderPdfPage1(f);
-}
-function handlePdfFile(inp) {
-  if (inp.files[0]) renderPdfPage1(inp.files[0]);
-}
-
-async function renderPdfPage1(file) {
-  document.getElementById('ai-status').classList.remove('active');
-  document.getElementById('ai-result').classList.remove('active');
-  document.getElementById('btn-pdf-analyze').disabled = true;
-  try {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    const buf = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
-    const page = await pdf.getPage(1);
-    const scale = 1.5;
-    const vp = page.getViewport({ scale });
-    const canvas = document.createElement('canvas');
-    canvas.width = vp.width; canvas.height = vp.height;
-    await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
-    pdfImgBase64 = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
-    document.getElementById('pdf-preview-img').src = 'data:image/jpeg;base64,' + pdfImgBase64;
-    document.getElementById('pdf-preview-wrap').style.display = 'block';
-    document.getElementById('btn-pdf-analyze').disabled = false;
-  } catch(e) {
-    showToast('PDF konnte nicht gelesen werden');
-  }
-}
-
-async function runPdfAnalyze() {
-  if (!pdfImgBase64) return;
-  const btn = document.getElementById('btn-pdf-analyze');
-  btn.disabled = true;
-  const status = document.getElementById('ai-status');
-  const result = document.getElementById('ai-result');
-  status.classList.add('active');
-  result.classList.remove('active');
-
-  try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{
-          role: 'user',
-          content: [
-            {
-              type: 'image',
-              source: { type: 'base64', media_type: 'image/jpeg', data: pdfImgBase64 }
-            },
-            {
-              type: 'text',
-              text: `Analysiere dieses Schnittmuster-Deckblatt und gib NUR ein JSON-Objekt zurück (kein Markdown, keine Erklärung):
-{
-  "name": "Schnittmustername",
-  "marke": "Markenname (z.B. pattydoo, Burda, Butterick)",
-  "zielgruppe": "Damen|Herren|Kinder|Baby|Unisex oder leer",
-  "oberkategorie": "Oberteil|Unterteil|Kleid|Einteiler|Lingerie|Accessoires|Taschen|Sonstiges",
-  "typ": "z.B. Shirt, Bluse, Rock, Hose, Kleid, Jacke …",
-  "groesse": "z.B. 32–54 oder 36–44",
-  "stoffart": "Jersey|Webware|Stretch-Webware|Strick|Spitze|Jacken-/Mantelstoffe|Leder|Fell|Sonstiges oder leer",
-  "notizen": "Varianten oder besondere Hinweise, kurz"
-}`
-            }
-          ]
-        }]
-      })
-    });
-    const data = await resp.json();
-    const text = data.content?.find(b => b.type === 'text')?.text || '';
-    const clean = text.replace(/```json|```/g,'').trim();
-    const parsed = JSON.parse(clean);
-
-    status.classList.remove('active');
-    result.innerHTML = '✓ Erkannt: <strong>' + esc(parsed.name||'') + '</strong> · ' + esc(parsed.marke||'') + ' · ' + esc(parsed.zielgruppe||'');
-    result.classList.add('active');
-
-    // Pre-fill form
-    closeModals();
-    editId = null;
-    clearForm();
-    sv('f-name', parsed.name||'');
-    sv('f-marke', parsed.marke||'');
-    sv('f-zielgruppe', parsed.zielgruppe||'');
-    sv('f-oberkat', parsed.oberkategorie||'');
-    syncFormTyp();
-    sv('f-typ2', parsed.typ||'');
-    sv('f-groesse', parsed.groesse||'');
-    sv('f-stoff2', parsed.stoffart||'');
-    document.getElementById('f-notizen').value = parsed.notizen||'';
-    // Set page 1 as preview image
-    imgData = 'data:image/jpeg;base64,' + pdfImgBase64;
-    showImgPrev(imgData);
-    checkSubmit();
-    document.getElementById('form-title').textContent = 'Neues Schnittmuster';
-    document.getElementById('btn-submit').textContent = 'Hinzufügen';
-    document.getElementById('modal-form').classList.add('open');
-    showToast('Formular befüllt ✓ — bitte prüfen!');
-
-  } catch(e) {
-    status.classList.remove('active');
-    showToast('Analyse fehlgeschlagen – bitte manuell eintragen');
-    btn.disabled = false;
-  }
 }
 
 // ── Keyboard ──
