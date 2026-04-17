@@ -1,4 +1,3 @@
 pattydoo-komplett-mit-links.csv
 charm-patterns-komplett.csv
-gertie-patreon-komplett.csv
 gertie-patreon-komplett-1.csv
