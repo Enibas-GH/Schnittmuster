@@ -236,7 +236,7 @@ textarea.fi { resize: vertical; }
         </div>
         <div>
           <label class="lbl">Marke</label>
-          <input type="text" id="f-marke" class="fi" list="marken-dl" placeholder="z. B. Pattydoo" autocomplete="off">
+          <input type="text" id="fm-marke" class="fi" list="marken-dl" placeholder="z. B. Pattydoo" autocomplete="off">
           <datalist id="marken-dl"></datalist>
         </div>
         <div>
@@ -590,7 +590,9 @@ function uid() { return Date.now().toString(36) + Math.random().toString(36).sli
 
 // ── Marken ──
 function updateMarkenList() {
-  const marken = [...new Set(P.map(p => p.marke).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de'));
+  const seen = new Map();
+  P.forEach(p => { if (p.marke) { const k = p.marke.toLowerCase(); if (!seen.has(k)) seen.set(k, p.marke); } });
+  const marken = [...seen.values()].sort((a,b) => a.localeCompare(b,'de'));
   const curFilt = gv('f-marke');
   const fSel = document.getElementById('f-marke');
   fSel.innerHTML = '<option value="">Alle Marken</option>';
@@ -637,7 +639,7 @@ function getFiltered() {
     if (zg && p.zielgruppe !== zg) return false;
     if (stoff && p.stoffart !== stoff) return false;
     if (status && p.status !== status) return false;
-    if (marke && p.marke !== marke) return false;
+    if (marke && (p.marke||'').toLowerCase() !== marke.toLowerCase()) return false;
     return true;
   });
   rows.sort((a,b) => {
@@ -732,7 +734,7 @@ function syncFormTyp() {
 }
 function checkSubmit() { document.getElementById('btn-submit').disabled = !gv('f-name').trim(); }
 function clearForm() {
-  ['f-name','f-marke','f-koll','f-groesse','f-link','f-bildurl'].forEach(id => sv(id,''));
+  ['f-name','fm-marke','f-koll','f-groesse','f-link','f-bildurl'].forEach(id => sv(id,''));
   document.getElementById('f-notizen').value='';
   ['f-zielgruppe','f-oberkat','f-typ2','f-stoff2','f-format','f-status2'].forEach(id => sv(id,''));
   syncFormTyp(); imgData=''; hideImgPrev(); checkSubmit();
@@ -746,7 +748,7 @@ function openAdd() {
 function openEdit(id) {
   const p=P.find(x=>x.id===id); if(!p) return;
   editId=id; clearForm();
-  sv('f-name',p.name); sv('f-marke',p.marke); sv('f-koll',p.kollektion);
+  sv('f-name',p.name); sv('fm-marke',p.marke); sv('f-koll',p.kollektion);
   sv('f-zielgruppe',p.zielgruppe); sv('f-oberkat',p.oberkategorie);
   syncFormTyp(); sv('f-typ2',p.typ);
   sv('f-stoff2',p.stoffart); sv('f-groesse',p.groesse);
@@ -766,7 +768,7 @@ async function submitForm() {
   const name=gv('f-name').trim(); if(!name) return;
   const bild=imgData||gv('f-bildurl').trim();
   const p = {
-    name, marke:gv('f-marke').trim(), kollektion:gv('f-koll').trim(),
+    name, marke:gv('fm-marke').trim(), kollektion:gv('f-koll').trim(),
     zielgruppe:gv('f-zielgruppe'), oberkategorie:gv('f-oberkat'), typ:gv('f-typ2'),
     stoffart:gv('f-stoff2'), groesse:gv('f-groesse').trim(),
     format:gv('f-format'), status:gv('f-status2'),
