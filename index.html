@@ -74,10 +74,13 @@ tr:hover td { background: #fff5ee; }
 .nc { display: flex; align-items: center; gap: 10px; }
 .thumb { width: 52px; height: 52px; object-fit: cover; border-radius: 10px; flex-shrink: 0; cursor: pointer; border: 2px solid var(--border); transition: transform .15s, border-color .15s; }
 .thumb:hover { transform: scale(1.08); border-color: var(--orange); }
-.skizze-thumb { background: #fff; object-fit: contain; padding: 3px; }
+.thumb-wrap { position: relative; display: inline-block; }
+.thumb-wrap.skizze .thumb { background: #fff; object-fit: contain; padding: 3px; }
+.sk-toggle { position: absolute; bottom: -4px; right: -4px; background: #fff; border: 2px solid var(--border); border-radius: 50%; width: 22px; height: 22px; padding: 0; font-size: 11px; display: flex; align-items: center; justify-content: center; color: var(--text2); box-shadow: 0 2px 6px rgba(0,0,0,.15); cursor: pointer; }
+.sk-toggle:hover { border-color: var(--orange); color: var(--orange); background: #fff; }
+.sk-toggle.active { background: var(--grad); color: #fff; border-color: transparent; }
 .card-imgwrap { position: relative; }
-.card-skizze { position: absolute; bottom: 8px; right: 8px; width: 48px; height: 48px; object-fit: contain; background: rgba(255,255,255,.95); border: 2px solid #fff; border-radius: 10px; padding: 3px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.15); transition: transform .15s; }
-.card-skizze:hover { transform: scale(1.15); }
+.card-imgwrap .sk-toggle { bottom: 8px; right: 8px; width: 32px; height: 32px; font-size: 14px; border-width: 2px; }
 .no-img { width: 52px; height: 52px; border-radius: 10px; background: linear-gradient(135deg,#fff0e8,#ffe4cc); border: 2px dashed var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; }
 .name-txt { font-weight: 700; }
 td.dim { color: var(--text2); }
@@ -406,7 +409,6 @@ const CSV_KEYS = ['name','marke','kollektion','zielgruppe','oberkategorie','typ'
 const TBL_COLS = [
   {k:'name', l:'Name'},
   {k:'marke', l:'Marke'},
-  {k:'modelskizze', l:'Skizze'},
   {k:'zielgruppe', l:'Zielgruppe'},
   {k:'oberkategorie', l:'Kategorie'},
   {k:'typ', l:'Typ'},
@@ -571,16 +573,48 @@ function badgeZg(p) {
   return p.zielgruppe ? '<span class="badge zg-' + (ZC[p.zielgruppe]||'') + '">' + esc(p.zielgruppe) + '</span>' : '—';
 }
 function thumbEl(p) {
-  if (p.bild) {
-    return '<img class="thumb" src="' + esc(p.bild) + '" alt="" onerror="this.style.display=\'none\'" onclick="openLightbox(\'' + esc(p.bild) + '\')">';
+  const hasBild = !!p.bild, hasSk = !!p.modelskizze;
+  if (!hasBild && !hasSk) return '<div class="no-img">✂</div>';
+  const primary = hasBild ? p.bild : p.modelskizze;
+  const isSk = !hasBild && hasSk;
+  const cls = 'thumb' + (isSk ? ' skizze-thumb' : '');
+  let h = '<div class="thumb-wrap' + (isSk ? ' skizze' : '') + '" id="tw-' + p.id + '">';
+  h += '<img class="' + cls + '" src="' + esc(primary) + '" alt="" onerror="this.style.display=\'none\'" onclick="openLightbox(this.src)">';
+  if (hasBild && hasSk) {
+    h += '<button class="sk-toggle" onclick="toggleSk(\'' + p.id + '\',event)" title="Skizze / Foto">📐</button>';
   }
-  return '<div class="no-img">✂</div>';
+  h += '</div>';
+  return h;
 }
-function skizzeEl(p) {
-  if (p.modelskizze) {
-    return '<img class="thumb skizze-thumb" src="' + esc(p.modelskizze) + '" alt="" onerror="this.style.display=\'none\'" onclick="openLightbox(\'' + esc(p.modelskizze) + '\')">';
+function cardImgH(p) {
+  const hasBild = !!p.bild, hasSk = !!p.modelskizze;
+  if (!hasBild && !hasSk) return '<div class="card-noimg">✂</div>';
+  const primary = hasBild ? p.bild : p.modelskizze;
+  const isSk = !hasBild && hasSk;
+  let h = '<div class="card-imgwrap' + (isSk ? ' skizze' : '') + '" id="cw-' + p.id + '">';
+  const style = isSk ? ' style="background:#fff;object-fit:contain;padding:8px"' : '';
+  h += '<img class="card-img" src="' + esc(primary) + '" alt="' + esc(p.name) + '"' + style + ' onerror="this.outerHTML=\'<div class=\\\'card-noimg\\\'>✂</div>\'" onclick="openLightbox(this.src)">';
+  if (hasBild && hasSk) {
+    h += '<button class="sk-toggle" onclick="toggleSk(\'' + p.id + '\',event)" title="Skizze / Foto">📐</button>';
   }
-  return '<span class="dim">—</span>';
+  h += '</div>';
+  return h;
+}
+function toggleSk(id, ev) {
+  ev.stopPropagation();
+  const p = P.find(x => x.id === id); if (!p) return;
+  ['tw-' + id, 'cw-' + id].forEach(wid => {
+    const el = document.getElementById(wid); if (!el) return;
+    const img = el.querySelector('img'); if (!img) return;
+    const btn = el.querySelector('.sk-toggle');
+    const showingSk = el.classList.toggle('skizze');
+    img.src = showingSk ? p.modelskizze : p.bild;
+    if (wid.startsWith('cw-')) {
+      if (showingSk) { img.style.background = '#fff'; img.style.objectFit = 'contain'; img.style.padding = '8px'; }
+      else { img.style.background = ''; img.style.objectFit = ''; img.style.padding = ''; }
+    }
+    if (btn) btn.classList.toggle('active', showingSk);
+  });
 }
 
 function renderList(rows) {
@@ -593,7 +627,6 @@ function renderList(rows) {
     h += '<tr>';
     h += '<td><div class="nc">' + thumbEl(p) + '<span class="name-txt">' + esc(p.name) + '</span></div></td>';
     h += '<td class="dim">' + esc(p.marke||'—') + '</td>';
-    h += '<td>' + skizzeEl(p) + '</td>';
     h += '<td>' + badgeZg(p) + '</td>';
     h += '<td>' + esc(p.oberkategorie||'—') + '</td>';
     h += '<td class="dim">' + esc(p.typ||'—') + '</td>';
@@ -612,15 +645,9 @@ function renderList(rows) {
 function renderGrid(rows) {
   let h = '<div class="grid">';
   rows.forEach(p => {
-    const imgH = p.bild
-      ? '<img class="card-img" src="' + esc(p.bild) + '" alt="' + esc(p.name) + '" onerror="this.outerHTML=\'<div class=\\\'card-noimg\\\'>✂</div>\'" onclick="openLightbox(\'' + esc(p.bild) + '\')">'
-      : '<div class="card-noimg">✂</div>';
     const lnk = p.link ? '<a href="' + esc(p.link) + '" target="_blank">↗ Link</a>' : '';
-    const skizzeOv = p.modelskizze
-      ? '<img class="card-skizze" src="' + esc(p.modelskizze) + '" alt="Modelskizze" title="Modelskizze" onerror="this.style.display=\'none\'" onclick="event.stopPropagation();openLightbox(\'' + esc(p.modelskizze) + '\')">'
-      : '';
     h += '<div class="card">';
-    h += '<div class="card-imgwrap">' + imgH + skizzeOv + '</div>';
+    h += cardImgH(p);
     h += '<div class="card-body">';
     h += '<div class="card-name" title="' + esc(p.name) + '">' + esc(p.name) + '</div>';
     h += '<div class="card-meta">' + esc(p.marke||'—') + (p.typ ? ' · ' + esc(p.typ) : '') + '</div>';
