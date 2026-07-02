@@ -989,7 +989,8 @@
     "link": "",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Audrey_Cigarette_Pants.jpg",
     "notizen": "Knöchellang oder Capri. Stretch-Stoff mit ca. 50% Stretch. Empfohlen: Ponte, Stretch-Bengaline, Stretch-Velour.",
-    "id": "mnztwcqfery0dh9udgl"
+    "id": "mnztwcqfery0dh9udgl",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/AudreyCigarettePants_Skizze.jpg"
   },
   {
     "name": "Aurora Bodice",
@@ -1201,7 +1202,8 @@
     "link": "",
     "bild": "",
     "notizen": "Knie- oder bodenlanger Rock mit 40er-Drapierung, Messerfalten, optionalem Hüftdrape. Kombinierbar mit Lamour-, Liz-, Landis- oder Mariner-Mieder. Empfohlen: Viskose-Challis, Woll-Krepp, Seide/Charmeuse.",
-    "id": "mnztwcqf2hf9woiv2bw"
+    "id": "mnztwcqf2hf9woiv2bw",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/DandridgeSkirt_Skizze.jpg"
   },
   {
     "name": "Lady Dandy Waistcoat",
@@ -1385,7 +1387,8 @@
     "bild": "",
     "notizen": "",
     "id": "mnztwcqf8biccedop9t",
-    "created": 1776244138359
+    "created": 1776244138359,
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/GardnerTop_Skizze.jpg"
   },
   {
     "name": "Gina Bustier",
@@ -1517,7 +1520,8 @@
     "bild": "",
     "notizen": "",
     "id": "mnztwcqfn7toj5yzkf",
-    "created": 1776244138359
+    "created": 1776244138359,
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/JasminJumpsuit_Skizze.jpg"
   },
   {
     "name": "Jeanne Gloves",
@@ -1550,7 +1554,8 @@
     "link": "",
     "bild": "",
     "notizen": "",
-    "id": "mnztwcqfn8o7ryylb1q"
+    "id": "mnztwcqfn8o7ryylb1q",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/JoanWiggleDress_Skizze.jpg"
   },
   {
     "name": "Judy Vest",
@@ -1566,7 +1571,8 @@
     "link": "",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Judy_Vest.jpg",
     "notizen": "",
-    "id": "mnztwcqf4pghd3cag0c"
+    "id": "mnztwcqf4pghd3cag0c",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/JudyVest_Skizze.jpg"
   },
   {
     "name": "Landis Bodice",
@@ -1617,7 +1623,8 @@
     "bild": "",
     "notizen": "",
     "id": "mnztwcqf8ovbkm4779j",
-    "created": 1776244138359
+    "created": 1776244138359,
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/LizabethRaglanTop_Skizze.jpg"
   },
   {
     "name": "Loretta Shorts",
@@ -1633,7 +1640,8 @@
     "link": "",
     "bild": "",
     "notizen": "",
-    "id": "mnztwcqfg3leh3wdpv5"
+    "id": "mnztwcqfg3leh3wdpv5",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/LorettaShorts_Skizze.jpg"
   },
   {
     "name": "Lucille Trousers",
@@ -1649,7 +1657,8 @@
     "link": "",
     "bild": "",
     "notizen": "",
-    "id": "mnztwcqfoh1ccftywz"
+    "id": "mnztwcqfoh1ccftywz",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/LucilleTrousers_Skizze.jpg"
   },
   {
     "name": "Maria Pencil Skirt",
@@ -1681,7 +1690,8 @@
     "link": "",
     "bild": "",
     "notizen": "",
-    "id": "mnztwcqfl110j850iy7"
+    "id": "mnztwcqfl110j850iy7",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/MarinerTop_Skizze.jpg"
   },
   {
     "name": "Marlene Blouse",
@@ -1700,7 +1710,7 @@
     "id": "mnztwcqf8kc7nqil9i9"
   },
   {
-    "name": "Midge Breton Shirt",
+    "name": "Midge Breton Top",
     "marke": "Gertie Patreon",
     "kollektion": "",
     "zielgruppe": "Damen",
@@ -1713,7 +1723,8 @@
     "link": "",
     "bild": "",
     "notizen": "",
-    "id": "mnztwcqfbt4uhne38xe"
+    "id": "mnztwcqfbt4uhne38xe",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/MidgeBretonTop_Skizze.jpg"
   },
   {
     "name": "Millicent Dress",
@@ -1831,7 +1842,8 @@
     "bild": "",
     "notizen": "",
     "id": "mnztwcqfp9jbkf9ce6b",
-    "created": 1776244138359
+    "created": 1776244138359,
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/PeterPanBolero_Skizze.jpg"
   },
   {
     "name": "Picnic Top",
@@ -1963,7 +1975,8 @@
     "link": "",
     "bild": "",
     "notizen": "",
-    "id": "mnztwcqftqpmt0ksvw"
+    "id": "mnztwcqftqpmt0ksvw",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/ScoutDress_Skizze.jpg"
   },
   {
     "name": "Secrets Clutch",
@@ -2013,7 +2026,8 @@
     "link": "",
     "bild": "",
     "notizen": "Auch Kleid und Body",
-    "id": "mnztwcqf39g9b6kj3qb"
+    "id": "mnztwcqf39g9b6kj3qb",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/SkipperDress_Skizze.jpg"
   },
   {
     "name": "Society Dress",
