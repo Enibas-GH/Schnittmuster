@@ -193,6 +193,7 @@ textarea.fi { resize: vertical; }
     </div>
     <button onclick="openImport()">↑ Import</button>
     <button id="btn-export" onclick="doExport()" style="display:none">↓ Export</button>
+    <button onclick="openSync()" title="GitHub-Sync">☁</button>
     <button class="btn-white" onclick="openAdd()">+ Neu</button>
   </div>
 </div>
@@ -384,6 +385,26 @@ textarea.fi { resize: vertical; }
   </div>
 </div>
 
+<!-- SYNC MODAL -->
+<div class="overlay" id="modal-sync">
+  <div class="sm" style="width:min(460px,100%)">
+    <div class="sm-hdr"><h2>GitHub-Sync</h2></div>
+    <div class="sm-body">
+      <p id="sync-status">Repo: <strong>Enibas-GH/Schnittmuster</strong></p>
+      <div style="margin-bottom:1rem">
+        <label class="lbl">Personal Access Token</label>
+        <input type="password" id="f-pat" class="fi" placeholder="ghp_… oder github_pat_…" autocomplete="off">
+        <small style="display:block;margin-top:4px;color:var(--text3);font-weight:600;font-size:12px">Classic PAT mit <code>public_repo</code>-Scope. Wird nur lokal gespeichert.</small>
+      </div>
+      <div class="sm-foot" style="flex-wrap:wrap">
+        <button class="btn-outline" onclick="closeModals()">Schließen</button>
+        <button class="btn-outline" onclick="doPull()">↓ Laden</button>
+        <button class="btn-accent" onclick="doPush()">↑ Speichern</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- LIGHTBOX -->
 <div class="lb" id="lightbox" onclick="closeLightbox()">
   <img id="lb-img" src="" alt="">
@@ -418,16 +439,72 @@ const TBL_COLS = [
   {k:'status', l:'Status'}
 ];
 const SK = 'sm-v3';
+const GH_OWNER = 'Enibas-GH';
+const GH_REPO = 'Schnittmuster';
+const GH_BRANCH = 'main';
+const GH_FILE = 'data.json';
+const GH_RAW = 'https://raw.githubusercontent.com/' + GH_OWNER + '/' + GH_REPO + '/' + GH_BRANCH + '/' + GH_FILE;
+const PAT_KEY = 'sm-pat';
 
 // ── State ──
 let P = [], editId = null, deleteId = null, pendingImport = [];
 let sortCol = 'name', sortDir = 'asc', viewMode = 'list', imgData = '';
 
+// ── GitHub Sync ──
+function openSync() {
+  const pat = localStorage.getItem(PAT_KEY) || '';
+  sv('f-pat', pat);
+  document.getElementById('sync-status').innerHTML = 'Repo: <strong>' + GH_OWNER + '/' + GH_REPO + '</strong>';
+  document.getElementById('modal-sync').classList.add('open');
+}
+async function ghLoadRemote() {
+  try {
+    const res = await fetch(GH_RAW + '?t=' + Date.now(), {cache:'no-store'});
+    if (!res.ok) return null;
+    const data = await res.json();
+    return Array.isArray(data) ? data : (data.items || null);
+  } catch(e) { return null; }
+}
+async function doPull() {
+  showToast('Lade …');
+  const remote = await ghLoadRemote();
+  if (!remote) { showToast('Fehler beim Laden ✕'); return; }
+  P = remote.map(p => ({...p, id: p.id || uid()}));
+  saveData(); updateMarkenList(); closeModals(); render();
+  showToast(remote.length + ' Einträge geladen ✓');
+}
+async function doPush() {
+  const pat = gv('f-pat').trim();
+  if (!pat) { showToast('PAT fehlt ✕'); return; }
+  localStorage.setItem(PAT_KEY, pat);
+  showToast('Speichere …');
+  try {
+    const apiBase = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_FILE;
+    const hdrs = {Authorization: 'token ' + pat, Accept: 'application/vnd.github+json'};
+    let sha = null;
+    const cur = await fetch(apiBase + '?ref=' + GH_BRANCH, {headers: hdrs});
+    if (cur.ok) sha = (await cur.json()).sha;
+    else if (cur.status !== 404) throw new Error('GET ' + cur.status);
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(P, null, 2))));
+    const body = {message: 'Update data.json (' + P.length + ' Einträge)', content, branch: GH_BRANCH};
+    if (sha) body.sha = sha;
+    const put = await fetch(apiBase, {method:'PUT', headers: hdrs, body: JSON.stringify(body)});
+    if (!put.ok) { const err = await put.json(); throw new Error(put.status + ': ' + (err.message||'')); }
+    closeModals();
+    showToast('Gespeichert ✓');
+  } catch(e) { showToast('Fehler: ' + e.message); }
+}
+
 // ── Persist ──
-function loadData() {
+async function loadData() {
   try { const d = localStorage.getItem(SK); if (d) P = JSON.parse(d); } catch(e) {}
   updateMarkenList();
   render();
+  const remote = await ghLoadRemote();
+  if (remote && remote.length) {
+    P = remote.map(p => ({...p, id: p.id || uid()}));
+    saveData(); updateMarkenList(); render();
+  }
 }
 function saveData() {
   try { localStorage.setItem(SK, JSON.stringify(P)); }
@@ -719,7 +796,7 @@ function confirmDelete() {
 
 // ── Modals ──
 function closeModals() {
-  ['modal-form','modal-del','modal-import'].forEach(id => document.getElementById(id).classList.remove('open'));
+  ['modal-form','modal-del','modal-import','modal-sync'].forEach(id => document.getElementById(id).classList.remove('open'));
   deleteId = null;
 }
 
