@@ -72,17 +72,9 @@ td { padding: 10px 14px; border-bottom: 1px solid #fff0e8; vertical-align: middl
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: #fff5ee; }
 .nc { display: flex; align-items: center; gap: 10px; }
-.thumb { width: 52px; height: 52px; object-fit: cover; border-radius: 10px; flex-shrink: 0; cursor: pointer; border: 2px solid var(--border); transition: transform .15s, border-color .15s; }
-.thumb:hover { transform: scale(1.08); border-color: var(--orange); }
-.thumb-wrap { position: relative; display: inline-block; }
-.thumb-wrap.skizze .thumb { background: #fff; object-fit: contain; padding: 3px; }
-.sk-toggle { position: absolute; bottom: -4px; right: -4px; background: #fff; border: 2px solid var(--border); border-radius: 50%; width: 22px; height: 22px; padding: 0; font-size: 11px; display: flex; align-items: center; justify-content: center; color: var(--text2); box-shadow: 0 2px 6px rgba(0,0,0,.15); cursor: pointer; }
-.sk-toggle:hover { border-color: var(--orange); color: var(--orange); background: #fff; }
-.sk-toggle.active { background: var(--grad); color: #fff; border-color: transparent; }
-.card-imgwrap { position: relative; }
-.card-imgwrap.skizze .card-img { background: #fff; object-fit: contain; padding: 8px; }
-.card-imgwrap .sk-toggle { bottom: 8px; right: 8px; width: 32px; height: 32px; font-size: 14px; border-width: 2px; }
-.no-img { width: 52px; height: 52px; border-radius: 10px; background: linear-gradient(135deg,#fff0e8,#ffe4cc); border: 2px dashed var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.thumb { width: 90px; height: 120px; object-fit: cover; border-radius: 10px; flex-shrink: 0; cursor: pointer; border: 2px solid var(--border); transition: transform .15s, border-color .15s; }
+.thumb:hover { transform: scale(1.06); border-color: var(--orange); }
+.no-img { width: 90px; height: 120px; border-radius: 10px; background: linear-gradient(135deg,#fff0e8,#ffe4cc); border: 2px dashed var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 34px; }
 .name-txt { font-weight: 700; }
 td.dim { color: var(--text2); }
 .row-act { display: flex; gap: 4px; }
@@ -94,8 +86,8 @@ td.dim { color: var(--text2); }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap: 16px; }
 .card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--rx); overflow: hidden; transition: box-shadow .2s, transform .2s, border-color .2s; }
 .card:hover { box-shadow: 0 8px 30px rgba(255,107,43,.18); transform: translateY(-3px); border-color: var(--orange); }
-.card-img { width: 100%; height: 150px; object-fit: cover; cursor: pointer; display: block; }
-.card-noimg { width: 100%; height: 150px; background: linear-gradient(135deg,#fff0e8,#ffd0b0); display: flex; align-items: center; justify-content: center; font-size: 42px; }
+.card-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; cursor: pointer; display: block; }
+.card-noimg { width: 100%; aspect-ratio: 3/4; background: linear-gradient(135deg,#fff0e8,#ffd0b0); display: flex; align-items: center; justify-content: center; font-size: 56px; }
 .card-body { padding: 12px 14px; }
 .card-name { font-weight: 800; font-size: 14px; margin-bottom: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .card-meta { font-size: 12px; color: var(--text2); font-weight: 600; margin-bottom: 8px; }
@@ -193,7 +185,6 @@ textarea.fi { resize: vertical; }
     </div>
     <button onclick="openImport()">↑ Import</button>
     <button id="btn-export" onclick="doExport()" style="display:none">↓ Export</button>
-    <button onclick="openSync()" title="GitHub-Sync">☁</button>
     <button class="btn-white" onclick="openAdd()">+ Neu</button>
   </div>
 </div>
@@ -332,10 +323,6 @@ textarea.fi { resize: vertical; }
           <input type="url" id="f-bildurl" class="fi" placeholder="… oder Bild-URL eingeben" style="margin-top:8px" oninput="syncUrlPrev()">
         </div>
         <div class="fw">
-          <label class="lbl">Modelskizze (URL)</label>
-          <input type="url" id="f-skizze" class="fi" placeholder="https://…/modelskizzen/DATEINAME.jpg">
-        </div>
-        <div class="fw">
           <label class="lbl">Notizen</label>
           <textarea id="f-notizen" class="fi" rows="3" placeholder="Erfahrungen, Anpassungen, Tipps …"></textarea>
         </div>
@@ -385,26 +372,6 @@ textarea.fi { resize: vertical; }
   </div>
 </div>
 
-<!-- SYNC MODAL -->
-<div class="overlay" id="modal-sync">
-  <div class="sm" style="width:min(460px,100%)">
-    <div class="sm-hdr"><h2>GitHub-Sync</h2></div>
-    <div class="sm-body">
-      <p id="sync-status">Repo: <strong>Enibas-GH/Schnittmuster</strong></p>
-      <div style="margin-bottom:1rem">
-        <label class="lbl">Personal Access Token</label>
-        <input type="password" id="f-pat" class="fi" placeholder="ghp_… oder github_pat_…" autocomplete="off">
-        <small style="display:block;margin-top:4px;color:var(--text3);font-weight:600;font-size:12px">Classic PAT mit <code>public_repo</code>-Scope. Wird nur lokal gespeichert.</small>
-      </div>
-      <div class="sm-foot" style="flex-wrap:wrap">
-        <button class="btn-outline" onclick="closeModals()">Schließen</button>
-        <button class="btn-outline" onclick="doPull()">↓ Laden</button>
-        <button class="btn-accent" onclick="doPush()">↑ Speichern</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- LIGHTBOX -->
 <div class="lb" id="lightbox" onclick="closeLightbox()">
   <img id="lb-img" src="" alt="">
@@ -426,8 +393,8 @@ const TM = {
 };
 const SC = { Vorhanden:'vorhanden', Genäht:'genaht', 'In Planung':'planung', Wunschliste:'wunsch' };
 const ZC = { Damen:'damen', Herren:'herren', Kinder:'kinder', Baby:'baby', Unisex:'unisex' };
-const CSV_HDRS = ['Name','Marke','Kollektion','Zielgruppe','Oberkategorie','Typ','Stoffart','Größe','Format','Status','Link','Bild','Notizen','Modelskizze'];
-const CSV_KEYS = ['name','marke','kollektion','zielgruppe','oberkategorie','typ','stoffart','groesse','format','status','link','bild','notizen','modelskizze'];
+const CSV_HDRS = ['Name','Marke','Kollektion','Zielgruppe','Oberkategorie','Typ','Stoffart','Größe','Format','Status','Link','Bild','Notizen'];
+const CSV_KEYS = ['name','marke','kollektion','zielgruppe','oberkategorie','typ','stoffart','groesse','format','status','link','bild','notizen'];
 const TBL_COLS = [
   {k:'name', l:'Name'},
   {k:'marke', l:'Marke'},
@@ -439,72 +406,44 @@ const TBL_COLS = [
   {k:'status', l:'Status'}
 ];
 const SK = 'sm-v3';
-const GH_OWNER = 'Enibas-GH';
-const GH_REPO = 'Schnittmuster';
-const GH_BRANCH = 'main';
-const GH_FILE = 'data.json';
-const GH_RAW = 'https://raw.githubusercontent.com/' + GH_OWNER + '/' + GH_REPO + '/' + GH_BRANCH + '/' + GH_FILE;
-const PAT_KEY = 'sm-pat';
 
 // ── State ──
 let P = [], editId = null, deleteId = null, pendingImport = [];
 let sortCol = 'name', sortDir = 'asc', viewMode = 'list', imgData = '';
 
-// ── GitHub Sync ──
-function openSync() {
-  const pat = localStorage.getItem(PAT_KEY) || '';
-  sv('f-pat', pat);
-  document.getElementById('sync-status').innerHTML = 'Repo: <strong>' + GH_OWNER + '/' + GH_REPO + '</strong>';
-  document.getElementById('modal-sync').classList.add('open');
-}
-async function ghLoadRemote() {
-  try {
-    const res = await fetch(GH_RAW + '?t=' + Date.now(), {cache:'no-store'});
-    if (!res.ok) return null;
-    const data = await res.json();
-    return Array.isArray(data) ? data : (data.items || null);
-  } catch(e) { return null; }
-}
-async function doPull() {
-  showToast('Lade …');
-  const remote = await ghLoadRemote();
-  if (!remote) { showToast('Fehler beim Laden ✕'); return; }
-  P = remote.map(p => ({...p, id: p.id || uid()}));
-  saveData(); updateMarkenList(); closeModals(); render();
-  showToast(remote.length + ' Einträge geladen ✓');
-}
-async function doPush() {
-  const pat = gv('f-pat').trim();
-  if (!pat) { showToast('PAT fehlt ✕'); return; }
-  localStorage.setItem(PAT_KEY, pat);
-  showToast('Speichere …');
-  try {
-    const apiBase = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_FILE;
-    const hdrs = {Authorization: 'token ' + pat, Accept: 'application/vnd.github+json'};
-    let sha = null;
-    const cur = await fetch(apiBase + '?ref=' + GH_BRANCH, {headers: hdrs});
-    if (cur.ok) sha = (await cur.json()).sha;
-    else if (cur.status !== 404) throw new Error('GET ' + cur.status);
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(P, null, 2))));
-    const body = {message: 'Update data.json (' + P.length + ' Einträge)', content, branch: GH_BRANCH};
-    if (sha) body.sha = sha;
-    const put = await fetch(apiBase, {method:'PUT', headers: hdrs, body: JSON.stringify(body)});
-    if (!put.ok) { const err = await put.json(); throw new Error(put.status + ': ' + (err.message||'')); }
-    closeModals();
-    showToast('Gespeichert ✓');
-  } catch(e) { showToast('Fehler: ' + e.message); }
-}
-
 // ── Persist ──
 async function loadData() {
   try { const d = localStorage.getItem(SK); if (d) P = JSON.parse(d); } catch(e) {}
+  await fetchDefaultCSV();
   updateMarkenList();
   render();
-  const remote = await ghLoadRemote();
-  if (remote && remote.length) {
-    P = remote.map(p => ({...p, id: p.id || uid()}));
-    saveData(); updateMarkenList(); render();
-  }
+}
+async function fetchDefaultCSV() {
+  try {
+    const listRes = await fetch('csvlist.txt');
+    if (!listRes.ok) return;
+    const files = (await listRes.text()).split('\n').map(l => l.trim()).filter(Boolean);
+    let imported = JSON.parse(localStorage.getItem('sm-imported') || '[]');
+    let changed = false;
+    for (const file of files) {
+      if (imported.includes(file)) continue;
+      try {
+        const res = await fetch(file);
+        if (!res.ok) continue;
+        const text = await res.text();
+        const rows = parseCSV(text);
+        const existing = new Set(P.map(p => p.name.toLowerCase()));
+        rows.filter(p => !existing.has(p.name.toLowerCase()))
+            .forEach(p => P.push({...p, id: uid(), created: Date.now()}));
+        imported.push(file);
+        changed = true;
+      } catch(e) {}
+    }
+    if (changed) {
+      saveData();
+      localStorage.setItem('sm-imported', JSON.stringify(imported));
+    }
+  } catch(e) {}
 }
 function saveData() {
   try { localStorage.setItem(SK, JSON.stringify(P)); }
@@ -623,42 +562,10 @@ function badgeZg(p) {
   return p.zielgruppe ? '<span class="badge zg-' + (ZC[p.zielgruppe]||'') + '">' + esc(p.zielgruppe) + '</span>' : '—';
 }
 function thumbEl(p) {
-  const hasBild = !!p.bild, hasSk = !!p.modelskizze;
-  if (!hasBild && !hasSk) return '<div class="no-img">✂</div>';
-  const primary = hasBild ? p.bild : p.modelskizze;
-  const isSk = !hasBild && hasSk;
-  let h = '<div class="thumb-wrap' + (isSk ? ' skizze' : '') + '" id="tw-' + p.id + '">';
-  h += '<img class="thumb" src="' + esc(primary) + '" alt="" onerror="this.style.display=\'none\'" onclick="openLightbox(this.src)">';
-  if (hasBild && hasSk) {
-    h += '<button class="sk-toggle" onclick="toggleSk(\'' + p.id + '\',event)" title="Skizze / Foto">📐</button>';
+  if (p.bild) {
+    return '<img class="thumb" src="' + esc(p.bild) + '" alt="" onerror="this.style.display=\'none\'" onclick="openLightbox(\'' + esc(p.bild) + '\')">';
   }
-  h += '</div>';
-  return h;
-}
-function cardImgH(p) {
-  const hasBild = !!p.bild, hasSk = !!p.modelskizze;
-  if (!hasBild && !hasSk) return '<div class="card-noimg">✂</div>';
-  const primary = hasBild ? p.bild : p.modelskizze;
-  const isSk = !hasBild && hasSk;
-  let h = '<div class="card-imgwrap' + (isSk ? ' skizze' : '') + '" id="cw-' + p.id + '">';
-  h += '<img class="card-img" src="' + esc(primary) + '" alt="' + esc(p.name) + '" onerror="this.style.display=\'none\'" onclick="openLightbox(this.src)">';
-  if (hasBild && hasSk) {
-    h += '<button class="sk-toggle" onclick="toggleSk(\'' + p.id + '\',event)" title="Skizze / Foto">📐</button>';
-  }
-  h += '</div>';
-  return h;
-}
-function toggleSk(id, ev) {
-  ev.stopPropagation();
-  const p = P.find(x => x.id === id); if (!p) return;
-  ['tw-' + id, 'cw-' + id].forEach(wid => {
-    const el = document.getElementById(wid); if (!el) return;
-    const img = el.querySelector('img'); if (!img) return;
-    const btn = el.querySelector('.sk-toggle');
-    const showingSk = el.classList.toggle('skizze');
-    img.src = showingSk ? p.modelskizze : p.bild;
-    if (btn) btn.classList.toggle('active', showingSk);
-  });
+  return '<div class="no-img">✂</div>';
 }
 
 function renderList(rows) {
@@ -689,9 +596,12 @@ function renderList(rows) {
 function renderGrid(rows) {
   let h = '<div class="grid">';
   rows.forEach(p => {
+    const imgH = p.bild
+      ? '<img class="card-img" src="' + esc(p.bild) + '" alt="' + esc(p.name) + '" onerror="this.outerHTML=\'<div class=\\\'card-noimg\\\'>✂</div>\'" onclick="openLightbox(\'' + esc(p.bild) + '\')">'
+      : '<div class="card-noimg">✂</div>';
     const lnk = p.link ? '<a href="' + esc(p.link) + '" target="_blank">↗ Link</a>' : '';
     h += '<div class="card">';
-    h += cardImgH(p);
+    h += imgH;
     h += '<div class="card-body">';
     h += '<div class="card-name" title="' + esc(p.name) + '">' + esc(p.name) + '</div>';
     h += '<div class="card-meta">' + esc(p.marke||'—') + (p.typ ? ' · ' + esc(p.typ) : '') + '</div>';
@@ -726,7 +636,7 @@ function checkSubmit() {
   document.getElementById('btn-submit').disabled = !gv('f-name').trim();
 }
 function clearForm() {
-  ['f-name','f-marke','f-koll','f-groesse','f-link','f-bildurl','f-skizze'].forEach(id => sv(id,''));
+  ['f-name','f-marke','f-koll','f-groesse','f-link','f-bildurl'].forEach(id => sv(id,''));
   document.getElementById('f-notizen').value = '';
   ['f-zielgruppe','f-oberkat','f-typ2','f-stoff2','f-format','f-status2'].forEach(id => sv(id,''));
   syncFormTyp();
@@ -752,7 +662,6 @@ function openEdit(id) {
   sv('f-stoff2', p.stoffart); sv('f-groesse', p.groesse);
   sv('f-format', p.format); sv('f-status2', p.status);
   sv('f-link', p.link);
-  sv('f-skizze', p.modelskizze);
   document.getElementById('f-notizen').value = p.notizen || '';
   if (p.bild) {
     if (p.bild.startsWith('data:')) { imgData = p.bild; showImgPrev(p.bild); }
@@ -773,8 +682,7 @@ function submitForm() {
     stoffart: gv('f-stoff2'), groesse: gv('f-groesse').trim(),
     format: gv('f-format'), status: gv('f-status2'),
     link: gv('f-link').trim(), bild,
-    notizen: document.getElementById('f-notizen').value.trim(),
-    modelskizze: gv('f-skizze').trim()
+    notizen: document.getElementById('f-notizen').value.trim()
   };
   if (editId) {
     P = P.map(x => x.id === editId ? {...p, id: editId} : x);
@@ -796,7 +704,7 @@ function confirmDelete() {
 
 // ── Modals ──
 function closeModals() {
-  ['modal-form','modal-del','modal-import','modal-sync'].forEach(id => document.getElementById(id).classList.remove('open'));
+  ['modal-form','modal-del','modal-import'].forEach(id => document.getElementById(id).classList.remove('open'));
   deleteId = null;
 }
 
