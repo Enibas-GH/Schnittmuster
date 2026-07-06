@@ -974,7 +974,7 @@
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Anni-Bodice.jpg",
     "notizen": "",
     "id": "mnztwcqf7yfvviur3ch",
-    "modelskizze": ""
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/AnniBodice_Skizze.jpg"
   },
   {
     "name": "Audrey Cigarette Pants",
@@ -1008,7 +1008,7 @@
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Aurora_Bodice.jpg",
     "notizen": "",
     "id": "mnztwcqfqnltrspzlvg",
-    "modelskizze": ""
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/AuroraBodice_Skizze.jpg"
   },
   {
     "name": "Barbara Bodice",
@@ -1025,7 +1025,7 @@
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Barbara_Bodice.jpg",
     "notizen": "",
     "id": "mnztwcqfd425m8jcgj",
-    "modelskizze": ""
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/BarbaraBodice_Skizze.jpg"
   },
   {
     "name": "Barbie Top",
@@ -1042,7 +1042,7 @@
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Barbie_Top.jpg",
     "notizen": "",
     "id": "mnztwcqfj13jwbcfn6",
-    "modelskizze": ""
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/BarbieTop_Skizze.jpg"
   },
   {
     "name": "Bathing Beauty",
@@ -1059,7 +1059,7 @@
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Bathing_Beauty_Swimsuit.jpg",
     "notizen": "",
     "id": "mnztwcqfdsw09e3o2jd",
-    "modelskizze": ""
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/BathingBeauty_Skizze.jpg"
   },
   {
     "name": "Boardwalk Sundress",
@@ -1390,7 +1390,7 @@
     "format": "PDF",
     "status": "Vorhanden",
     "link": "",
-    "bild": "",
+    "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Frenchy-Peignoir.jpg",
     "notizen": "",
     "id": "mnztwcqforpvq8l8x9",
     "modelskizze": ""
@@ -1533,7 +1533,7 @@
     "bild": "",
     "notizen": "",
     "id": "mnztwcqfsi5mz7njl4",
-    "modelskizze": ""
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/IngridSkirt_Skizze.jpg"
   },
   {
     "name": "Jasmin Jumpsuit",
@@ -1742,7 +1742,7 @@
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Marlene_Blouse.jpg",
     "notizen": "",
     "id": "mnztwcqf8kc7nqil9i9",
-    "modelskizze": ""
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/MarleneBlouse_skizze.jpg"
   },
   {
     "name": "Midge Breton Top",
@@ -2150,7 +2150,7 @@
     "modelskizze": ""
   },
   {
-    "name": "Summer vacation pants",
+    "name": "Summer Vacation Pants",
     "marke": "Gertie Patreon",
     "kollektion": "Charm School Patreon 2024",
     "zielgruppe": "Damen",
@@ -2179,7 +2179,7 @@
     "format": "PDF",
     "status": "Vorhanden",
     "link": "",
-    "bild": "",
+    "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Sweetheart-Slip.jpg",
     "notizen": "",
     "id": "mnztwcqfy2456xfks1b",
     "modelskizze": ""
@@ -2248,7 +2248,7 @@
     "format": "PDF",
     "status": "Vorhanden",
     "link": "",
-    "bild": "",
+    "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Vargas-Panties.jpg",
     "notizen": "",
     "id": "mnztwcqffofn91zubv",
     "created": 1776244138359,
@@ -2307,7 +2307,7 @@
     "modelskizze": ""
   },
   {
-    "name": "American Beauty Dress",
+    "name": "The American Beauty Dress",
     "marke": "Gertie Patreon",
     "kollektion": "Institute of Style",
     "zielgruppe": "Damen",
@@ -2472,7 +2472,7 @@
     "format": "PDF",
     "status": "Vorhanden",
     "link": "",
-    "bild": "",
+    "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/MakeDoMend-Overalls.jpg",
     "notizen": "",
     "id": "mo3xfi65jm314jxymt",
     "modelskizze": ""
@@ -2969,5 +2969,107 @@
     "bild": "",
     "notizen": "2 Varianten: klassisch mit Ärmeln oder Fledermausärmel; auch in Jersey nähbar",
     "id": "mo45w4klduwb468kba"
+  },
+  {
+    "name": "Jane Set",
+    "marke": "Gertie Patreon",
+    "kollektion": "",
+    "zielgruppe": "Damen",
+    "oberkategorie": "Einteiler",
+    "typ": "Jumpsuit/Playsuit/Separates",
+    "stoffart": "Stretch-Webware",
+    "groesse": "2-16 (B/C/D/DD Cup)",
+    "format": "PDF",
+    "status": "Vorhanden",
+    "link": "",
+    "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/JaneSet.jpg",
+    "notizen": "",
+    "modelskizze": "",
+    "source": "v10"
+  },
+  {
+    "name": "Katherine Skirt",
+    "marke": "Gertie Patreon",
+    "kollektion": "",
+    "zielgruppe": "Damen",
+    "oberkategorie": "Unterteil",
+    "typ": "Rock",
+    "stoffart": "",
+    "groesse": "2-20 / 18-34",
+    "format": "PDF",
+    "status": "Vorhanden",
+    "link": "",
+    "bild": "",
+    "notizen": "",
+    "modelskizze": "",
+    "source": "v10"
+  },
+  {
+    "name": "Midge Breton Shirt",
+    "marke": "Gertie Patreon",
+    "kollektion": "",
+    "zielgruppe": "Damen",
+    "oberkategorie": "Oberteil",
+    "typ": "Shirt",
+    "stoffart": "",
+    "groesse": "2-20 / 18-34",
+    "format": "PDF",
+    "status": "Vorhanden",
+    "link": "",
+    "bild": "",
+    "notizen": "",
+    "modelskizze": "",
+    "source": "v10"
+  },
+  {
+    "name": "Patsy Sleeve and Necktie",
+    "marke": "Gertie Patreon",
+    "kollektion": "",
+    "zielgruppe": "Damen",
+    "oberkategorie": "Accessoires",
+    "typ": "",
+    "stoffart": "",
+    "groesse": "2-20 / 18-34",
+    "format": "PDF",
+    "status": "Vorhanden",
+    "link": "",
+    "bild": "",
+    "notizen": "",
+    "modelskizze": "",
+    "source": "v10"
+  },
+  {
+    "name": "Valedictorian Bow and Tie",
+    "marke": "Gertie Patreon",
+    "kollektion": "",
+    "zielgruppe": "Damen",
+    "oberkategorie": "Accessoires",
+    "typ": "Gürtel",
+    "stoffart": "",
+    "groesse": "2-20 / 18-34",
+    "format": "PDF",
+    "status": "Vorhanden",
+    "link": "",
+    "bild": "",
+    "notizen": "",
+    "modelskizze": "",
+    "source": "v10"
+  },
+  {
+    "name": "Wanda Skirt",
+    "marke": "Gertie Patreon",
+    "kollektion": "Lamour Series",
+    "zielgruppe": "Damen",
+    "oberkategorie": "Unterteil",
+    "typ": "Rock",
+    "stoffart": "",
+    "groesse": "2-20 / 18-34",
+    "format": "PDF",
+    "status": "Vorhanden",
+    "link": "",
+    "bild": "",
+    "notizen": "",
+    "modelskizze": "",
+    "source": "v10"
   }
 ]
