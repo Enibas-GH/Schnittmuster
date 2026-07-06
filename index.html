@@ -426,10 +426,26 @@ let viewState = {}; // id → 'foto' | 'skizze'
 
 // ── Persist ──
 async function loadData() {
-  try { const d = localStorage.getItem(SK); if (d) P = JSON.parse(d); } catch(e) {}
-  await fetchDefaultCSV();
+  const ok = await fetchDataJson();
+  if (!ok) {
+    try { const d = localStorage.getItem(SK); if (d) P = JSON.parse(d); } catch(e) {}
+    await fetchDefaultCSV();
+  }
   updateMarkenList();
   render();
+}
+async function fetchDataJson() {
+  try {
+    const res = await fetch('data.json?t=' + Date.now());
+    if (!res.ok) return false;
+    const data = await res.json();
+    if (!Array.isArray(data)) return false;
+    P = data.map(p => ({...p, id: p.id || uid()}));
+    saveData();
+    return true;
+  } catch(e) {
+    return false;
+  }
 }
 async function fetchDefaultCSV() {
   try {
