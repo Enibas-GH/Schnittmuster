@@ -96,6 +96,14 @@ td.dim { color: var(--text2); }
 .card-act button, .card-act a { font-size: 12px; font-weight: 700; padding: 5px 10px; flex: 1; text-align: center; text-decoration: none; border: 2px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text2); cursor: pointer; font-family: 'Nunito',sans-serif; }
 .card-act button:hover, .card-act a:hover { border-color: var(--orange); color: var(--orange); }
 
+/* ── Skizze-Toggle ── */
+.mk-wrap { position: relative; display: inline-block; }
+.mk-wrap-card { position: relative; }
+.mk-toggle { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border-radius: 50%; border: none; background: rgba(255,255,255,.92); color: var(--orange); font-size: 15px; padding: 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,.15); cursor: pointer; z-index: 2; }
+.mk-toggle:hover { background: #fff; transform: scale(1.08); }
+.mk-toggle.on { background: var(--orange); color: #fff; }
+.card .mk-toggle { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 17px; }
+
 /* ── Badges ── */
 .badge { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 20px; display: inline-block; white-space: nowrap; }
 .s-vorhanden { background: #d1fae5; color: #065f46; }
@@ -323,6 +331,10 @@ textarea.fi { resize: vertical; }
           <input type="url" id="f-bildurl" class="fi" placeholder="… oder Bild-URL eingeben" style="margin-top:8px" oninput="syncUrlPrev()">
         </div>
         <div class="fw">
+          <label class="lbl">Modelskizze (URL)</label>
+          <input type="url" id="f-modelskizze" class="fi" placeholder="https://…/modelskizzen/…">
+        </div>
+        <div class="fw">
           <label class="lbl">Notizen</label>
           <textarea id="f-notizen" class="fi" rows="3" placeholder="Erfahrungen, Anpassungen, Tipps …"></textarea>
         </div>
@@ -393,8 +405,8 @@ const TM = {
 };
 const SC = { Vorhanden:'vorhanden', Genäht:'genaht', 'In Planung':'planung', Wunschliste:'wunsch' };
 const ZC = { Damen:'damen', Herren:'herren', Kinder:'kinder', Baby:'baby', Unisex:'unisex' };
-const CSV_HDRS = ['Name','Marke','Kollektion','Zielgruppe','Oberkategorie','Typ','Stoffart','Größe','Format','Status','Link','Bild','Notizen'];
-const CSV_KEYS = ['name','marke','kollektion','zielgruppe','oberkategorie','typ','stoffart','groesse','format','status','link','bild','notizen'];
+const CSV_HDRS = ['Name','Marke','Kollektion','Zielgruppe','Oberkategorie','Typ','Stoffart','Größe','Format','Status','Link','Bild','Modelskizze','Notizen'];
+const CSV_KEYS = ['name','marke','kollektion','zielgruppe','oberkategorie','typ','stoffart','groesse','format','status','link','bild','modelskizze','notizen'];
 const TBL_COLS = [
   {k:'name', l:'Name'},
   {k:'marke', l:'Marke'},
@@ -410,6 +422,7 @@ const SK = 'sm-v3';
 // ── State ──
 let P = [], editId = null, deleteId = null, pendingImport = [];
 let sortCol = 'name', sortDir = 'asc', viewMode = 'list', imgData = '';
+let viewState = {}; // id → 'foto' | 'skizze'
 
 // ── Persist ──
 async function loadData() {
@@ -465,7 +478,13 @@ function showToast(msg) {
 
 // ── Marken ──
 function updateMarkenList() {
-  const marken = [...new Set(P.map(p => p.marke).filter(Boolean))].sort((a,b) => a.localeCompare(b,'de'));
+  const map = {};
+  P.map(p => p.marke).filter(Boolean).forEach(m => {
+    const k = m.toLowerCase();
+    // bevorzuge Version mit Großbuchstabe am Anfang
+    if (!map[k] || (/^[a-z]/.test(map[k]) && /^[A-ZÄÖÜ]/.test(m))) map[k] = m;
+  });
+  const marken = Object.values(map).sort((a,b) => a.localeCompare(b,'de'));
   const curFilt = gv('f-marke');
   const fSel = document.getElementById('f-marke');
   fSel.innerHTML = '<option value="">Alle Marken</option>';
@@ -527,7 +546,7 @@ function getFiltered() {
     if (zg && p.zielgruppe !== zg) return false;
     if (stoff && p.stoffart !== stoff) return false;
     if (status && p.status !== status) return false;
-    if (marke && p.marke !== marke) return false;
+    if (marke && (p.marke||'').toLowerCase() !== marke.toLowerCase()) return false;
     return true;
   });
   rows.sort((a,b) => {
@@ -562,10 +581,21 @@ function badgeZg(p) {
   return p.zielgruppe ? '<span class="badge zg-' + (ZC[p.zielgruppe]||'') + '">' + esc(p.zielgruppe) + '</span>' : '—';
 }
 function thumbEl(p) {
-  if (p.bild) {
-    return '<img class="thumb" src="' + esc(p.bild) + '" alt="" onerror="this.style.display=\'none\'" onclick="openLightbox(\'' + esc(p.bild) + '\')">';
+  const hasBoth = p.bild && p.modelskizze;
+  const showSkizze = viewState[p.id] === 'skizze' || (!p.bild && p.modelskizze);
+  const src = showSkizze ? p.modelskizze : p.bild;
+  if (!src) return '<div class="no-img">✂</div>';
+  let h = '<div class="mk-wrap">';
+  h += '<img class="thumb" src="' + esc(src) + '" alt="" onerror="this.style.display=\'none\'" onclick="openLightbox(\'' + esc(src) + '\')">';
+  if (hasBoth) {
+    h += '<button class="mk-toggle' + (showSkizze ? ' on' : '') + '" title="' + (showSkizze ? 'Foto zeigen' : 'Modelskizze zeigen') + '" onclick="event.stopPropagation();toggleSkizze(\'' + p.id + '\')">📐</button>';
   }
-  return '<div class="no-img">✂</div>';
+  h += '</div>';
+  return h;
+}
+function toggleSkizze(id) {
+  viewState[id] = viewState[id] === 'skizze' ? 'foto' : 'skizze';
+  render();
 }
 
 function renderList(rows) {
@@ -596,12 +626,18 @@ function renderList(rows) {
 function renderGrid(rows) {
   let h = '<div class="grid">';
   rows.forEach(p => {
-    const imgH = p.bild
-      ? '<img class="card-img" src="' + esc(p.bild) + '" alt="' + esc(p.name) + '" onerror="this.outerHTML=\'<div class=\\\'card-noimg\\\'>✂</div>\'" onclick="openLightbox(\'' + esc(p.bild) + '\')">'
+    const hasBoth = p.bild && p.modelskizze;
+    const showSkizze = viewState[p.id] === 'skizze' || (!p.bild && p.modelskizze);
+    const src = showSkizze ? p.modelskizze : p.bild;
+    const imgH = src
+      ? '<img class="card-img" src="' + esc(src) + '" alt="' + esc(p.name) + '" onerror="this.outerHTML=\'<div class=\\\'card-noimg\\\'>✂</div>\'" onclick="openLightbox(\'' + esc(src) + '\')">'
       : '<div class="card-noimg">✂</div>';
+    const togg = hasBoth
+      ? '<button class="mk-toggle' + (showSkizze ? ' on' : '') + '" title="' + (showSkizze ? 'Foto zeigen' : 'Modelskizze zeigen') + '" onclick="event.stopPropagation();toggleSkizze(\'' + p.id + '\')">📐</button>'
+      : '';
     const lnk = p.link ? '<a href="' + esc(p.link) + '" target="_blank">↗ Link</a>' : '';
     h += '<div class="card">';
-    h += imgH;
+    h += '<div class="mk-wrap-card">' + imgH + togg + '</div>';
     h += '<div class="card-body">';
     h += '<div class="card-name" title="' + esc(p.name) + '">' + esc(p.name) + '</div>';
     h += '<div class="card-meta">' + esc(p.marke||'—') + (p.typ ? ' · ' + esc(p.typ) : '') + '</div>';
@@ -636,7 +672,7 @@ function checkSubmit() {
   document.getElementById('btn-submit').disabled = !gv('f-name').trim();
 }
 function clearForm() {
-  ['f-name','f-marke','f-koll','f-groesse','f-link','f-bildurl'].forEach(id => sv(id,''));
+  ['f-name','f-marke','f-koll','f-groesse','f-link','f-bildurl','f-modelskizze'].forEach(id => sv(id,''));
   document.getElementById('f-notizen').value = '';
   ['f-zielgruppe','f-oberkat','f-typ2','f-stoff2','f-format','f-status2'].forEach(id => sv(id,''));
   syncFormTyp();
@@ -662,6 +698,7 @@ function openEdit(id) {
   sv('f-stoff2', p.stoffart); sv('f-groesse', p.groesse);
   sv('f-format', p.format); sv('f-status2', p.status);
   sv('f-link', p.link);
+  sv('f-modelskizze', p.modelskizze);
   document.getElementById('f-notizen').value = p.notizen || '';
   if (p.bild) {
     if (p.bild.startsWith('data:')) { imgData = p.bild; showImgPrev(p.bild); }
@@ -682,6 +719,7 @@ function submitForm() {
     stoffart: gv('f-stoff2'), groesse: gv('f-groesse').trim(),
     format: gv('f-format'), status: gv('f-status2'),
     link: gv('f-link').trim(), bild,
+    modelskizze: gv('f-modelskizze').trim(),
     notizen: document.getElementById('f-notizen').value.trim()
   };
   if (editId) {
