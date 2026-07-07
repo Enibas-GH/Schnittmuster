@@ -1125,7 +1125,7 @@
     "format": "PDF",
     "status": "Vorhanden",
     "link": "https://charmpatterns.com/shop/charlotte-beret/",
-    "bild": "",
+    "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/charlotte-Beret.jpg",
     "notizen": "",
     "id": "mnztwcqfxbpokv3su7",
     "created": 1776244138359,
@@ -2144,7 +2144,7 @@
     "format": "PDF",
     "status": "Vorhanden",
     "link": "https://charmpatterns.com/shop/swing-coat-and-jacket/",
-    "bild": "",
+    "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/SwingCoat.jpg",
     "notizen": "",
     "id": "mnztwcqfvp60qy19ug",
     "modelskizze": ""
@@ -2230,7 +2230,7 @@
     "format": "PDF",
     "status": "Vorhanden",
     "link": "https://charmpatterns.com/shop/waspie-corset-belt/",
-    "bild": "",
+    "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/WaspieCorsetBelt.jpg",
     "notizen": "",
     "id": "mnztwcqfgxwiazakp0p",
     "created": 1776244138359,
@@ -2522,10 +2522,10 @@
     "format": "PDF",
     "status": "Vorhanden",
     "link": "https://charmpatterns.com/shop/wanda-pencil-skirt/",
-    "bild": "",
+    "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Wanda-pencil-skirt.jpg",
     "notizen": "",
     "id": "mo3xfi65o4xuz5d9kk",
-    "modelskizze": ""
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/Wanda-pencil-skirt_skizze.jpg"
   },
   {
     "name": "Sabrina Dress",
