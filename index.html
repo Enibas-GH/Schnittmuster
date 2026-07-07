@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Schnittmuster">
 <title>Schnittmuster</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Space+Grotesk:wght@700&family=Fraunces:ital,wght@1,600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -31,8 +31,9 @@ body { font-family: 'Nunito', -apple-system, sans-serif; background: var(--bg); 
 
 /* ── Header ── */
 .hdr { background: var(--grad); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 20px rgba(255,107,43,.3); }
-.hdr-title { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -.5px; }
-.hdr-sub { font-size: 12px; color: rgba(255,255,255,.8); font-weight: 600; margin-top: 2px; }
+.hdr-title { line-height: .95; }
+.hdr-title .t1 { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; color: #fff; letter-spacing: 1px; }
+.hdr-title .t2 { font-family: 'Fraunces', serif; font-size: 27px; font-weight: 600; font-style: italic; color: #1a0a00; }
 .hdr-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
 /* ── Buttons ── */
@@ -70,12 +71,13 @@ th { padding: 12px 14px; font-size: 11px; font-weight: 800; color: var(--orange)
 th:hover { color: var(--pink); }
 td { padding: 10px 14px; border-bottom: 1px solid #fff0e8; vertical-align: middle; font-weight: 600; }
 tr:last-child td { border-bottom: none; }
+td:first-child { max-width: 280px; }
 tr:hover td { background: #fff5ee; }
-.nc { display: flex; align-items: center; gap: 10px; }
+.nc { display: flex; align-items: center; gap: 10px; max-width: 260px; }
 .thumb { width: 90px; height: 120px; object-fit: cover; border-radius: 10px; flex-shrink: 0; cursor: pointer; border: 2px solid var(--border); transition: transform .15s, border-color .15s; }
 .thumb:hover { transform: scale(1.06); border-color: var(--orange); }
 .no-img { width: 90px; height: 120px; border-radius: 10px; background: linear-gradient(135deg,#fff0e8,#ffe4cc); border: 2px dashed var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 34px; }
-.name-txt { font-weight: 700; }
+.name-txt { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 td.dim { color: var(--text2); }
 .row-act { display: flex; gap: 4px; }
 .row-act button { font-size: 12px; padding: 3px 8px; }
@@ -99,10 +101,10 @@ td.dim { color: var(--text2); }
 /* ── Skizze-Toggle ── */
 .mk-wrap { position: relative; display: inline-block; }
 .mk-wrap-card { position: relative; }
-.mk-toggle { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border-radius: 50%; border: none; background: rgba(255,255,255,.92); color: var(--orange); font-size: 15px; padding: 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,.15); cursor: pointer; z-index: 2; }
+.mk-toggle { position: absolute; bottom: 6px; left: 6px; width: 28px; height: 28px; border-radius: 50%; border: none; background: rgba(255,255,255,.92); color: var(--orange); font-size: 15px; padding: 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,.15); cursor: pointer; z-index: 2; }
 .mk-toggle:hover { background: #fff; transform: scale(1.08); }
 .mk-toggle.on { background: var(--orange); color: #fff; }
-.card .mk-toggle { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 17px; }
+.card .mk-toggle { bottom: 10px; left: 10px; width: 34px; height: 34px; font-size: 17px; }
 
 /* ── Badges ── */
 .badge { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 20px; display: inline-block; white-space: nowrap; }
@@ -183,8 +185,7 @@ textarea.fi { resize: vertical; }
 <!-- HEADER -->
 <div class="hdr">
   <div>
-    <div class="hdr-title">✂ Schnittmuster</div>
-    <div class="hdr-sub" id="hdr-count">0 Einträge</div>
+    <div class="hdr-title"><span class="t1">SCHNITT</span><span class="t2">MUSTER</span></div>
   </div>
   <div class="hdr-actions">
     <div class="view-toggle">
@@ -576,7 +577,6 @@ function getFiltered() {
 function render() {
   const rows = getFiltered();
   const cnt = rows.length + ' von ' + P.length + ' Einträgen';
-  document.getElementById('hdr-count').textContent = cnt;
   document.getElementById('stats').textContent = cnt;
   const area = document.getElementById('area');
   if (!P.length) {
