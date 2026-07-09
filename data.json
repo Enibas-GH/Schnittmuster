@@ -846,9 +846,10 @@
     "format": "PDF",
     "status": "Vorhanden",
     "link": "https://www.pattydoo.de/schnittmuster-top-maya",
-    "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/schnittmuster-5263.jpg",
+    "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/top-maya.jpg",
     "notizen": "",
-    "id": "mnypegavkjthgeov9ot"
+    "id": "mnypegavkjthgeov9ot",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/top-maya_skizze.jpg"
   },
   {
     "name": "Wendetasche Milly",
