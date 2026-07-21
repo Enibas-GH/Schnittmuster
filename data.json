@@ -1531,13 +1531,12 @@
     "stoffart": "Jersey",
     "groesse": "2–20 / 18–34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Wunschliste",
     "link": "https://charmpatterns.com/shop/jasmin-jumpsuit/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/DSC04339-247x296.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/JasminJumpsuit_Skizze.jpg",
     "notizen": "",
-    "id": "mnztwcqfn7toj5yzkf",
-    "created": 1776244138359,
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/JasminJumpsuit_Skizze.jpg"
+    "id": "mnztwcqfn7toj5yzkf"
   },
   {
     "name": "Jeanne Gloves",
@@ -2399,16 +2398,16 @@
     "kollektion": "Institute of Style",
     "zielgruppe": "Damen",
     "oberkategorie": "Einteiler",
-    "typ": "Latzhose",
+    "typ": "",
     "stoffart": "Webware",
     "groesse": "2-20 / 18-34 (A-H Cup)",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Wunschliste",
     "link": "https://charmpatterns.com/shop/make-do-and-mend-overalls/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/MakeDoMend-Overalls.jpg",
+    "modelskizze": "",
     "notizen": "",
-    "id": "mo3xfi65jm314jxymt",
-    "modelskizze": ""
+    "id": "mo3xfi65jm314jxymt"
   },
   {
     "name": "Millicent Skirt",
