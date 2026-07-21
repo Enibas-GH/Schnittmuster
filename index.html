@@ -241,6 +241,12 @@ textarea.fi { resize: vertical; }
     <option>Strick</option>
     <option>Spitze</option>
     <option>Jacken-/Mantelstoffe</option>
+    <option>Sweat</option>
+    <option>Frottee</option>
+    <option>Cord</option>
+    <option>Denim</option>
+    <option>Fleece</option>
+    <option>Festliche Stoffe</option>
     <option>Leder</option>
     <option>Fell</option>
     <option>Sonstiges</option>
@@ -311,6 +317,12 @@ textarea.fi { resize: vertical; }
             <option>Strick</option>
             <option>Spitze</option>
             <option>Jacken-/Mantelstoffe</option>
+            <option>Sweat</option>
+            <option>Frottee</option>
+            <option>Cord</option>
+            <option>Denim</option>
+            <option>Fleece</option>
+            <option>Festliche Stoffe</option>
             <option>Leder</option>
             <option>Fell</option>
             <option>Sonstiges</option>
@@ -728,7 +740,8 @@ function sv(id, v) { document.getElementById(id).value = v || ''; }
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  const dur = /fehler|error|ungültig|konflikt/i.test(msg) ? 5000 : 2500;
+  setTimeout(() => t.classList.remove('show'), dur);
 }
 
 // ── Marken ──
