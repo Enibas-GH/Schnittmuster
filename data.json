@@ -994,12 +994,12 @@
     "stoffart": "Jersey",
     "groesse": "2-20 / 18-34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/audrey-cigarette-pants/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Audrey_Cigarette_Pants.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/AudreyCigarettePants_Skizze.jpg",
     "notizen": "",
-    "id": "mnztwcqfery0dh9udgl",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/AudreyCigarettePants_Skizze.jpg"
+    "id": "mnztwcqfery0dh9udgl"
   },
   {
     "name": "Aurora Bodice",
@@ -1045,12 +1045,12 @@
     "stoffart": "Jersey",
     "groesse": "2-20 / 18-34 (A-H Cup)",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/barbie-top/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Barbie_Top.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/BarbieTop_Skizze.jpg",
     "notizen": "",
-    "id": "mnztwcqfj13jwbcfn6",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/BarbieTop_Skizze.jpg"
+    "id": "mnztwcqfj13jwbcfn6"
   },
   {
     "name": "Bathing Beauty",
@@ -1377,12 +1377,12 @@
     "stoffart": "Sonstiges",
     "groesse": "2–20 / 18–34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/frenchy-peignoir-robe-and-nightie-set/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Frenchy-Peignoir.jpg",
+    "modelskizze": "",
     "notizen": "",
-    "id": "mnztwcqforpvq8l8x9",
-    "modelskizze": ""
+    "id": "mnztwcqforpvq8l8x9"
   },
   {
     "name": "Gardner Top",
@@ -1430,12 +1430,12 @@
     "stoffart": "Webware",
     "groesse": "2–20 / 18–34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/ginger-sailor-pants-and-shorts/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/Look-06_060-Web-247x296.jpg",
-    "notizen": "",
-    "id": "mnztwcqfdvmt949l8pr",
-    "modelskizze": ""
+    "modelskizze": "",
+    "notizen": "Eine Shorts genäht: Anpassungen nötig.",
+    "id": "mnztwcqfdvmt949l8pr"
   },
   {
     "name": "Grace Bodice",
@@ -1500,12 +1500,12 @@
     "stoffart": "Webware",
     "groesse": "2–20 / 18–34 (A-H Cup)",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/honor-roll-top/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/HR_DSC_5823-247x296.jpg",
-    "notizen": "",
-    "id": "mnztwcqfpvwpj8w26n",
-    "modelskizze": ""
+    "modelskizze": "",
+    "notizen": "Nicht mein Schnitt",
+    "id": "mnztwcqfpvwpj8w26n"
   },
   {
     "name": "Ingrid Skirt",
@@ -1517,12 +1517,12 @@
     "stoffart": "Webware",
     "groesse": "2-20 / 18-34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/ingrid-skirt/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/05/HR_DSC_5791-247x296.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/IngridSkirt_Skizze.jpg",
     "notizen": "",
-    "id": "mnztwcqfsi5mz7njl4",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/IngridSkirt_Skizze.jpg"
+    "id": "mnztwcqfsi5mz7njl4"
   },
   {
     "name": "Jasmin Jumpsuit",
@@ -1569,12 +1569,12 @@
     "stoffart": "Jersey",
     "groesse": "2–20 / 18–34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/joan-wiggle-dress/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/Charm-December-290-247x296.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/JoanWiggleDress_Skizze.jpg",
     "notizen": "",
-    "id": "mnztwcqfn8o7ryylb1q",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/JoanWiggleDress_Skizze.jpg"
+    "id": "mnztwcqfn8o7ryylb1q"
   },
   {
     "name": "Judy Vest",
@@ -1583,15 +1583,15 @@
     "zielgruppe": "Damen",
     "oberkategorie": "Oberteil",
     "typ": "Weste",
-    "stoffart": "Jersey (stabil)",
+    "stoffart": "",
     "groesse": "2-20 / 18-34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/judy-vest/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Judy_Vest.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/JudyVest_Skizze.jpg",
     "notizen": "",
-    "id": "mnztwcqf4pghd3cag0c",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/JudyVest_Skizze.jpg"
+    "id": "mnztwcqf4pghd3cag0c"
   },
   {
     "name": "Landis Bodice",
@@ -1657,12 +1657,12 @@
     "stoffart": "Webware",
     "groesse": "2–20",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/loretta-shorts/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Loretta-Shorts.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/LorettaShorts_Skizze.jpg",
     "notizen": "",
-    "id": "mnztwcqfg3leh3wdpv5",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/LorettaShorts_Skizze.jpg"
+    "id": "mnztwcqfg3leh3wdpv5"
   },
   {
     "name": "Lucille Trousers",
@@ -1674,12 +1674,12 @@
     "stoffart": "Webware",
     "groesse": "2-20 / 18-34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/lucille-trousers/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/Look01_DandyWasitCoat_115-247x296.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/LucilleTrousers_Skizze.jpg",
     "notizen": "",
-    "id": "mnztwcqfoh1ccftywz",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/LucilleTrousers_Skizze.jpg"
+    "id": "mnztwcqfoh1ccftywz"
   },
   {
     "name": "Maria Pencil Skirt",
@@ -1708,12 +1708,12 @@
     "stoffart": "Webware",
     "groesse": "2–20 / 18–34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/mariner-top/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/Charm-224-High-Res-247x296.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/MarinerTop_Skizze.jpg",
     "notizen": "",
-    "id": "mnztwcqfl110j850iy7",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/MarinerTop_Skizze.jpg"
+    "id": "mnztwcqfl110j850iy7"
   },
   {
     "name": "Marlene Blouse",
@@ -1725,12 +1725,12 @@
     "stoffart": "Webware",
     "groesse": "2-20 / 18-34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/marlene-blouse/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Marlene_Blouse.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/MarleneBlouse_skizze.jpg",
     "notizen": "",
-    "id": "mnztwcqf8kc7nqil9i9",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/MarleneBlouse_skizze.jpg"
+    "id": "mnztwcqf8kc7nqil9i9"
   },
   {
     "name": "Midge Breton Top",
@@ -1742,12 +1742,12 @@
     "stoffart": "Jersey",
     "groesse": "2–20 / 18–34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/midge-breton-top/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/Charm-Patreon-March-16-Web-247x296.jpg",
-    "notizen": "",
-    "id": "mnztwcqfbt4uhne38xe",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/MidgeBretonTop_Skizze.jpg"
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/MidgeBretonTop_Skizze.jpg",
+    "notizen": "Mit langen Ärmeln schön, ohne nicht so meins.",
+    "id": "mnztwcqfbt4uhne38xe"
   },
   {
     "name": "Millicent Dress",
@@ -1866,12 +1866,12 @@
     "stoffart": "",
     "groesse": "2-20 / 18-34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/picnic-top/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/DSC_1229-High-Res-247x296.jpg",
+    "modelskizze": "",
     "notizen": "",
-    "id": "mnztwcqfqvxxqqicgr",
-    "modelskizze": ""
+    "id": "mnztwcqfqvxxqqicgr"
   },
   {
     "name": "Presley Shirt",
@@ -1919,12 +1919,12 @@
     "stoffart": "",
     "groesse": "2-20 / 18-34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/rizzo-jacket/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/02_Pink-Ladies-Jacket_Gretchen_098-1-247x296.jpg",
+    "modelskizze": "",
     "notizen": "",
-    "id": "mnztwcqfvr2uanx63h",
-    "modelskizze": ""
+    "id": "mnztwcqfvr2uanx63h"
   },
   {
     "name": "Sabrina Bodice",
@@ -1972,12 +1972,12 @@
     "stoffart": "Webware",
     "groesse": "2–20 / 18–34 (A–H Cup)",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/scout-dress/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/border-print-gertie-247x296.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/ScoutDress_Skizze.jpg",
     "notizen": "",
-    "id": "mnztwcqftqpmt0ksvw",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/ScoutDress_Skizze.jpg"
+    "id": "mnztwcqftqpmt0ksvw"
   },
   {
     "name": "Secrets Clutch",
@@ -2025,12 +2025,12 @@
     "stoffart": "Jersey",
     "groesse": "2–20 / 18–34 (A–H Cup)",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/skipper-dress-and-bodysuit/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/Skipper-Composite-Merged-247x296.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/SkipperDress_Skizze.jpg",
     "notizen": "",
-    "id": "mnztwcqf39g9b6kj3qb",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/SkipperDress_Skizze.jpg"
+    "id": "mnztwcqf39g9b6kj3qb"
   },
   {
     "name": "Society Dress",
@@ -2095,12 +2095,12 @@
     "stoffart": "Webware",
     "groesse": "2–20 / 18–34 (A-H Cup)",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/study-hall-dress/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Study_Hall_Dress.jpg",
+    "modelskizze": "",
     "notizen": "",
-    "id": "mnztwcqfn44cjt2n82",
-    "modelskizze": ""
+    "id": "mnztwcqfn44cjt2n82"
   },
   {
     "name": "Summer Vacation Pants",
@@ -2130,12 +2130,12 @@
     "stoffart": "Sonstiges",
     "groesse": "2–20",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/sweetheart-slip/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Sweetheart-Slip.jpg",
+    "modelskizze": "",
     "notizen": "",
-    "id": "mnztwcqfy2456xfks1b",
-    "modelskizze": ""
+    "id": "mnztwcqfy2456xfks1b"
   },
   {
     "name": "Swing Coat",
@@ -2147,12 +2147,12 @@
     "stoffart": "Jacken-/Mantelstoffe",
     "groesse": "2–20 (A-H Cup)",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/swing-coat-and-jacket/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/SwingCoat.jpg",
-    "notizen": "",
-    "id": "mnztwcqfvp60qy19ug",
-    "modelskizze": ""
+    "modelskizze": "",
+    "notizen": "Anpassen!",
+    "id": "mnztwcqfvp60qy19ug"
   },
   {
     "name": "Turner Cardigan",
@@ -2164,12 +2164,12 @@
     "stoffart": "Strick",
     "groesse": "2–20 / 18–34 (A–H Cup)",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/turner-cardigan/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/09_Turner-Cardigan_758-247x296.jpg",
+    "modelskizze": "",
     "notizen": "",
-    "id": "mnztwcqfjcso075fh2",
-    "modelskizze": ""
+    "id": "mnztwcqfjcso075fh2"
   },
   {
     "name": "Vargas Panties",
@@ -2199,12 +2199,12 @@
     "stoffart": "Jersey",
     "groesse": "2–20 / 18–34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/varsity-gym-shorts/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/HR_DSC_9803-247x296.jpg",
+    "modelskizze": "",
     "notizen": "",
-    "id": "mnztwcqflfchh0l0l6q",
-    "modelskizze": ""
+    "id": "mnztwcqflfchh0l0l6q"
   },
   {
     "name": "Varsity Sweatshirt",
@@ -2216,12 +2216,12 @@
     "stoffart": "Jersey",
     "groesse": "2–20 / 18–34 (A–H Cup)",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/varsity-sweatshirt/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/HR_DSC_9702-Closeup-247x296.jpg",
+    "modelskizze": "",
     "notizen": "",
-    "id": "mnztwcqfpcb4h6yobx",
-    "modelskizze": ""
+    "id": "mnztwcqfpcb4h6yobx"
   },
   {
     "name": "Waspie Corset Belt",
@@ -2285,12 +2285,12 @@
     "stoffart": "Jacken-/Mantelstoffe",
     "groesse": "2–20",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/charm-scout-capelet/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/Charm-302-High-Res-247x296.jpg",
+    "modelskizze": "",
     "notizen": "",
-    "id": "mo3xfi65efef9w5d5md",
-    "modelskizze": ""
+    "id": "mo3xfi65efef9w5d5md"
   },
   {
     "name": "Holly Bodice Backs",
@@ -2490,12 +2490,12 @@
     "stoffart": "Sonstiges",
     "groesse": "2–20 (A-H Cup)",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/foundations-slip-tap-pants/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/SlipandTapPants.jpg",
+    "modelskizze": "",
     "notizen": "",
-    "id": "mo3xfi65aos4804abfa",
-    "modelskizze": ""
+    "id": "mo3xfi65aos4804abfa"
   },
   {
     "name": "Valedictorian Bow Tie and Suspenders",
@@ -2525,12 +2525,12 @@
     "stoffart": "Webware",
     "groesse": "2–20 / 18–34",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/wanda-pencil-skirt/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Wanda-pencil-skirt.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/Wanda-pencil-skirt_skizze.jpg",
     "notizen": "",
-    "id": "mo3xfi65o4xuz5d9kk",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/Wanda-pencil-skirt_skizze.jpg"
+    "id": "mo3xfi65o4xuz5d9kk"
   },
   {
     "name": "Sabrina Dress",
