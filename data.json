@@ -9,12 +9,12 @@
     "stoffart": "Webware",
     "groesse": "",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/hepburn-top/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Hepburn-Top.jpg",
-    "notizen": "https://enibas-gh.github.io/Schnittmuster/bilder/Anni-Bodice.jpg",
-    "id": "mnymd99mjrhn1vlz0n",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/Hepburn-Top_skizze.jpg"
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/Hepburn-Top_skizze.jpg",
+    "notizen": "",
+    "id": "mnymd99mjrhn1vlz0n"
   },
   {
     "name": "Night and Day Dress",
@@ -26,9 +26,10 @@
     "stoffart": "Webware",
     "groesse": "",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/night-and-day-dress/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/NightandDayDress.jpg",
+    "modelskizze": "",
     "notizen": "",
     "id": "mnymd99moob0572162a"
   },
@@ -42,12 +43,12 @@
     "stoffart": "Webware",
     "groesse": "",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/patsy-blouse/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/PatsyBlouse.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/Patsy-Blouse_skizze.png",
     "notizen": "",
-    "id": "mnymd99m5fypudflwpt",
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/Patsy-Blouse_skizze.png"
+    "id": "mnymd99m5fypudflwpt"
   },
   {
     "name": "Marilyn Jeans",
@@ -76,10 +77,11 @@
     "stoffart": "Webware",
     "groesse": "",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/stanwyck-skirt/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Stanwyck_Skirt.jpg",
-    "notizen": "https://charmpatterns.com/wp-content/uploads/2020/03/Charm-926-Web.jpg",
+    "modelskizze": "",
+    "notizen": "",
     "id": "mnyneqhavl0opatcoc"
   },
   {
@@ -92,10 +94,11 @@
     "stoffart": "Webware",
     "groesse": "",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/preorder-princess-coat/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Princess_Coat.png",
-    "notizen": "https://charmpatterns.com/wp-content/uploads/2019/12/Charm-121-Revised-Web.jpg",
+    "modelskizze": "",
+    "notizen": "",
     "id": "mnyneqhapnefwh222ws"
   },
   {
@@ -108,9 +111,10 @@
     "stoffart": "Webware",
     "groesse": "",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Genäht",
     "link": "https://charmpatterns.com/shop/dorothy-bolero/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Dorothy-Bolero.jpg",
+    "modelskizze": "",
     "notizen": "https://charmpatterns.com/wp-content/uploads/2019/08/Screenshot-2019-08-20-14.03.51.png",
     "id": "mnyneqhao321rs0m3im"
   },
