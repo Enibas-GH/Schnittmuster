@@ -1072,15 +1072,15 @@
     "zielgruppe": "Damen",
     "oberkategorie": "Kleid",
     "typ": "Kleid",
-    "stoffart": "",
+    "stoffart": "Webware",
     "groesse": "",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Wunschliste",
     "link": "https://charmpatterns.com/shop/boardwalk-sundress-and-patio-skirt/",
     "bild": "https://enibas-gh.github.io/Schnittmuster/bilder/Boardwalk_Sundress.jpg",
+    "modelskizze": "",
     "notizen": "",
-    "id": "mnztwcqfrwrg3t7bx6o",
-    "modelskizze": ""
+    "id": "mnztwcqfrwrg3t7bx6o"
   },
   {
     "name": "Brooklyn Jacket",
@@ -1214,13 +1214,12 @@
     "stoffart": "Webware",
     "groesse": "2-20 / 18-34 (A-H Cup)",
     "format": "PDF",
-    "status": "Vorhanden",
+    "status": "Wunschliste",
     "link": "https://charmpatterns.com/shop/lady-dandy-waistcoat/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/01/Look01_DandyWasitCoat_072-247x296.jpg",
+    "modelskizze": "",
     "notizen": "",
-    "id": "mnztwcqf0ihfh0fy3mts",
-    "created": 1776244138359,
-    "modelskizze": ""
+    "id": "mnztwcqf0ihfh0fy3mts"
   },
   {
     "name": "Dandy Waistcoat",
