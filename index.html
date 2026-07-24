@@ -255,7 +255,8 @@ textarea.fi { resize: vertical; }
     <option value="">Alle Status</option>
     <option>Vorhanden</option><option>Genäht</option><option>In Planung</option><option>Wunschliste</option>
   </select>
-  <select id="f-marke" onchange="render()"><option value="">Alle Marken</option></select>
+  <select id="f-marke" onchange="syncFiltKoll();render()"><option value="">Alle Marken</option></select>
+  <select id="f-koll" onchange="render()"><option value="">Alle Kollektionen</option></select>
   <button class="btn-outline" id="btn-reset" onclick="resetFilters()" style="display:none">✕ Reset</button>
 </div>
 
@@ -280,12 +281,12 @@ textarea.fi { resize: vertical; }
         </div>
         <div>
           <label class="lbl">Marke</label>
-          <input type="text" id="f-marke" class="fi" list="marken-dl" placeholder="z. B. Pattydoo" autocomplete="off">
+          <input type="text" id="f-marke2" class="fi" list="marken-dl" placeholder="z. B. Pattydoo" autocomplete="off" oninput="syncFormKoll()">
           <datalist id="marken-dl"></datalist>
         </div>
         <div>
           <label class="lbl">Kollektion</label>
-          <input type="text" id="f-koll" class="fi" placeholder="z. B. Frühjahr 2024">
+          <select id="f-koll2" class="fi"><option value="">—</option></select>
         </div>
         <div>
           <label class="lbl">Zielgruppe</label>
@@ -768,6 +769,44 @@ function updateMarkenList() {
     const o = document.createElement('option');
     o.value = m; dl.appendChild(o);
   });
+  syncFiltKoll();
+}
+
+// ── Kollektion-Sync (marken-abhängig) ──
+function syncFiltKoll() {
+  const marke = gv('f-marke');
+  const sel = document.getElementById('f-koll');
+  if (!sel) return;
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Alle Kollektionen</option>';
+  const source = marke
+    ? P.filter(p => (p.marke||'').toLowerCase() === marke.toLowerCase())
+    : P;
+  const kolls = [...new Set(source.map(p => p.kollektion).filter(Boolean))]
+    .sort((a,b) => a.localeCompare(b,'de'));
+  kolls.forEach(k => {
+    const o = document.createElement('option');
+    o.value = k; o.textContent = k; sel.appendChild(o);
+  });
+  if (cur && kolls.includes(cur)) sel.value = cur;
+}
+function syncFormKoll() {
+  const marke = gv('f-marke2');
+  const sel = document.getElementById('f-koll2');
+  if (!sel) return;
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">—</option>';
+  const source = marke
+    ? P.filter(p => (p.marke||'').toLowerCase() === marke.toLowerCase())
+    : [];
+  const kolls = [...new Set(source.map(p => p.kollektion).filter(Boolean))]
+    .sort((a,b) => a.localeCompare(b,'de'));
+  kolls.forEach(k => {
+    const o = document.createElement('option');
+    o.value = k; o.textContent = k; sel.appendChild(o);
+  });
+  sel.disabled = !marke;
+  if (cur && kolls.includes(cur)) sel.value = cur;
 }
 
 // ── View toggle ──
@@ -797,14 +836,14 @@ function syncFiltTyp() {
 }
 function resetFilters() {
   document.getElementById('f-q').value = '';
-  ['f-ok','f-typ','f-zg','f-stoff','f-status','f-marke'].forEach(id => sv(id,''));
-  syncFiltTyp(); render();
+  ['f-ok','f-typ','f-zg','f-stoff','f-status','f-marke','f-koll'].forEach(id => sv(id,''));
+  syncFiltTyp(); syncFiltKoll(); render();
 }
 function getFiltered() {
   const q = gv('f-q').toLowerCase();
   const ok = gv('f-ok'), typ = gv('f-typ'), zg = gv('f-zg');
-  const stoff = gv('f-stoff'), status = gv('f-status'), marke = gv('f-marke');
-  const hasF = q||ok||typ||zg||stoff||status||marke;
+  const stoff = gv('f-stoff'), status = gv('f-status'), marke = gv('f-marke'), koll = gv('f-koll');
+  const hasF = q||ok||typ||zg||stoff||status||marke||koll;
   document.getElementById('btn-reset').style.display = hasF ? '' : 'none';
   document.getElementById('btn-export').style.display = P.length ? '' : 'none';
   let rows = P.filter(p => {
@@ -815,6 +854,7 @@ function getFiltered() {
     if (stoff && p.stoffart !== stoff) return false;
     if (status && p.status !== status) return false;
     if (marke && (p.marke||'').toLowerCase() !== marke.toLowerCase()) return false;
+    if (koll && p.kollektion !== koll) return false;
     return true;
   });
   rows.sort((a,b) => {
@@ -939,10 +979,11 @@ function checkSubmit() {
   document.getElementById('btn-submit').disabled = !gv('f-name').trim();
 }
 function clearForm() {
-  ['f-name','f-marke','f-koll','f-groesse','f-link','f-bildurl','f-modelskizze'].forEach(id => sv(id,''));
+  ['f-name','f-marke2','f-groesse','f-link','f-bildurl','f-modelskizze'].forEach(id => sv(id,''));
   document.getElementById('f-notizen').value = '';
-  ['f-zielgruppe','f-oberkat','f-typ2','f-stoff2','f-format','f-status2'].forEach(id => sv(id,''));
+  ['f-zielgruppe','f-oberkat','f-typ2','f-stoff2','f-format','f-status2','f-koll2'].forEach(id => sv(id,''));
   syncFormTyp();
+  syncFormKoll();
   imgData = '';
   hideImgPrev();
   checkSubmit();
@@ -959,7 +1000,18 @@ function openEdit(id) {
   if (!p) return;
   editId = id;
   clearForm();
-  sv('f-name', p.name); sv('f-marke', p.marke); sv('f-koll', p.kollektion);
+  sv('f-name', p.name); sv('f-marke2', p.marke);
+  syncFormKoll();
+  // Falls gespeicherte Kollektion nicht in der Auswahl ist (Datenfehler), zusätzlich einfügen
+  if (p.kollektion) {
+    const ks = document.getElementById('f-koll2');
+    if (!Array.from(ks.options).some(o => o.value === p.kollektion)) {
+      const o = document.createElement('option');
+      o.value = p.kollektion; o.textContent = p.kollektion + ' ⚠';
+      ks.appendChild(o);
+    }
+    sv('f-koll2', p.kollektion);
+  }
   sv('f-zielgruppe', p.zielgruppe); sv('f-oberkat', p.oberkategorie);
   syncFormTyp(); sv('f-typ2', p.typ);
   sv('f-stoff2', p.stoffart); sv('f-groesse', p.groesse);
@@ -981,7 +1033,7 @@ function submitForm() {
   if (!name) return;
   const bild = imgData || gv('f-bildurl').trim();
   const p = {
-    name, marke: gv('f-marke').trim(), kollektion: gv('f-koll').trim(),
+    name, marke: gv('f-marke2').trim(), kollektion: gv('f-koll2'),
     zielgruppe: gv('f-zielgruppe'), oberkategorie: gv('f-oberkat'), typ: gv('f-typ2'),
     stoffart: gv('f-stoff2'), groesse: gv('f-groesse').trim(),
     format: gv('f-format'), status: gv('f-status2'),
