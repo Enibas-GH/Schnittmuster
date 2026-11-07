@@ -1620,16 +1620,15 @@
     "zielgruppe": "Damen",
     "oberkategorie": "Oberteil",
     "typ": "Top",
-    "stoffart": "Jersey",
+    "stoffart": "Webware",
     "groesse": "2–20 / 18–34",
     "format": "PDF",
     "status": "Vorhanden",
     "link": "https://charmpatterns.com/shop/lisa-bodice/",
     "bild": "https://charmpatterns.com/wp-content/uploads/2025/05/HR_DSC_0327-247x296.jpg",
+    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/LisaBodice_Skizze.png",
     "notizen": "",
-    "id": "mnztwcqfzwqameg40t",
-    "created": 1776244138359,
-    "modelskizze": "https://enibas-gh.github.io/Schnittmuster/modelskizzen/LisaBodice_Skizze.png"
+    "id": "mnztwcqfzwqameg40t"
   },
   {
     "name": "Lizabeth Raglan Top",
